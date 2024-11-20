@@ -1,6 +1,6 @@
 ﻿namespace Rss_Tracking_Data.Entities
 {
-    public class Creator
+    public class Feed
     {
         public Guid Id { get; set; }
         public Enums.Platform Platform { get; set; } = Enums.Platform.Basic;

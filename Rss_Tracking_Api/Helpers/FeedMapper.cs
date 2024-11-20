@@ -115,11 +115,11 @@ namespace Rss_Tracking_Api.Helpers
             return GetItems(items.Select(x => (ITunesItem)x));
         }
 
-        public static Creator FeedToDto(SyndicationFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDto(SyndicationFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
-            return new Creator
+            return new Feed
             {
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
@@ -130,11 +130,11 @@ namespace Rss_Tracking_Api.Helpers
                 Platform = Platform.Basic
             };
         }
-        public static Creator FeedToDto(MediaFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDto(MediaFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
-            return new Creator
+            return new Feed
             {
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
@@ -145,11 +145,11 @@ namespace Rss_Tracking_Api.Helpers
                 Platform = Platform.Media
             };
         }
-        public static Creator FeedToDto(YoutubeFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDto(YoutubeFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
-            return new Creator
+            return new Feed
             {
                 CreatorId = feed.ChannelId ?? feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
@@ -160,11 +160,11 @@ namespace Rss_Tracking_Api.Helpers
                 Platform = Platform.Youtube
             };
         }
-        public static Creator FeedToDto(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDto(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
-            return new Creator
+            return new Feed
             {
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
@@ -175,11 +175,11 @@ namespace Rss_Tracking_Api.Helpers
                 Platform = Platform.iTunes
             };
         }
-        public static Creator FeedToDto(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDto(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
-            return new Creator
+            return new Feed
             {
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,

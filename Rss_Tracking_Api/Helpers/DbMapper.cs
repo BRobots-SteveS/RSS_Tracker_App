@@ -5,7 +5,7 @@ namespace Rss_Tracking_Api.Helpers
 {
     public static class DbMapper
     {
-        public static AuthorDto AuthorToDto(Author author, List<Creator> feeds) => new()
+        public static AuthorDto AuthorToDto(Author author, List<Feed> feeds) => new()
         {
             Id = author.Id,
             FeedIds = feeds.Select(x => x.Id).ToList(),
@@ -13,7 +13,7 @@ namespace Rss_Tracking_Api.Helpers
             Email = author.Email,
             Uri = author.Uri
         };
-        public static FeedDto CreatorToDto(Creator creator, List<Author> authors) => new()
+        public static FeedDto CreatorToDto(Feed creator, List<Author> authors) => new()
         {
             Id = creator.Id,
             AuthorId = authors.Select(x => x.Id),
@@ -32,7 +32,7 @@ namespace Rss_Tracking_Api.Helpers
             CreatedOn = episode.Published,
             PreviewUrl = episode.Url,
             Description = episode.Description,
-            FeedId = episode.CreatorId,
+            FeedId = episode.FeedId,
         };
         public static UserDto UserToDto(User user) => new()
         {
@@ -44,7 +44,7 @@ namespace Rss_Tracking_Api.Helpers
         {
             Id = userFavorite.Id,
             User = UserToDto(userFavorite.User),
-            Creator = CreatorToDto(userFavorite.Creator, [])
+            Creator = CreatorToDto(userFavorite.Feed, [])
         };
     }
 }

@@ -5,8 +5,8 @@ namespace Rss_Tracking_Data
 {
     public class Rss_TrackingDbContext : DbContext
     {
-        public DbSet<Creator> Creators { get; set; }
-        public DbSet<CreatorsAuthors> CreatorsAuthors { get; set; }
+        public DbSet<Feed> Feeds { get; set; }
+        public DbSet<FeedsAuthors> FeedsAuthors { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Episode> Episodes { get; set; }
         public DbSet<User> Users { get; set; }
@@ -14,8 +14,8 @@ namespace Rss_Tracking_Data
         public Rss_TrackingDbContext(DbContextOptions<Rss_TrackingDbContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Creator>().HasData(
-                new Creator
+            modelBuilder.Entity<Feed>().HasData(
+                new Feed
                 {
                     Id = new Guid("da69f989-6159-4f03-a777-e4880345e7e6"),
                     CreatorId = "yt:channel:o_IB5145EVNcf8hw1Kku7w",
@@ -28,7 +28,7 @@ namespace Rss_Tracking_Data
                     PublishDate = new DateTime(2009, 8, 22, 18, 1, 46),
                     LastUpdated = DateTime.UtcNow
                 },
-                new Creator
+                new Feed
                 {
                     Id = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2"),
                     CreatorId = "yt:playlist:PLOl4b517qn8iG3DBk-0TSm3fcP3_zgTlf",
@@ -41,7 +41,7 @@ namespace Rss_Tracking_Data
                     PublishDate = new DateTime(2024, 8, 31, 7, 38, 51),
                     LastUpdated = DateTime.UtcNow
                 },
-                new Creator
+                new Feed
                 {
                     Id = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d"),
                     CreatorId = "796469f9-ea34-46a2-8776-ad0f015d6beb",
@@ -55,7 +55,7 @@ namespace Rss_Tracking_Data
                     PublishDate = DateTime.MinValue,
                     LastUpdated = DateTime.UtcNow
                 },
-                new Creator
+                new Feed
                 {
                     Id = new Guid("a0748a81-91b4-450b-8469-3175284c1083"),
                     CreatorId = "Nicholas Galinski",
@@ -94,29 +94,29 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Name = "Nicolas Galinski",
                 }
             );
-            modelBuilder.Entity<CreatorsAuthors>().HasData(
-                new CreatorsAuthors
+            modelBuilder.Entity<FeedsAuthors>().HasData(
+                new FeedsAuthors
                 {
                     Id = new Guid("e1429ca7-1a3e-4145-b46b-1db03302843a"),
-                    CreatorId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6"),
+                    FeedId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6"),
                     AuthorId = new Guid("9b2448b2-4ad0-4f1d-a781-deadc9afe03d")
                 },
-                new CreatorsAuthors
+                new FeedsAuthors
                 {
                     Id = new Guid("24fadfa7-cc5a-4575-8336-3a62c75fb49d"),
-                    CreatorId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2"),
+                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2"),
                     AuthorId = new Guid("9b2448b2-4ad0-4f1d-a781-deadc9afe03d")
                 },
-                new CreatorsAuthors
+                new FeedsAuthors
                 {
                     Id = new Guid("951ede19-caab-4b44-abc1-e055de3d3288"),
-                    CreatorId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d"),
+                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d"),
                     AuthorId = new Guid("c33ac723-8757-41b1-a6f1-34ea6502281a")
                 },
-                new CreatorsAuthors
+                new FeedsAuthors
                 {
                     Id = new Guid("c942a7d7-695c-4948-b8a2-426361193d43"),
-                    CreatorId = new Guid("a0748a81-91b4-450b-8469-3175284c1083"),
+                    FeedId = new Guid("a0748a81-91b4-450b-8469-3175284c1083"),
                     AuthorId = new Guid("73c512fa-d771-457c-8996-54b59cdd8b6a")
                 }
             );
@@ -131,7 +131,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"*SUBSCRIBE to Game Theory!* Don't miss a Game Theory! ► https://www.youtube.com/@GameTheory/?sub_confirmation=1 Dress to Impress is officially a horror game! There has been so much added to this game since the last time we covered it and it changes EVERYTHING we thought we knew about this Roblox experience. Where is Lana? What is Aggy's plan? Have we sufficiently impressed with our dress? Let's find out! The game ► https://www.roblox.com/games/15101393044/Dress-To-Impress ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ *Credits:* Writers: Eddie “NostalGamer” Robinson and Tom Robinson Editors: Tyler Mascola, Danial ""BanditRants"" Keristoufil, and Warak Sound Designer: Yosi Berman ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Need Royalty Free Music for your Content? Try Epidemic Sound. Get Your 30 Day Free Trial Now ► http://share.epidemicsound.com/MatPat ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ #DressToImpress #DTI #Roblox #DTILore #Theory #GameTheory",
                     LastUpdated = new DateTime(2024, 11, 18, 2, 13, 52),
                     Published = new DateTime(2024, 11, 16, 18, 5, 0),
-                    CreatorId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6")
+                    FeedId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6")
                 },
                 new Episode
                 {
@@ -143,7 +143,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"*SUBSCRIBE to SAVE Amanda!* ► https://www.youtube.com/@GameTheory/?sub_confirmation=1 Amanda The Adventurer 2 has been a SMASH hit this year, being one of YouTube's favorite games! The VHS-based horror game took the scene by storm a few years ago and never looked back! But one question has always remained... Who exactly is Wooly, Amanda's fuzzie companion. Today we answer that question... and a few others! So press play and get ready theorists! The game ► https://store.steampowered.com/app/2826800/Amanda_the_Adventurer_2/ ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ *Credits:* Writers: Eddie Robinson and Tom Robinson Editors: Tyler Mascola, Warak, Danial ""BanditRants"" Keristoufi, and Axellent Sound Designer: Yosi Berman ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Need Royalty Free Music for your Content? Try Epidemic Sound. Get Your 30 Day Free Trial Now ► http://share.epidemicsound.com/MatPat ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ #AmandaTheAdventurer2 #AmandTheAdventurer #VHS #Theory #GameTheory",
                     LastUpdated = new DateTime(2024, 11, 16, 4, 13, 25),
                     Published = new DateTime(2024, 11, 9, 18, 5, 0),
-                    CreatorId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6")
+                    FeedId = new Guid("da69f989-6159-4f03-a777-e4880345e7e6")
                 },
                 new Episode
                 {
@@ -155,7 +155,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"*SUBSCRIBE* To SAVE The Chompettes ► https://www.youtube.com/@GameTheory/?sub_confirmation=1 Cooking Companions was a horror visual novel game that came out a few years ago that everyone slept on! It had every element you need in a fantastic scary game, from great visuals, interesting characters, and of course… satisfying lore! So when Dread Weight, the sequel released we knew it was a game to keep an eye on. After playing through the game I feel like we’re able to finally answer some of the BIGGEST questions we were left with from Cooking Companions, so sharpen those knives theorists because it’s time to cook! ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Need Royalty Free Music for your Content? Try Epidemic Sound. Get Your 30 Day Free Trial Now ► http://share.epidemicsound.com/MatPat ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Credits: Writers: Tom Robinson, Taylor ""Swag Dracula"" Bailey, and Eddie “NostalGamer” Robinson Editors: Alex ""Sedge"" Sedgwick, Jerika (NekoOnigiri), Koen Verhagen, Millie Ferris, and Axellent Sound Designer: Yosi Berman Thumbnail Artist: DasGnomo ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ #DreadWeight #CookingCompanions #VisualNovel #Lore #Theory #GameTheory #Matpat",
                     LastUpdated = new DateTime(2024, 9, 24, 1, 12, 17),
                     Published = new DateTime(2024, 8, 31, 17, 5, 0),
-                    CreatorId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
+                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
                 },
                 new Episode
                 {
@@ -167,7 +167,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"Can you EAT your clothes to SURVIVE? Check out the Food Theory ! ► https://youtu.be/5nMEJEndAV4 Theorists, not since Doki Doki Literature Club have I seen a game that makes me scared the cute character is going to come out of the computer and get me. Welcome to Cooking Companions, the sweet looking cooking game that is hiding some unimaginable horrors. You'll have to grab a snack and watch to find out what secrets I've uncovered. Be careful though, you never know what may be hiding in your food. Find out more about how to support Ukraine ► https://bit.ly/3K9HjF3 Find out more about the game here! ► https://store.steampowered.com/app/1263230/Cooking_Companions/ Get Your Theory Wear! ► https://theorywear.com/ SUBSCRIBE for every TASTY Theory! ► https://goo.gl/kQWHkJ Need Royalty Free Music for your Content? Try Epidemic Sound. Get A 30 Day Free Trial! ► http://share.epidemicsound.com/MatPat More THEORIES: FNAF, The FINAL Timeline ►► https://bit.ly/2MlHYFe FNAF, The Monster We MISSED! ►► https://youtu.be/_ygN8HLCaJg FNAF This Theory Changes Everything ► https://bit.ly/2JUQUn6 FNAF, You Were Meant To Lose ► https://youtu.be/7bn8hM9k0b0 FNAF 6, No More Secrets ► https://bit.ly/2LVCq4u Credits: Writers: Matthew Patrick and Tom Robinson Editors: Pedro Freitas, Jerika (NekoOnigiri), and Alex ""Sedge"" Sedgwick Assistant Editor: Caitie Turner (Caiterpillart) Sound Editor: Yosi Berman #CookingCompanions #Lore #CookingCompanionsLore #BabaYaga #Secrets #Scary #MatPat #Theory #GameTheory",
                     LastUpdated = new DateTime(2024, 10, 8, 4, 57, 26),
                     Published = new DateTime(2024, 4, 5, 18, 5, 55),
-                    CreatorId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
+                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
                 },
                 new Episode
                 {
@@ -181,7 +181,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 1775,
                     IsExplicit = true,
-                    CreatorId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
+                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
                 },
                 new Episode
                 {
@@ -195,7 +195,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 1718,
                     IsExplicit = true,
-                    CreatorId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
+                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
                 },
                 new Episode
                 {
@@ -209,7 +209,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 7158,
                     IsExplicit = false,
-                    CreatorId = new Guid("a0748a81-91b4-450b-8469-3175284c1083")
+                    FeedId = new Guid("a0748a81-91b4-450b-8469-3175284c1083")
                 },
                 new Episode
                 {
@@ -223,7 +223,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 12467,
                     IsExplicit = false,
-                    CreatorId = new Guid("a0748a81-91b4-450b-8469-3175284c1083")
+                    FeedId = new Guid("a0748a81-91b4-450b-8469-3175284c1083")
                 }
             );
             base.OnModelCreating(modelBuilder);
