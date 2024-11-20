@@ -13,17 +13,25 @@ namespace Rss_Tracking_Api.Helpers
             Email = author.Email,
             Uri = author.Uri
         };
-        public static FeedDto CreatorToDto(Feed creator, List<Author> authors) => new()
+        public static FeedDto FeedToDto(Feed creator, List<Author> authors)
         {
-            Id = creator.Id,
-            AuthorId = authors.Select(x => x.Id),
-            CreatorId = creator.CreatorId,
-            Description = creator.Description,
-            ThumbnailUri = creator.ImageUrl,
-            FeedUri = creator.FeedUrl,
-            PublishedTime = creator.PublishDate,
-            Platform = creator.Platform.ToString(),
-        };
+            var creatorId = string.IsNullOrEmpty(creator.PlaylistId) ?
+                string.IsNullOrEmpty(creator.ChannelId) ?
+                    creator.CreatorId : $"yt:channel:{creator.ChannelId}"
+                : $"yt:playlist:{creator.PlaylistId}";
+            return new()
+            {
+                Id = creator.Id,
+                AuthorId = authors.Select(x => x.Id),
+                CreatorId = creatorId,
+                Description = creator.Description,
+                ThumbnailUri = creator.ImageUrl,
+                FeedUri = creator.FeedUrl,
+                PublishedTime = creator.PublishDate,
+                Platform = creator.Platform.ToString(),
+            };
+        }
+
         public static EpisodeDto EpisodeToDto(Episode episode, Author firstAuthor) => new()
         {
             Id = episode.Id,
@@ -44,7 +52,7 @@ namespace Rss_Tracking_Api.Helpers
         {
             Id = userFavorite.Id,
             User = UserToDto(userFavorite.User),
-            Creator = CreatorToDto(userFavorite.Feed, [])
+            Creator = FeedToDto(userFavorite.Feed, [])
         };
     }
 }

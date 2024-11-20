@@ -157,7 +157,9 @@ namespace Rss_Tracking_Api.Helpers
                 Description = feed.Description.Text,
                 LastUpdated = feed.LastUpdatedTime.Date,
                 YoutubeType = string.IsNullOrEmpty(feed.PlaylistId) ? YoutubeType.Playlist : YoutubeType.Channel,
-                Platform = Platform.Youtube
+                Platform = Platform.Youtube,
+                ChannelId = feed.ChannelId,
+                PlaylistId = feed.PlaylistId
             };
         }
         public static Feed FeedToDto(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)

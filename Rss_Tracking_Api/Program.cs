@@ -23,7 +23,12 @@ builder.Services
     .AddScoped<IEpisodeRepository, EpisodeRepository>()
     .AddScoped<IFeedRepository, FeedRepository>()
     .AddScoped<IUserFavoriteRepository, UserFavoriteRepository>()
-    .AddScoped<IUserRepository, UserRepository>();
+    .AddScoped<IUserRepository, UserRepository>()
+    .AddLogging( options =>
+    {
+        options.AddDebug();
+        options.AddConsole();
+    });
 
 var app = builder.Build();
 
