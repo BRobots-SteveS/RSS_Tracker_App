@@ -1,5 +1,6 @@
 using Rss_Tracking_Data;
 using Microsoft.EntityFrameworkCore;
+using Rss_Tracking_Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,12 @@ builder.Services.AddDbContext<Rss_TrackingDbContext>(opts =>
     opts.EnableSensitiveDataLogging();
 #endif
 });
+builder.Services
+    .AddScoped<IAuthorRepository, AuthorRepository>()
+    .AddScoped<IEpisodeRepository, EpisodeRepository>()
+    .AddScoped<IFeedRepository, FeedRepository>()
+    .AddScoped<IUserFavoriteRepository, UserFavoriteRepository>()
+    .AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
