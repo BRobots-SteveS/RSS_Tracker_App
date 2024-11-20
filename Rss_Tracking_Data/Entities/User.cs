@@ -13,7 +13,7 @@ namespace Rss_Tracking_Data.Entities
         {
             UserName = userName;
             Password = CryptoHelper.HashPassword(password, null, out var salt);
-            Salt = Encoding.UTF8.GetString(salt);
+            Salt = Convert.ToHexString(salt);
         }
         public void UpdatePassword(string newPassword)
         {
