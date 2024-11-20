@@ -13,6 +13,7 @@
         public int Duration { get; set; } = 0;
         public string? EpisodeType { get; set; }
         public bool IsExplicit { get; set; } = false;
+        public Creator Creator { get; set; }
         public Guid CreatorId { get; set; }
     }
 }
