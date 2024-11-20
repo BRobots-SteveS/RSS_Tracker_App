@@ -9,7 +9,7 @@ namespace Rss_Tracking_Data.Repositories
 {
     public interface IUserRepository
     {
-        User GetUserById(Guid id);
+        User? GetUserById(Guid id);
         List<User> GetAllUsers();
         List<User> GetUsersByName(string name);
         User AddUser(User User);
@@ -20,7 +20,7 @@ namespace Rss_Tracking_Data.Repositories
     {
         private readonly Rss_TrackingDbContext _context;
         public UserRepository(Rss_TrackingDbContext context) { _context = context; }
-        public User GetUserById(Guid id) => _context.Users.Where(x => x.Id == id).FirstOrDefault();
+        public User? GetUserById(Guid id) => _context.Users.Where(x => x.Id == id).FirstOrDefault();
         public List<User> GetAllUsers() => _context.Users.ToList();
         public List<User> GetUsersByName(string name) => _context.Users.Where(x => x.UserName == name).ToList();
         public User AddUser(User User) => _context.Users.Add(User).Entity;

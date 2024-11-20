@@ -9,7 +9,7 @@ namespace Rss_Tracking_Data.Repositories
 {
     public interface IEpisodeRepository
     {
-        Episode GetEpisodeById(Guid id);
+        Episode? GetEpisodeById(Guid id);
         List<Episode> GetAllEpisodes();
         List<Episode> GetEpisodesByName(string name);
         List<Episode> GetEpisodesByCreator(Feed creator);
@@ -22,7 +22,7 @@ namespace Rss_Tracking_Data.Repositories
     {
         private readonly Rss_TrackingDbContext _context;
         public EpisodeRepository(Rss_TrackingDbContext context) { _context = context; }
-        public Episode GetEpisodeById(Guid id) => _context.Episodes.Where(x => x.Id == id).FirstOrDefault();
+        public Episode? GetEpisodeById(Guid id) => _context.Episodes.Where(x => x.Id == id).FirstOrDefault();
         public List<Episode> GetAllEpisodes() => _context.Episodes.ToList();
         public List<Episode> GetEpisodesByName(string name) => _context.Episodes.Where(x => x.Name == name).ToList();
         public List<Episode> GetEpisodesByCreator(Feed feed) => _context.Episodes.Where(x => x.FeedId == feed.Id).ToList();
