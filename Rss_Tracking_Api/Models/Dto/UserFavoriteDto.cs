@@ -4,6 +4,7 @@
     {
         public Guid Id { get; set; }
         public UserDto User { get; set; }
-        public FeedDto Creator { get; set; }
+        public FeedDto Feed { get; set; }
+        public AuthorDto? Author { get; set; }
     }
 }
