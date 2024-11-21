@@ -18,8 +18,13 @@ namespace Rss_Tracking_Data.Repositories
         public UserFavorite? GetUserFavoriteById(Guid id) => _context.UserFavorites.Where(x => x.Id == id).FirstOrDefault();
         public List<UserFavorite> GetAllUserFavorites() => _context.UserFavorites.ToList();
         public List<UserFavorite> GetUserFavoritesByUserId(Guid userId) => _context.UserFavorites.Where(x => x.UserId == userId).ToList();
-        public UserFavorite AddUserFavorite(UserFavorite UserFavorite) => _context.UserFavorites.Add(UserFavorite).Entity;
-        public UserFavorite UpdateUserFavorite(UserFavorite UserFavorite) => _context.UserFavorites.Update(UserFavorite).Entity;
-        public void DeleteUserFavorite(UserFavorite UserFavorite) => _context.UserFavorites.Remove(UserFavorite);
+        public UserFavorite AddUserFavorite(UserFavorite userFavorite)
+        {
+            userFavorite.Id = Guid.NewGuid();
+            return _context.UserFavorites.Add(userFavorite).Entity;
+        }
+
+        public UserFavorite UpdateUserFavorite(UserFavorite userFavorite) => _context.UserFavorites.Update(userFavorite).Entity;
+        public void DeleteUserFavorite(UserFavorite userFavorite) => _context.UserFavorites.Remove(userFavorite);
     }
 }
