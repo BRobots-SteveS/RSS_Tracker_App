@@ -28,7 +28,7 @@ namespace Rss_Tracking_Api.Controllers
             return Ok(_episodes.GetAllEpisodes().Select(x => DbMapper.EpisodeToDto(x, _authors.GetAuthorsByFeedId(x.FeedId).First())).ToList());
         }
 
-        [HttpGet("/feed/{feedId}")]
+        [HttpGet("feed/{feedId}")]
         public async Task<ActionResult<List<EpisodeDto>>> GetEpisodeByFeedId(Guid feedId)
         {
             return Ok(_episodes.GetEpisodesByFeedId(feedId).ToList());
