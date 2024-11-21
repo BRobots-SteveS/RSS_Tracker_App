@@ -16,7 +16,7 @@ namespace Rss_Tracking_Api.Helpers
                 EpisodeId = item.Id,
                 Published = item.PublishDate.Date,
                 LastUpdated = item.LastUpdatedTime.Date,
-                Description = item.Summary.Text
+                Description = DescriptionSanitizer(item.Summary.Text)
             });
         }
         public static IEnumerable<Episode> GetItems(IEnumerable<MediaItem> items)
@@ -55,7 +55,7 @@ namespace Rss_Tracking_Api.Helpers
                     EpisodeId = item.Id,
                     Published = item.PublishDate.Date,
                     LastUpdated = item.LastUpdatedTime.Date,
-                    Description = item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text
+                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text)
                 };
             });
         }
@@ -105,7 +105,7 @@ namespace Rss_Tracking_Api.Helpers
                     EpisodeId = item.Id,
                     Published = item.PublishDate.Date,
                     LastUpdated = item.LastUpdatedTime.Date,
-                    Description = item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text
+                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text)
                 };
             });
         }
@@ -115,7 +115,7 @@ namespace Rss_Tracking_Api.Helpers
             return GetItems(items.Select(x => (ITunesItem)x));
         }
 
-        public static Feed FeedToDto(SyndicationFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDbObject(SyndicationFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
@@ -124,13 +124,13 @@ namespace Rss_Tracking_Api.Helpers
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.ImageUrl.AbsoluteUri,
-                Description = feed.Description.Text,
+                Description = DescriptionSanitizer(feed.Description.Text),
                 LastUpdated = feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.Basic
             };
         }
-        public static Feed FeedToDto(MediaFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDbObject(MediaFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
@@ -139,30 +139,30 @@ namespace Rss_Tracking_Api.Helpers
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.ImageUrl.AbsoluteUri,
-                Description = feed.Description.Text,
+                Description = DescriptionSanitizer(feed.Description.Text),
                 LastUpdated = feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.Media
             };
         }
-        public static Feed FeedToDto(YoutubeFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDbObject(YoutubeFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
                 CreatorId = feed.ChannelId ?? feed.Id,
-                FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
+                FeedUrl = string.IsNullOrEmpty(feed.PlaylistId) ? $"https://www.youtube.com/feeds/videos.xml?channel_id={feed.ChannelId}" : $"https://www.youtube.com/feeds/videos.xml?playlist_id={feed.PlaylistId}",
                 ImageUrl = feed.ImageUrl.AbsoluteUri,
-                Description = feed.Description.Text,
+                Description = DescriptionSanitizer(feed.Description.Text),
                 LastUpdated = feed.LastUpdatedTime.Date,
-                YoutubeType = string.IsNullOrEmpty(feed.PlaylistId) ? YoutubeType.Playlist : YoutubeType.Channel,
+                YoutubeType = string.IsNullOrEmpty(feed.PlaylistId) ? YoutubeType.Channel : YoutubeType.Playlist,
                 Platform = Platform.Youtube,
                 ChannelId = feed.ChannelId,
                 PlaylistId = feed.PlaylistId
             };
         }
-        public static Feed FeedToDto(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDbObject(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
@@ -171,26 +171,32 @@ namespace Rss_Tracking_Api.Helpers
                 CreatorId = feed.Id,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.Image?.Href ?? feed.ImageUrl.AbsoluteUri,
-                Description = feed.Summary ?? feed.Description.Text,
+                Description = DescriptionSanitizer(feed.Summary ?? feed.Description.Text),
                 LastUpdated = feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.iTunes
             };
         }
-        public static Feed FeedToDto(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
+        public static Feed FeedToDbObject(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
             authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
                 CreatorId = feed.Id,
-                FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
+                ChannelId = $"{feed.OrganizationId}/{feed.ProgramId}",
+                PlaylistId = feed.PlaylistId.ToString(),
+                FeedUrl = $"https://www.omnycontent.com/d/playlist/{feed.OrganizationId}/{feed.ProgramId}/{feed.PlaylistId}/podcast.rss",
                 ImageUrl = feed.Image?.Href ?? feed.ImageUrl.AbsoluteUri,
-                Description = feed.Summary ?? feed.Description.Text,
+                Description = DescriptionSanitizer(feed.Summary ?? feed.Description.Text),
                 LastUpdated = feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.Omny
             };
+        }
+        private static string DescriptionSanitizer(string description)
+        {
+            return description.Replace("<![CDATA[", "").Replace("]]>", "").Trim();
         }
     }
 }

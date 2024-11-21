@@ -13,23 +13,29 @@ namespace Rss_Tracking_Api.Helpers
             Email = author.Email,
             Uri = author.Uri
         };
-        public static FeedDto FeedToDto(Feed creator, List<Author> authors)
+        public static List<FeedDto> FeedToDto(Feed feed, List<Author> authors)
         {
-            var creatorId = string.IsNullOrEmpty(creator.PlaylistId) ?
-                string.IsNullOrEmpty(creator.ChannelId) ?
-                    creator.CreatorId : $"yt:channel:{creator.ChannelId}"
-                : $"yt:playlist:{creator.PlaylistId}";
-            return new()
+            string creatorId = string.Empty;
+            if (feed.Platform == Rss_Tracking_Data.Enums.Platform.Omny)
+            { creatorId = $"{feed.ChannelId}/{feed.PlaylistId}"; }
+            else if (feed.Platform == Rss_Tracking_Data.Enums.Platform.Youtube)
+                creatorId = string.IsNullOrEmpty(feed.PlaylistId) ?
+                    string.IsNullOrEmpty(feed.ChannelId) ?
+                        feed.CreatorId : $"yt:channel:{feed.ChannelId}"
+                    : $"yt:playlist:{feed.PlaylistId}";
+            return authors.Select(author => new FeedDto
             {
-                Id = creator.Id,
-                AuthorId = authors.Select(x => x.Id),
+                Id = feed.Id,
+                AuthorName = author.Name,
+                AuthorEmail = author.Email,
+                AuthorUri = author.Uri,
                 CreatorId = creatorId,
-                Description = creator.Description,
-                ThumbnailUri = creator.ImageUrl,
-                FeedUri = creator.FeedUrl,
-                PublishedTime = creator.PublishDate,
-                Platform = creator.Platform.ToString(),
-            };
+                Description = feed.Description,
+                ThumbnailUri = feed.ImageUrl,
+                FeedUri = feed.FeedUrl,
+                PublishedTime = feed.PublishDate,
+                Platform = feed.Platform.ToString(),
+            }).ToList();
         }
 
         public static EpisodeDto EpisodeToDto(Episode episode, Author firstAuthor) => new()
@@ -48,11 +54,12 @@ namespace Rss_Tracking_Api.Helpers
             Username = user.UserName,
             Password = string.Empty,
         };
-        public static UserFavoriteDto UserFavoriteToDto(UserFavorite userFavorite) => new()
+        public static UserFavoriteDto UserFavoriteToDto(UserFavorite userFavorite, Author author) => new()
         {
             Id = userFavorite.Id,
             User = UserToDto(userFavorite.User),
-            Creator = FeedToDto(userFavorite.Feed, [])
+            Feed = FeedToDto(userFavorite.Feed, [author]).First(),
+            Author = AuthorToDto(author, [userFavorite.Feed])
         };
     }
 }
