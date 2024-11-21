@@ -38,7 +38,7 @@ namespace Rss_Tracking_Api.Helpers
             }).ToList();
         }
 
-        public static EpisodeDto EpisodeToDto(Episode episode, Author firstAuthor) => new()
+        public static EpisodeDto EpisodeToDto(Episode episode) => new()
         {
             Id = episode.Id,
             EpisodeId = episode.EpisodeId,

@@ -10,8 +10,8 @@ using Rss_Tracking_Lib.Models;
 namespace Rss_Tracking_Api.Controllers
 {
     [ApiController]
-    [ApiVersion(1.0f)]
-    [Route("api/v[version:apiVersion]/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class FeedsController : ControllerBase
     {
         private readonly IFeedRepository _feeds;
@@ -27,22 +27,36 @@ namespace Rss_Tracking_Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<FeedDto>>> GetAllFeeds()
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllFeeds()
         {
-            return Ok(_feeds.GetAllFeeds().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
+            return new OkObjectResult(_feeds.GetAllFeeds().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
         }
 
         [HttpGet("{feedId}")]
-        public async Task<ActionResult<FeedDto>> GetFeedById(Guid feedId) => Ok(_feeds.GetFeedById(feedId));
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFeedById(Guid feedId)
+        {
+            var feed = _feeds.GetFeedById(feedId);
+            if (feed == null) return BadRequest("Feed does not exist");
+            var authors = _authors.GetAuthorsByFeedId(feedId);
+            return new OkObjectResult(DbMapper.FeedToDto(feed, authors));
+        }
 
         [HttpGet("author/{authorId}")]
-        public async Task<ActionResult<List<FeedDto>>> GetFeedsByAuthorId(Guid authorId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFeedsByAuthorId(Guid authorId)
         {
-            return Ok(_feeds.GetFeedsByAuthorId(authorId).ToList());
+            return new OkObjectResult(_feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetAuthorById(authorId)])).ToList());
         }
 
         [HttpPost]
-        public async Task<ActionResult<FeedDto>> CreateFeed(FeedDto dto)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateFeed(FeedDto dto)
         {
             string uri = string.Empty;
             if (dto.Platform == Platform.Youtube.ToString())
@@ -101,7 +115,7 @@ namespace Rss_Tracking_Api.Controllers
                 else
                     resultEpisode = _episodes.GetEpisodeByData(episode) ?? throw new FileNotFoundException($"Failed to find existing Episode: {System.Text.Json.JsonSerializer.Serialize(episode)}");
             }
-            return Ok(DbMapper.FeedToDto(resultFeed, resultAuthors));
+            return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors));
         }
     }
 }

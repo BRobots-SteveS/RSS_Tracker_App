@@ -3,17 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Rss_Tracking_Api.Helpers;
 using Rss_Tracking_Api.Models.Dto;
 using Rss_Tracking_Data.Entities;
-using Rss_Tracking_Data.Enums;
 using Rss_Tracking_Data.Helpers;
 using Rss_Tracking_Data.Repositories;
-using Rss_Tracking_Lib.Models;
 using System.Text;
 
 namespace Rss_Tracking_Api.Controllers
 {
     [ApiController]
-    [ApiVersion(1.0f)]
-    [Route("api/v[version:apiVersion]/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
 
     public class UsersController : ControllerBase
     {
@@ -35,44 +33,54 @@ namespace Rss_Tracking_Api.Controllers
         }
 
         [HttpGet("login")]
-        public async Task<ActionResult<UserDto>> GetUser([FromQuery] string username, [FromQuery] string password)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUser([FromQuery] string username, [FromQuery] string password)
         {
             var realPassword = Encoding.UTF8.GetString(Convert.FromHexString(password));
             var users = _users.GetUsersByName(username);
             if (users is null || !users.Any()) return NotFound("No user exists for the given username");
             foreach (var user in users)
             {
-                if (CryptoHelper.ValidatePassword(password, user.Salt, user.Password)) return Ok(DbMapper.UserToDto(user));
+                if (CryptoHelper.ValidatePassword(password, user.Salt, user.Password)) return new OkObjectResult(DbMapper.UserToDto(user));
                 continue;
             }
             return BadRequest("Wrong password, try again");
         }
 
         [HttpGet("favorite/{userId}")]
-        public async Task<ActionResult<List<UserFavoriteDto>>> GetMyFavorites(Guid userId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<UserFavoriteDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetMyFavorites(Guid userId)
         {
-            return _favorites.GetUserFavoritesByUserId(userId).Select(x => DbMapper.UserFavoriteToDto(x, x.Author ?? new() { Name = string.Empty })).ToList();
+            return new OkObjectResult(_favorites.GetUserFavoritesByUserId(userId).Select(x => DbMapper.UserFavoriteToDto(x, x.Author ?? new() { Name = string.Empty })).ToList());
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserDto>> CreateUser([FromQuery] string username, [FromQuery] string password)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateUser([FromQuery] string username, [FromQuery] string password)
         {
             if (_users.IsUsernameTaken(username)) return BadRequest("This username is already taken");
             User user = new(username, password) { UserName = username };
-            return Ok(DbMapper.UserToDto(_users.AddUser(user)));
+            return new OkObjectResult(DbMapper.UserToDto(_users.AddUser(user)));
         }
         [HttpPost("favorite")]
-        public async Task<ActionResult<UserFavoriteDto>> CreateFavorite([FromQuery]Guid userId, [FromQuery]Guid feedId, [FromQuery]Guid? authorId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(UserFavoriteDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateFavorite([FromQuery] Guid userId, [FromQuery] Guid feedId, [FromQuery] Guid? authorId)
         {
             if (_favorites.GetUserFavoritesByUserId(userId).Any(x => x.FeedId == feedId && x.AuthorId == authorId))
                 return BadRequest("Already exists");
-            var author = _authors.GetAuthorById(authorId?? Guid.Empty);
+            var author = _authors.GetAuthorById(authorId ?? Guid.Empty);
             var feed = _feeds.GetFeedById(feedId);
             if (author == null || feed == null) return BadRequest("Feed or Author do not exist");
-            return Ok(DbMapper.UserFavoriteToDto(_favorites.AddUserFavorite(new() { UserId = userId, FeedId = feedId, AuthorId = authorId }), author));
+            return new OkObjectResult(DbMapper.UserFavoriteToDto(_favorites.AddUserFavorite(new() { UserId = userId, FeedId = feedId, AuthorId = authorId }), author));
         }
         [HttpDelete("favorite")]
-        public async Task<IActionResult> DeleteFavorite([FromQuery]Guid favoriteId, [FromQuery]Guid userId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteFavorite([FromQuery] Guid favoriteId, [FromQuery] Guid userId)
         {
             var favorite = _favorites.GetUserFavoriteById(favoriteId);
             if (favorite == null) return BadRequest("Favorite doesn't exist");
@@ -84,7 +92,9 @@ namespace Rss_Tracking_Api.Controllers
             return NoContent();
         }
         [HttpDelete]
-        public async Task<IActionResult> DeleteUser([FromQuery]Guid userId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public async Task<IActionResult> DeleteUser([FromQuery] Guid userId)
         {
             var user = _users.GetUserById(userId);
             if (user == null) return BadRequest("User doesn't exist");

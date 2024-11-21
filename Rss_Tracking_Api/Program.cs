@@ -6,11 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddDbContext<Rss_TrackingDbContext>(opts =>
 {
     opts.UseSqlServer(builder.Configuration["ConnectionStrings:RssTrackerConnectionString"]);
@@ -24,11 +19,20 @@ builder.Services
     .AddScoped<IFeedRepository, FeedRepository>()
     .AddScoped<IUserFavoriteRepository, UserFavoriteRepository>()
     .AddScoped<IUserRepository, UserRepository>()
-    .AddLogging( options =>
+    .AddLogging(options =>
     {
         options.AddDebug();
         options.AddConsole();
     });
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.ReportApiVersions = true;
+});
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 

@@ -1,5 +1,4 @@
 ﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Rss_Tracking_Api.Helpers;
 using Rss_Tracking_Api.Models.Dto;
@@ -8,8 +7,8 @@ using Rss_Tracking_Data.Repositories;
 namespace Rss_Tracking_Api.Controllers
 {
     [ApiController]
-    [ApiVersion(1.0f)]
-    [Route("api/v[version:apiVersion]/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     public class EpisodesController : ControllerBase
     {
         private readonly IEpisodeRepository _episodes;
@@ -23,15 +22,23 @@ namespace Rss_Tracking_Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<EpisodeDto>>> GetAllEpisodes()
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<EpisodeDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllEpisodes()
         {
-            return Ok(_episodes.GetAllEpisodes().Select(x => DbMapper.EpisodeToDto(x, _authors.GetAuthorsByFeedId(x.FeedId).First())).ToList());
+            return new OkObjectResult(_episodes.GetAllEpisodes().Select(DbMapper.EpisodeToDto).ToList());
         }
 
         [HttpGet("feed/{feedId}")]
-        public async Task<ActionResult<List<EpisodeDto>>> GetEpisodeByFeedId(Guid feedId)
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<EpisodeDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEpisodesByFeedId(Guid feedId)
         {
-            return Ok(_episodes.GetEpisodesByFeedId(feedId).ToList());
+            return new OkObjectResult(_episodes.GetEpisodesByFeedId(feedId).Select(DbMapper.EpisodeToDto).ToList());
         }
+        [HttpGet("{episodeId}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(EpisodeDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetEpisodeById(Guid episodeId) => _episodes.GetEpisodeById(episodeId) is null ? BadRequest("Episode does not exist") : new OkObjectResult(DbMapper.EpisodeToDto(_episodes.GetEpisodeById(episodeId)));
     }
 }

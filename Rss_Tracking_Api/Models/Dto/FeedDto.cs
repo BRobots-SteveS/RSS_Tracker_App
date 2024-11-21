@@ -6,14 +6,14 @@ namespace Rss_Tracking_Api.Models.Dto
     {
         private Platform _platform = Rss_Tracking_Lib.Enums.Platform.Basic;
         public string Platform { get => _platform.ToString(); set => _platform = Enum.Parse<Platform>(value); }
-        public required Guid Id;
-        public string AuthorName;
-        public string? AuthorEmail;
-        public string? AuthorUri;
-        public string CreatorId = string.Empty;
-        public string Description = string.Empty;
-        public string FeedUri = string.Empty;
-        public string? ThumbnailUri;
-        public DateTimeOffset PublishedTime;
+        public Guid Id { get; set; }
+        public string AuthorName { get; set; }
+        public string? AuthorEmail { get; set; }
+        public string? AuthorUri { get; set; }
+        public string CreatorId { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string FeedUri { get; set; } = string.Empty;
+        public string? ThumbnailUri { get; set; }
+        public DateTime PublishedTime { get; set; }
     }
 }
