@@ -35,14 +35,18 @@ namespace Rss_Tracking_Api.Controllers
         [HttpGet("login")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUser([FromQuery] string username, [FromQuery] string password)
+        public async Task<IActionResult> GetUser()
         {
-            var realPassword = Encoding.UTF8.GetString(Convert.FromHexString(password));
+            if (Request.Headers.Authorization.Count <= 0) return BadRequest("Requires basic auth header");
+            var authHeader = Request.Headers.Authorization.FirstOrDefault();
+            var values = authHeader.Replace("Basic ", "").Split(':');
+            var username = values[0];
+            var realPassword = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(values[1]));
             var users = _users.GetUsersByName(username);
             if (users is null || !users.Any()) return NotFound("No user exists for the given username");
             foreach (var user in users)
             {
-                if (CryptoHelper.ValidatePassword(password, user.Salt, user.Password)) return new OkObjectResult(DbMapper.UserToDto(user));
+                if (CryptoHelper.ValidatePassword(realPassword, user.Salt, user.Password)) return new OkObjectResult(DbMapper.UserToDto(user));
                 continue;
             }
             return BadRequest("Wrong password, try again");
@@ -59,8 +63,13 @@ namespace Rss_Tracking_Api.Controllers
         [HttpPost]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateUser([FromQuery] string username, [FromQuery] string password)
+        public async Task<IActionResult> CreateUser()
         {
+            if (Request.Headers.Authorization.Count <= 0) return BadRequest("Requires basic auth header");
+            var authHeader = Request.Headers.Authorization.FirstOrDefault();
+            var values = authHeader.Replace("Basic ", "").Split(':');
+            var username = values[0];
+            var password = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(values[1]));
             if (_users.IsUsernameTaken(username)) return BadRequest("This username is already taken");
             User user = new(username, password) { UserName = username };
             return new OkObjectResult(DbMapper.UserToDto(_users.AddUser(user)));
