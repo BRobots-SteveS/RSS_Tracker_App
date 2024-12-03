@@ -7,31 +7,26 @@ using System.Threading.Tasks;
 
 namespace Rss_Tracking_Data.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
-        User? GetUserById(Guid id);
-        List<User> GetAllUsers();
         List<User> GetUsersByName(string name);
-        User AddUser(User User);
-        User UpdateUser(User User);
-        void DeleteUser(User User);
         bool IsUsernameTaken(string username);
     }
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
-        private readonly Rss_TrackingDbContext _context;
-        public UserRepository(Rss_TrackingDbContext context) { _context = context; }
-        public User? GetUserById(Guid id) => _context.Users.Where(x => x.Id == id).FirstOrDefault();
-        public List<User> GetAllUsers() => _context.Users.ToList();
-        public List<User> GetUsersByName(string name) => _context.Users.Where(x => x.UserName == name).ToList();
-        public User AddUser(User user)
+        public UserRepository(Rss_TrackingDbContext context) : base(context) { }
+        public override User? GetById(Guid id) => _context.Users.Where(x => x.Id == id).FirstOrDefault();
+        public override List<User> GetAll() => _context.Users.ToList();
+        public override User Add(User user)
         {
             user.Id = Guid.NewGuid();
             return _context.Users.Add(user).Entity;
         }
 
-        public User UpdateUser(User user) => _context.Users.Update(user).Entity;
-        public void DeleteUser(User user) => _context.Users.Remove(user);
+        public override User Update(User user) => _context.Users.Update(user).Entity;
+        public override void Delete(User user) => _context.Users.Remove(user);
+        public override bool AlreadyExists(User user) => IsUsernameTaken(user.UserName);
         public bool IsUsernameTaken(string username) => _context.Users.Any(x => x.UserName == username);
+        public List<User> GetUsersByName(string name) => _context.Users.Where(x => x.UserName == name).ToList();
     }
 }

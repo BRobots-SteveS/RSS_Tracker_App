@@ -26,7 +26,7 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<EpisodeDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllEpisodes()
         {
-            return new OkObjectResult(_episodes.GetAllEpisodes().Select(DbMapper.EpisodeToDto).ToList());
+            return new OkObjectResult(_episodes.GetAll().Select(DbMapper.EpisodeToDto).ToList());
         }
 
         [HttpGet("feed/{feedId}")]
@@ -39,6 +39,6 @@ namespace Rss_Tracking_Api.Controllers
         [HttpGet("{episodeId}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(EpisodeDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetEpisodeById(Guid episodeId) => _episodes.GetEpisodeById(episodeId) is null ? BadRequest("Episode does not exist") : new OkObjectResult(DbMapper.EpisodeToDto(_episodes.GetEpisodeById(episodeId)));
+        public async Task<IActionResult> GetEpisodeById(Guid episodeId) => _episodes.GetById(episodeId) is null ? BadRequest("Episode does not exist") : new OkObjectResult(DbMapper.EpisodeToDto(_episodes.GetById(episodeId)));
     }
 }

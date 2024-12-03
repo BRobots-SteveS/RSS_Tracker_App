@@ -23,7 +23,7 @@ namespace Rss_Tracking_Api.Helpers
         {
             return items.Select(item =>
             {
-                var firstUrl = item.BaseUri.AbsolutePath;
+                var firstUrl = item.Item.BaseUri?.AbsolutePath;
                 string? firstImage = null;
                 if (item.MediaGroup is null || item.MediaGroup.Count <= 0)
                 {
@@ -49,13 +49,13 @@ namespace Rss_Tracking_Api.Helpers
                 }
                 return new Episode
                 {
-                    Name = item.MediaGroup?.FirstOrDefault()?.Title ?? item.Title.Text,
+                    Name = item.MediaGroup?.FirstOrDefault()?.Title ?? item.Item.Title.Text,
                     Url = firstUrl,
                     ThumbnailUrl = firstImage,
-                    EpisodeId = item.Id,
-                    Published = item.PublishDate.Date,
-                    LastUpdated = item.LastUpdatedTime.Date,
-                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text)
+                    EpisodeId = item.Item.Id,
+                    Published = item.Item.PublishDate.Date,
+                    LastUpdated = item.Item.LastUpdatedTime.Date,
+                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Item.Summary?.Text)
                 };
             });
         }
@@ -72,7 +72,7 @@ namespace Rss_Tracking_Api.Helpers
         {
             return items.Select(item =>
             {
-                var firstUrl = item.BaseUri.AbsolutePath;
+                var firstUrl = item.Item.BaseUri.AbsolutePath;
                 string? firstImage = null;
                 if (item.MediaGroup is null || item.MediaGroup.Count <= 0)
                 {
@@ -99,13 +99,13 @@ namespace Rss_Tracking_Api.Helpers
                 }
                 return new Episode
                 {
-                    Name = item.MediaGroup?.FirstOrDefault()?.Title ?? item.Title.Text,
+                    Name = item.MediaGroup?.FirstOrDefault()?.Title ?? item.Item.Title.Text,
                     Url = firstUrl,
                     ThumbnailUrl = firstImage,
-                    EpisodeId = item.Id,
-                    Published = item.PublishDate.Date,
-                    LastUpdated = item.LastUpdatedTime.Date,
-                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Summary.Text)
+                    EpisodeId = item.Item.Id,
+                    Published = item.Item.PublishDate.Date,
+                    LastUpdated = item.Item.LastUpdatedTime.Date,
+                    Description = DescriptionSanitizer(item.MediaGroup?.FirstOrDefault()?.Description ?? item.Item.Summary.Text)
                 };
             });
         }
@@ -132,30 +132,30 @@ namespace Rss_Tracking_Api.Helpers
         }
         public static Feed FeedToDbObject(MediaFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
-                CreatorId = feed.Id,
-                FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
-                ImageUrl = feed.ImageUrl.AbsoluteUri,
-                Description = DescriptionSanitizer(feed.Description.Text),
-                LastUpdated = feed.LastUpdatedTime.Date,
+                CreatorId = feed.Feed.Id,
+                FeedUrl = feed.Feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
+                ImageUrl = feed.Feed.ImageUrl.AbsoluteUri,
+                Description = DescriptionSanitizer(feed.Feed.Description?.Text),
+                LastUpdated = feed.Feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.Media
             };
         }
         public static Feed FeedToDbObject(YoutubeFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
-                CreatorId = feed.ChannelId ?? feed.Id,
+                CreatorId = feed.ChannelId ?? feed.Feed.Id,
                 FeedUrl = string.IsNullOrEmpty(feed.PlaylistId) ? $"https://www.youtube.com/feeds/videos.xml?channel_id={feed.ChannelId}" : $"https://www.youtube.com/feeds/videos.xml?playlist_id={feed.PlaylistId}",
-                ImageUrl = feed.ImageUrl.AbsoluteUri,
-                Description = DescriptionSanitizer(feed.Description.Text),
-                LastUpdated = feed.LastUpdatedTime.Date,
+                ImageUrl = feed.Feed.ImageUrl?.AbsoluteUri,
+                Description = DescriptionSanitizer(feed.Feed.Description?.Text),
+                LastUpdated = feed.Feed.LastUpdatedTime.Date,
                 YoutubeType = string.IsNullOrEmpty(feed.PlaylistId) ? YoutubeType.Channel : YoutubeType.Playlist,
                 Platform = Platform.Youtube,
                 ChannelId = feed.ChannelId,
@@ -164,38 +164,39 @@ namespace Rss_Tracking_Api.Helpers
         }
         public static Feed FeedToDbObject(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
-                CreatorId = feed.Id,
-                FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
-                ImageUrl = feed.Image?.Href ?? feed.ImageUrl.AbsoluteUri,
-                Description = DescriptionSanitizer(feed.Summary ?? feed.Description.Text),
-                LastUpdated = feed.LastUpdatedTime.Date,
+                CreatorId = feed.Feed.Id,
+                FeedUrl = feed.Feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
+                ImageUrl = feed.Image?.Href ?? feed.Feed.ImageUrl?.AbsoluteUri,
+                Description = DescriptionSanitizer(feed.Summary ?? feed.Feed.Description.Text),
+                LastUpdated = feed.Feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.iTunes
             };
         }
         public static Feed FeedToDbObject(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
-                CreatorId = feed.Id,
+                CreatorId = feed.Feed.Id,
                 ChannelId = $"{feed.OrganizationId}/{feed.ProgramId}",
                 PlaylistId = feed.PlaylistId.ToString(),
                 FeedUrl = $"https://www.omnycontent.com/d/playlist/{feed.OrganizationId}/{feed.ProgramId}/{feed.PlaylistId}/podcast.rss",
-                ImageUrl = feed.Image?.Href ?? feed.ImageUrl.AbsoluteUri,
-                Description = DescriptionSanitizer(feed.Summary ?? feed.Description.Text),
-                LastUpdated = feed.LastUpdatedTime.Date,
+                ImageUrl = feed.Image?.Href ?? feed.Feed.ImageUrl?.AbsoluteUri,
+                Description = DescriptionSanitizer(feed.Summary ?? feed.Feed.Description?.Text),
+                LastUpdated = feed.Feed.LastUpdatedTime.Date,
                 YoutubeType = YoutubeType.None,
                 Platform = Platform.Omny
             };
         }
-        private static string DescriptionSanitizer(string description)
+        private static string DescriptionSanitizer(string? description)
         {
+            if (string.IsNullOrWhiteSpace(description)) return string.Empty;
             return description.Replace("<![CDATA[", "").Replace("]]>", "").Trim();
         }
     }

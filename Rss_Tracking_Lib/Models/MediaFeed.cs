@@ -3,14 +3,25 @@ using System.ServiceModel.Syndication;
 
 namespace Rss_Tracking_Lib.Models
 {
-    public class MediaFeed : SyndicationFeed
+    public class MediaFeed
     {
-        public new IEnumerable<MediaItem> Items { get => base.Items.Select(x => (MediaItem)x); }
+        public readonly SyndicationFeed Feed;
+        public MediaFeed(SyndicationFeed feed)
+        {
+            Feed = feed;
+        }
+        public const string NAMESPACE = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+        public new IEnumerable<MediaItem> Items { get => Feed.Items.Select(x => new MediaItem(x)); }
     }
-    public class MediaItem : SyndicationItem
+    public class MediaItem
     {
-        private const string NAMESPACE = "media";
-        public List<Media_RSS.MediaGroup>? MediaGroup { get => SyndicationHelper.GetExtensionElementValue<List<Media_RSS.MediaGroup>>(this, NAMESPACE, "group"); }
-        public List<Media_RSS.MediaContent>? MediaContent { get => SyndicationHelper.GetExtensionElementValue<List<Media_RSS.MediaContent>>(this, NAMESPACE, "content"); }
+        public readonly SyndicationItem Item;
+        public MediaItem(SyndicationItem item)
+        {
+            Item = item;
+        }
+        public const string NAMESPACE = "http://www.itunes.com/dtds/podcast-1.0.dtd";
+        public List<Media_RSS.MediaGroup>? MediaGroup { get => SyndicationHelper.GetExtensionElementValue<List<Media_RSS.MediaGroup>>(Item, NAMESPACE, "group"); }
+        public List<Media_RSS.MediaContent>? MediaContent { get => SyndicationHelper.GetExtensionElementValue<List<Media_RSS.MediaContent>>(Item, NAMESPACE, "content"); }
     }
 }

@@ -31,7 +31,7 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllFeeds()
         {
-            return new OkObjectResult(_feeds.GetAllFeeds().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
+            return new OkObjectResult(_feeds.GetAll().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
         }
 
         [HttpGet("{feedId}")]
@@ -39,7 +39,7 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFeedById(Guid feedId)
         {
-            var feed = _feeds.GetFeedById(feedId);
+            var feed = _feeds.GetById(feedId);
             if (feed == null) return BadRequest("Feed does not exist");
             var authors = _authors.GetAuthorsByFeedId(feedId);
             return new OkObjectResult(DbMapper.FeedToDto(feed, authors));
@@ -50,7 +50,7 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFeedsByAuthorId(Guid authorId)
         {
-            return new OkObjectResult(_feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetAuthorById(authorId)])).ToList());
+            return new OkObjectResult(_feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList());
         }
 
         [HttpPost]
@@ -62,9 +62,9 @@ namespace Rss_Tracking_Api.Controllers
             if (dto.Platform == Platform.Youtube.ToString())
             {
                 if (dto.CreatorId.StartsWith("yt:channel:"))
-                    uri = $"https://wwww.youtube.com/feeds/videos.xml?channel_id={dto.CreatorId.Replace("yt:channel:", string.Empty)}";
+                    uri = $"https://www.youtube.com/feeds/videos.xml?channel_id={dto.CreatorId.Replace("yt:channel:", string.Empty)}";
                 else if (dto.CreatorId.StartsWith("yt:playlist:"))
-                    uri = $"https://wwww.youtube.com/feeds/videos.xml?playlist_id={dto.CreatorId.Replace("yt:playlist:", string.Empty)}";
+                    uri = $"https://www.youtube.com/feeds/videos.xml?playlist_id={dto.CreatorId.Replace("yt:playlist:", string.Empty)}";
             }
             else if (dto.Platform == Platform.Omny.ToString())
             {
@@ -81,25 +81,25 @@ namespace Rss_Tracking_Api.Controllers
             List<Author> resultAuthors = new();
             var syndicate = FeedHelper.GetLatestFeed(new Uri(uri));
             if (syndicate == null) return BadRequest("Failed to fetch data from URL with given parameters.");
-            if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == "yt"))
-                feed = FeedMapper.FeedToDbObject((YoutubeFeed)syndicate, out authors, out episodes);
-            if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == "omny"))
-                feed = FeedMapper.FeedToDbObject((OmnyFeed)syndicate, out authors, out episodes);
-            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == "itunes"))
-                feed = FeedMapper.FeedToDbObject((ITunesFeed)syndicate, out authors, out episodes);
-            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == "media"))
-                feed = FeedMapper.FeedToDbObject((ITunesFeed)syndicate, out authors, out episodes);
+            if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == YoutubeFeed.NAMESPACE))
+                feed = FeedMapper.FeedToDbObject(new YoutubeFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == OmnyFeed.NAMESPACE))
+                feed = FeedMapper.FeedToDbObject(new OmnyFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == ITunesFeed.NAMESPACE))
+                feed = FeedMapper.FeedToDbObject(new ITunesFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == MediaFeed.NAMESPACE))
+                feed = FeedMapper.FeedToDbObject(new MediaFeed(syndicate), out authors, out episodes);
             else
                 return BadRequest("Given feed to not conform to Atom1, RSS2 standard with mRSS");
-            if (!_feeds.DoesFeedAlreadyExist(feed))
-                resultFeed = _feeds.AddFeed(feed);
+            if (!_feeds.AlreadyExists(feed))
+                resultFeed = _feeds.Add(feed);
             else
                 resultFeed = _feeds.GetFeedsByUri(uri).First();
             foreach (var author in authors)
             {
                 Author resultAuthor;
-                if (!_authors.DoesAuthorExist(author))
-                    resultAuthor = _authors.AddAuthor(author);
+                if (!_authors.AlreadyExists(author))
+                    resultAuthor = _authors.Add(author);
                 else
                     resultAuthor = _authors.GetAuthorsByName(author.Name).First();
                 if (!_authors.DoesFeedAuthorExist(resultFeed.Id, resultAuthor.Id))
@@ -110,11 +110,12 @@ namespace Rss_Tracking_Api.Controllers
             {
                 episode.FeedId = resultFeed.Id;
                 Episode resultEpisode;
-                if (!_episodes.DoesEpisodeExist(episode))
-                    resultEpisode = _episodes.AddEpisode(episode);
+                if (!_episodes.AlreadyExists(episode))
+                    resultEpisode = _episodes.Add(episode);
                 else
                     resultEpisode = _episodes.GetEpisodeByData(episode) ?? throw new FileNotFoundException($"Failed to find existing Episode: {System.Text.Json.JsonSerializer.Serialize(episode)}");
             }
+            _feeds.SaveChanges();
             return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors));
         }
     }
