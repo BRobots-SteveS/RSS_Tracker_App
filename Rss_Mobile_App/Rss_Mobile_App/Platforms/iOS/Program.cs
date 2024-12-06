@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Rss_Mobile_App
+namespace Rss_Mobile_App.Platforms.iOS
 {
     public class Program
     {

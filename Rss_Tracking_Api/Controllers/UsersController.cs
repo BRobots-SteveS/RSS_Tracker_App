@@ -32,6 +32,10 @@ namespace Rss_Tracking_Api.Controllers
             _authors = authors;
         }
 
+        /// <summary>
+        /// Preforms a login through a Basic Authorization header {username}:{password}
+        /// </summary>
+        /// <returns>A User object with ID and Username</returns>
         [HttpGet("login")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]

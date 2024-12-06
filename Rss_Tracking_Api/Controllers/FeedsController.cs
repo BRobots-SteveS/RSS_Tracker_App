@@ -56,7 +56,7 @@ namespace Rss_Tracking_Api.Controllers
         [HttpPost]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateFeed(FeedDto dto)
+        public async Task<IActionResult> CreateFeed([FromBody] FeedDto dto)
         {
             string uri = string.Empty;
             if (dto.Platform == Platform.Youtube.ToString())
@@ -114,6 +114,62 @@ namespace Rss_Tracking_Api.Controllers
                     resultEpisode = _episodes.Add(episode);
                 else
                     resultEpisode = _episodes.GetEpisodeByData(episode) ?? throw new FileNotFoundException($"Failed to find existing Episode: {System.Text.Json.JsonSerializer.Serialize(episode)}");
+            }
+            _feeds.SaveChanges();
+            return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors));
+        }
+
+        [HttpPut("{feedId}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateFeed(Guid feedId)
+        {
+            var feed = _feeds.GetById(feedId);
+            if (feed == null || feedId == Guid.Empty) return NotFound($"No feed for given id.");
+            List<Author> authors = new();
+            List<Episode> episodes = new();
+            Feed resultFeed;
+            List<Author> resultAuthors = new();
+            var syndicate = FeedHelper.GetLatestFeed(new Uri(feed.FeedUrl));
+            if (syndicate == null) return BadRequest("Failed to fetch data from URL with given parameters.");
+            if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == YoutubeFeed.NAMESPACE))
+                resultFeed = FeedMapper.FeedToDbObject(new YoutubeFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == OmnyFeed.NAMESPACE))
+                resultFeed = FeedMapper.FeedToDbObject(new OmnyFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == ITunesFeed.NAMESPACE))
+                resultFeed = FeedMapper.FeedToDbObject(new ITunesFeed(syndicate), out authors, out episodes);
+            else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == MediaFeed.NAMESPACE))
+                resultFeed = FeedMapper.FeedToDbObject(new MediaFeed(syndicate), out authors, out episodes);
+            else
+                return BadRequest("Given feed to not conform to Atom1, RSS2 standard with mRSS");
+            resultFeed.Id = feed.Id;
+            _feeds.Update(resultFeed);
+
+            foreach (var author in authors)
+            {
+                Author resultAuthor;
+                if (!_authors.AlreadyExists(author))
+                    resultAuthor = _authors.Add(author);
+                else
+                {
+                    var tempAuthor = _authors.GetAuthorsByUri(author.Uri).First();
+                    author.Id = tempAuthor.Id;
+                    resultAuthor = _authors.Update(author);
+                }
+                if (!_authors.DoesFeedAuthorExist(resultFeed.Id, resultAuthor.Id))
+                    _authors.AddFeedAuthor(resultFeed.Id, resultAuthor.Id);
+                resultAuthors.Add(resultAuthor);
+            }
+            foreach (var episode in episodes)
+            {
+                episode.FeedId = resultFeed.Id;
+                if (!_episodes.AlreadyExists(episode))
+                    _episodes.Add(episode);
+                else
+                {
+                    var tempEpisode = _episodes.GetEpisodeByData(episode); episode.Id = tempEpisode.Id;
+                    _episodes.Update(episode);
+                }
             }
             _feeds.SaveChanges();
             return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors));

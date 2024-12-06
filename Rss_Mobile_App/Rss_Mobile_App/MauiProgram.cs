@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using InputKit.Shared.Controls;
+using Rss_Mobile_App.Repositories;
+using Rss_Mobile_App.Services;
+using Rss_Mobile_App.ViewModels;
 using UraniumUI;
 using UraniumUI.Icons.MaterialSymbols;
 
@@ -25,6 +28,19 @@ namespace Rss_Mobile_App
                 });
 
             builder.Services.AddCommunityToolkitDialogs();
+            builder.Services
+                .AddSingleton<INavigationService, MauiNavigationService>()
+                .AddSingleton<AuthorRepository>()
+                .AddSingleton<EpisodeRepository>()
+                .AddSingleton<FeedRepository>()
+                .AddSingleton<UserRepository>()
+                .AddSingleton<AccountViewModel>()
+                .AddSingleton<AuthorListViewModel>()
+                .AddSingleton<EpisodeListViewModel>()
+                .AddSingleton<FeedDetailViewModel>()
+                .AddSingleton<FeedListViewModel>()
+                .AddSingleton<LoginViewModel>()
+                .AddSingleton<RegisterViewModel>();
             return builder.Build();
         }
     }

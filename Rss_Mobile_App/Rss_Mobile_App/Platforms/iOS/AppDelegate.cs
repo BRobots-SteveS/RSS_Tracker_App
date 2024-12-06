@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace Rss_Mobile_App
+namespace Rss_Mobile_App.Platforms.iOS
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
