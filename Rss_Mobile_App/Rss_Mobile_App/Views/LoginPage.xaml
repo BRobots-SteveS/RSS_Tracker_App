@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<uranium:UraniumContentPage x:Class="Rss_Mobile_App.Views.LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+             xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+             xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
+             xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+             xmlns:local="clr-namespace:Rss_Mobile_App.Views"
+             Shell.FlyoutBehavior="Disabled">
+
+    <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" HorizontalOptions="Center" MaximumWidthRequest="400">
+        <material:TextField 
+        Title="Username"
+        Text="{Binding ExistingUser.Username}"
+        TextColor="{StaticResource OnPrimary}"
+        AccentColor="{StaticResource OnPrimary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
+            <validation:RequiredValidation />
+        </material:TextField>
+
+        <material:TextField 
+        Title="Password"
+        Text="{Binding ExistingUser.Password}" IsPassword="True"
+        TextColor="{StaticResource OnPrimary}"
+        AccentColor="{StaticResource OnPrimary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Password}}">
+            <validation:RequiredValidation />
+        </material:TextField>
+        <Button
+        input:FormView.IsSubmitButton="True"
+        Text="Login"
+        StyleClass="ElevatedButton"/>
+    </input:FormView>
+
+    <uranium:UraniumContentPage.Attachments>
+        <material:BackdropView
+                Title="Add" 
+                IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Add_circle}, Color={StaticResource OnPrimary}}"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
+            <input:FormView SubmitCommand="{Binding AddNewUserCommand}" Spacing="10" Padding="25,30" HorizontalOptions="Center" MaximumWidthRequest="400">
+                <material:TextField 
+                    Title="Username"
+                    Text="{Binding NewUser.Username}"
+                    TextColor="{StaticResource OnPrimary}"
+                    AccentColor="{StaticResource OnPrimary}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
+                    <validation:RequiredValidation />
+                </material:TextField>
+
+                <material:TextField 
+                    Title="Password"
+                    Text="{Binding NewUser.Password}" IsPassword="True"
+                    TextColor="{StaticResource OnPrimary}"
+                    AccentColor="{StaticResource OnPrimary}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Password}}">
+                    <validation:RequiredValidation />
+                </material:TextField>
+                <Button 
+                    input:FormView.IsSubmitButton="True"
+                    Text="Register"
+                    StyleClass="ElevatedButton"/>
+            </input:FormView>
+        </material:BackdropView>
+    </uranium:UraniumContentPage.Attachments>
+
+</uranium:UraniumContentPage>
