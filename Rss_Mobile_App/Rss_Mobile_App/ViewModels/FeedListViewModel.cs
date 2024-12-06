@@ -10,7 +10,6 @@ namespace Rss_Mobile_App.ViewModels
         [ObservableProperty]
         private ObservableCollection<FeedDto> feeds;
         public FeedListViewModel(INavigationService navigation) : base(navigation)
-        {
-        }
+        { }
     }
 }

@@ -5,7 +5,7 @@ using Rss_Tracking_App.Models.Dto;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    internal partial class LoginViewModel : BaseViewModel
+    public partial class LoginViewModel : BaseViewModel
     {
         public LoginViewModel(INavigationService navigation) : base(navigation)
         {

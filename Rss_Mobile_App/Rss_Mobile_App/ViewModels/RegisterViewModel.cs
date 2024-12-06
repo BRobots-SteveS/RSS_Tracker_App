@@ -2,12 +2,9 @@
 
 namespace Rss_Mobile_App.ViewModels
 {
-    internal class RegisterViewModel : BaseViewModel
+    public class RegisterViewModel : BaseViewModel
     {
-        public RegisterViewModel(INavigationService navigation) : base(navigation)
-        {
-
-        }
+        public RegisterViewModel(INavigationService navigation) : base(navigation) { }
 
     }
 }
