@@ -36,11 +36,10 @@ namespace Rss_Mobile_App
                 .AddSingleton<UserRepository>()
                 .AddSingleton<AccountViewModel>()
                 .AddSingleton<AuthorListViewModel>()
-                .AddSingleton<EpisodeListViewModel>()
+                .AddSingleton<EpisodeDetailViewModel>()
                 .AddSingleton<FeedDetailViewModel>()
                 .AddSingleton<FeedListViewModel>()
-                .AddSingleton<LoginViewModel>()
-                .AddSingleton<RegisterViewModel>();
+                .AddSingleton<LoginViewModel>();
             return builder.Build();
         }
     }

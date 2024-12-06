@@ -14,7 +14,7 @@ namespace Rss_Mobile_App.Repositories
                 RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/feed/{feedId}")
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Record not updated for id: {feedId}");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<List<EpisodeDto>>(await result.Content.ReadAsStringAsync());
     }
 }

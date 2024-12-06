@@ -25,7 +25,7 @@ namespace Rss_Mobile_App.Repositories
                 RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}")
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Table does not exist");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<List<T>>(await result.Content.ReadAsStringAsync());
         }
         public async Task<T> GetRowById(Guid id)
@@ -36,7 +36,8 @@ namespace Rss_Mobile_App.Repositories
                 RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}?id={id}")
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Record not found for id: {id}");
+            if (result.StatusCode == System.Net.HttpStatusCode.NotFound) return (T)Activator.CreateInstance(typeof(T));
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
@@ -49,7 +50,7 @@ namespace Rss_Mobile_App.Repositories
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Failed to create item");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
@@ -62,7 +63,7 @@ namespace Rss_Mobile_App.Repositories
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Record not updated for id: {itemId}");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
@@ -75,7 +76,7 @@ namespace Rss_Mobile_App.Repositories
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Record not found for id: {itemId}");
+            result.EnsureSuccessStatusCode();
             return;
         }
 

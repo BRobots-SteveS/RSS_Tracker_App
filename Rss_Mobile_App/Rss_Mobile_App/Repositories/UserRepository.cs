@@ -15,7 +15,19 @@ namespace Rss_Mobile_App.Repositories
             };
             message.Headers.Add("authorization", $"Basic {username}:{Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(password))}");
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Table does not exist");
+            result.EnsureSuccessStatusCode();
+            return System.Text.Json.JsonSerializer.Deserialize<UserDto>(await result.Content.ReadAsStringAsync());
+        }
+        public async Task<UserDto> DoRegister(string username, string password)
+        {
+            HttpRequestMessage message = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}")
+            };
+            message.Headers.Add("authorization", $"Basic {username}:{Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(password))}");
+            var result = await httpClient.SendAsync(message);
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<UserDto>(await result.Content.ReadAsStringAsync());
         }
         public async Task<List<UserFavoriteDto>> GetFavoritesByUserId(Guid userId)
@@ -26,7 +38,7 @@ namespace Rss_Mobile_App.Repositories
                 RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/favorite/{userId}")
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Table does not exist");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<List<UserFavoriteDto>>(await result.Content.ReadAsStringAsync());
         }
 
@@ -39,7 +51,7 @@ namespace Rss_Mobile_App.Repositories
                 Content = JsonContent.Create(favoriteDto)
             };
             var result = await httpClient.SendAsync(message);
-            if (result == null || !result.IsSuccessStatusCode) throw new Exception($"Table does not exist");
+            result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<UserFavoriteDto>(await result.Content.ReadAsStringAsync());
         }
     }
