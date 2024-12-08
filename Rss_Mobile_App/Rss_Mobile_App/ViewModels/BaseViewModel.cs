@@ -17,7 +17,7 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
-        public async void DoLogout()
+        public async Task DoLogout()
         {
             Preferences.Remove("user");
             await Navigation.NavigateToAsync($"///{nameof(LoginPage)}");

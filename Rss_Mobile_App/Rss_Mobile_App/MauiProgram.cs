@@ -35,6 +35,7 @@ namespace Rss_Mobile_App
                 .AddSingleton<FeedRepository>()
                 .AddSingleton<UserRepository>()
                 .AddSingleton<AccountViewModel>()
+                .AddSingleton<AuthorDetailViewModel>()
                 .AddSingleton<AuthorListViewModel>()
                 .AddSingleton<EpisodeDetailViewModel>()
                 .AddSingleton<FeedDetailViewModel>()

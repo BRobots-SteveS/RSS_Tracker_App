@@ -17,7 +17,7 @@
         <ShellContent ContentTemplate="{DataTemplate views:LoginPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="My account"
-                Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
+                Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}}">
         <ShellContent ContentTemplate="{DataTemplate views:AccountDetailsPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Search feed"

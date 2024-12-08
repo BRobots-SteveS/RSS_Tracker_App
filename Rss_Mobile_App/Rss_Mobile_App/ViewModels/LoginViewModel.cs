@@ -24,7 +24,7 @@ namespace Rss_Mobile_App.ViewModels
         private UserDto existingUser;
 
         [RelayCommand]
-        public async void Login()
+        public async Task Login()
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Rss_Mobile_App.ViewModels
             catch (Exception ex) { await DialogService.ConfirmAsync("Unknown error", ex.Message); }
         }
         [RelayCommand]
-        public async void Register()
+        public async Task Register()
         {
             try
             {
