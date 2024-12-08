@@ -42,13 +42,12 @@ namespace Rss_Mobile_App.Repositories
             return System.Text.Json.JsonSerializer.Deserialize<List<UserFavoriteDto>>(await result.Content.ReadAsStringAsync());
         }
 
-        public async Task<UserFavoriteDto> CreateFavorite(UserFavoriteDto favoriteDto)
+        public async Task<UserFavoriteDto> CreateFavorite(Guid userId, Guid? feedId = null, Guid? authorId = null)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/favorite"),
-                Content = JsonContent.Create(favoriteDto)
+                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/favorite?userid={userId}{(feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
