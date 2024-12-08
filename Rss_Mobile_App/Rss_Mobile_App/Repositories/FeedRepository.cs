@@ -27,5 +27,16 @@ namespace Rss_Mobile_App.Repositories
             result.EnsureSuccessStatusCode();
             return System.Text.Json.JsonSerializer.Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
         }
+        public async Task<List<FeedDto>> GetFeedsByUserId(Guid userId)
+        {
+            HttpRequestMessage message = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/user/{userId}")
+            };
+            var result = await httpClient.SendAsync(message);
+            result.EnsureSuccessStatusCode();
+            return System.Text.Json.JsonSerializer.Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+        }
     }
 }

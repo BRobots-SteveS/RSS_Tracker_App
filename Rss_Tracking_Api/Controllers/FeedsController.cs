@@ -53,6 +53,15 @@ namespace Rss_Tracking_Api.Controllers
             return new OkObjectResult(_feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList());
         }
 
+        [HttpGet("user/{userId}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFeedsByUserId(Guid userId)
+        {
+            return new OkObjectResult(_feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
+        }
+
+
         [HttpPost]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(FeedDto), StatusCodes.Status200OK)]
