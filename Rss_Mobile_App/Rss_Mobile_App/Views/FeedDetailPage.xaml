@@ -12,7 +12,22 @@
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
 
-    </StackLayout>
+    <material:TabView CachingStrategy="RecreateAlways" TabPlacement="Bottom">
+        <material:TabItem Title="Authors">
+            <material:TabItem.Content>
+                <material:DataGrid ItemsSource="{Binding Authors}">
+
+                </material:DataGrid>
+            </material:TabItem.Content>
+        </material:TabItem>
+        <material:TabItem Title="Episodes">
+            <material:TabItem.Content>
+                <material:DataGrid ItemsSource="{Binding Episodes}">
+
+                </material:DataGrid>
+            </material:TabItem.Content>
+        </material:TabItem>
+    </material:TabView>
 
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView>

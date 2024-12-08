@@ -11,7 +11,11 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-        <StackLayout>
+    <StackLayout>
+        <uranium:ExpanderView>
+            <uranium:ExpanderView.Header>
+                <Label Text="Account details"/>
+            </uranium:ExpanderView.Header>
             <input:FormView SubmitCommand="{Binding ChangePasswordCommand}" Spacing="10" Padding="25,30" HorizontalOptions="Center" MaximumWidthRequest="400">
                 <material:TextField 
                     Title="Username"
@@ -23,22 +27,32 @@
                 </material:TextField>
 
                 <material:TextField 
-                    Title="Password"
+                    Title="Current Password"
                     Text="{Binding User.Password}" IsPassword="True"
                     TextColor="{StaticResource OnPrimary}"
                     AccentColor="{StaticResource OnPrimary}"
                     Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Password}}">
                     <validation:RequiredValidation />
                 </material:TextField>
+                <material:TextField
+                    Title="New Password"
+                    Text="{Binding NewPassword}" IsPassword="True"
+                    TextColor="{StaticResource OnPrimary}"
+                    AccentColor="{StaticResource OnPrimary}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Password}}">
+                    <validation:RegexValidation/>
+                </material:TextField>
                 <Button 
                     input:FormView.IsSubmitButton="True"
                     Text="Register"
                     StyleClass="ElevatedButton"/>
             </input:FormView>
-        </StackLayout>
-        <uranium:UraniumContentPage.Attachments>
-        <material:BottomSheetView>
-
-        </material:BottomSheetView>
-    </uranium:UraniumContentPage.Attachments>
+        </uranium:ExpanderView>
+        <uranium:ExpanderView>
+            <uranium:ExpanderView.Header>
+                <Label Text="Actions"/>
+            </uranium:ExpanderView.Header>
+            <Button HorizontalOptions="Center" Text="My favorites" StyleClass="ElevatedButton" Command="{Binding GoToFavoritesCommand}"/>
+        </uranium:ExpanderView>
+    </StackLayout>
 </uranium:UraniumContentPage>

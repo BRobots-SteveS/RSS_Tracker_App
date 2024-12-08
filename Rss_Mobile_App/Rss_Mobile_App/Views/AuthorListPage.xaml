@@ -12,7 +12,19 @@
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
 
-    </StackLayout>
+    <material:DataGrid ItemsSource="{Binding Authors}" HorizontalOptions="Center" x:Name="authorList" Margin="20">
+        <material:DataGrid.Columns>
+            <material:DataGridColumn ValueBinding="{Binding Name}" Title="Name"/>
+            <material:DataGridColumn ValueBinding="{Binding Email}" Title="Email"/>
+            <material:DataGridColumn Title="Add to favorites">
+                <material:DataGridColumn.CellItemTemplate>
+                    <DataTemplate>
+                        <Button StyleClass="TextButton" Text="Add me" Command="{Binding AddToFavoritesCommand}" CommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList} }"/>
+                    </DataTemplate>
+                </material:DataGridColumn.CellItemTemplate>
+            </material:DataGridColumn>
+        </material:DataGrid.Columns>
+    </material:DataGrid>
 
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView
