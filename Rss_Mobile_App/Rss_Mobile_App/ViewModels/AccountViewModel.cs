@@ -10,12 +10,12 @@ namespace Rss_Mobile_App.ViewModels
 {
     public partial class AccountViewModel : BaseViewModel
     {
-        private readonly UserRepository _repo;
+        private readonly IUserRepository _repo;
         [ObservableProperty]
         private UserDto user;
         [ObservableProperty]
         private string newPassword;
-        public AccountViewModel(INavigationService navigation, IDialogService dialogService, UserRepository repo) : base(navigation, dialogService)
+        public AccountViewModel(INavigationService navigation, IDialogService dialogService, IUserRepository repo) : base(navigation, dialogService)
         { 
             _repo = repo;
             newPassword = string.Empty;

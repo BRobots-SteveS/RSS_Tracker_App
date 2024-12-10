@@ -3,7 +3,11 @@ using System.Net.Http.Json;
 
 namespace Rss_Mobile_App.Repositories
 {
-    public class EpisodeRepository : BaseRepository<EpisodeDto>
+    public interface IEpisodeRepository : IBaseRepository<EpisodeDto>
+    {
+        Task<List<EpisodeDto>> GetEpisodesByFeedId(Guid feedId);
+    }
+    public class EpisodeRepository : BaseRepository<EpisodeDto>, IEpisodeRepository
     {
         public EpisodeRepository() : base("episodes") { }
         public async Task<List<EpisodeDto>> GetEpisodesByFeedId(Guid feedId)
@@ -15,7 +19,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<List<EpisodeDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<EpisodeDto>>(await result.Content.ReadAsStringAsync());
     }
 }
 }

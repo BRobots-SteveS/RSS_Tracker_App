@@ -3,6 +3,7 @@ using InputKit.Shared.Controls;
 using Rss_Mobile_App.Repositories;
 using Rss_Mobile_App.Services;
 using Rss_Mobile_App.ViewModels;
+using Rss_Mobile_App.Views;
 using UraniumUI;
 using UraniumUI.Icons.MaterialSymbols;
 
@@ -30,10 +31,10 @@ namespace Rss_Mobile_App
             builder.Services.AddCommunityToolkitDialogs();
             builder.Services
                 .AddSingleton<INavigationService, MauiNavigationService>()
-                .AddSingleton<AuthorRepository>()
-                .AddSingleton<EpisodeRepository>()
-                .AddSingleton<FeedRepository>()
-                .AddSingleton<UserRepository>()
+                .AddSingleton<IAuthorRepository, AuthorRepository>()
+                .AddSingleton<IEpisodeRepository, EpisodeRepository>()
+                .AddSingleton<IFeedRepository, FeedRepository>()
+                .AddSingleton<IUserRepository, UserRepository>()
                 .AddSingleton<AccountViewModel>()
                 .AddSingleton<AuthorDetailViewModel>()
                 .AddSingleton<AuthorListViewModel>()
@@ -41,6 +42,14 @@ namespace Rss_Mobile_App
                 .AddSingleton<FeedDetailViewModel>()
                 .AddSingleton<FeedListViewModel>()
                 .AddSingleton<LoginViewModel>();
+            builder.Services
+                .AddSingleton<LoginPage>()
+                .AddSingleton<AccountDetailsPage>()
+                .AddSingleton<AuthorListPage>()
+                .AddSingleton<AuthorDetailPage>()
+                .AddSingleton<FeedListPage>()
+                .AddSingleton<FeedDetailPage>()
+                .AddSingleton<EpisodeDetailPage>();
             return builder.Build();
         }
     }

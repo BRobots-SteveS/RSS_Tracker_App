@@ -10,8 +10,8 @@ namespace Rss_Mobile_App.ViewModels
 {
     public partial class LoginViewModel : BaseViewModel
     {
-        private readonly UserRepository _repo;
-        public LoginViewModel(INavigationService navigation, IDialogService dialogService, UserRepository repo) : base(navigation, dialogService)
+        private readonly IUserRepository _repo;
+        public LoginViewModel(INavigationService navigation, IDialogService dialogService, IUserRepository repo) : base(navigation, dialogService)
         {
             _repo = repo;
             newUser = new();

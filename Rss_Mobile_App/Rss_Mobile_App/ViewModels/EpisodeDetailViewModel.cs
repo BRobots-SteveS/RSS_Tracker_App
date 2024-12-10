@@ -11,12 +11,12 @@ namespace Rss_Mobile_App.ViewModels
     [QueryProperty(nameof(EpisodeId), "episode")]
     public partial class EpisodeDetailViewModel : BaseViewModel
     {
-        private readonly EpisodeRepository _repo;
+        private readonly IEpisodeRepository _repo;
         [ObservableProperty]
         private Guid episodeId;
         [ObservableProperty]
         private EpisodeDto episode;
-        public EpisodeDetailViewModel(INavigationService navigation, IDialogService dialogService, EpisodeRepository repo) : base(navigation, dialogService)
+        public EpisodeDetailViewModel(INavigationService navigation, IDialogService dialogService, IEpisodeRepository repo) : base(navigation, dialogService)
         { _repo = repo; episode = _repo.GetRowById(episodeId).GetAwaiter().GetResult(); }
 
         [RelayCommand]

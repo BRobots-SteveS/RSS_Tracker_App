@@ -12,10 +12,10 @@ namespace Rss_Mobile_App.ViewModels
     [QueryProperty(nameof(FeedId), "feed")]
     public partial class FeedDetailViewModel : BaseViewModel
     {
-        private readonly FeedRepository _feedRepo;
-        private readonly AuthorRepository _authorRepo;
-        private readonly EpisodeRepository _episodeRepo;
-        private readonly UserRepository _userRepo;
+        private readonly IFeedRepository _feedRepo;
+        private readonly IAuthorRepository _authorRepo;
+        private readonly IEpisodeRepository _episodeRepo;
+        private readonly IUserRepository _userRepo;
         [ObservableProperty]
         private Guid? feedId;
         [ObservableProperty]
@@ -26,7 +26,7 @@ namespace Rss_Mobile_App.ViewModels
         private ObservableCollection<AuthorDto> authors;
         [ObservableProperty]
         private ObservableCollection<string> platforms;
-        public FeedDetailViewModel(FeedRepository feedRepo, AuthorRepository authorRepo, EpisodeRepository episodeRepo, UserRepository userRepo,
+        public FeedDetailViewModel(IFeedRepository feedRepo, IAuthorRepository authorRepo, IEpisodeRepository episodeRepo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         {
             _feedRepo = feedRepo; _authorRepo = authorRepo; _episodeRepo = episodeRepo; _userRepo = userRepo;

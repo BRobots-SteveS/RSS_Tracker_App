@@ -16,15 +16,15 @@ namespace Rss_Mobile_App.ViewModels
     [QueryProperty(nameof(authorId), "author")]
     public partial class AuthorDetailViewModel : BaseViewModel
     {
-        private readonly AuthorRepository _authorRepo;
-        private readonly FeedRepository _feedRepo;
+        private readonly IAuthorRepository _authorRepo;
+        private readonly IFeedRepository _feedRepo;
         [ObservableProperty]
         private Guid authorId;
         [ObservableProperty]
         private AuthorDto author;
         [ObservableProperty]
         private ObservableCollection<FeedDto> feeds;
-        public AuthorDetailViewModel( AuthorRepository authorRepo, FeedRepository feedRepo,
+        public AuthorDetailViewModel(IAuthorRepository authorRepo, IFeedRepository feedRepo,
             INavigationService navigation, IDialogService dialog) : base(navigation, dialog)
         { _authorRepo = authorRepo; _feedRepo = feedRepo; ReloadData().GetAwaiter().GetResult(); }
 

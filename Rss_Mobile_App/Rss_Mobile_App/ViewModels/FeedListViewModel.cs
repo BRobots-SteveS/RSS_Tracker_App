@@ -13,14 +13,14 @@ namespace Rss_Mobile_App.ViewModels
     [QueryProperty(nameof(AuthorId), "author")]
     public partial class FeedListViewModel : BaseViewModel
     {
-        private readonly FeedRepository _feedRepo;
+        private readonly IFeedRepository _feedRepo;
         [ObservableProperty]
         private Guid? userId;
         [ObservableProperty]
         private Guid? authorId;
         [ObservableProperty]
         private ObservableCollection<FeedDto> feeds;
-        public FeedListViewModel(INavigationService navigation, IDialogService dialogService, FeedRepository repo) : base(navigation, dialogService)
+        public FeedListViewModel(INavigationService navigation, IDialogService dialogService, IFeedRepository repo) : base(navigation, dialogService)
         { _feedRepo = repo; }
 
         [RelayCommand]

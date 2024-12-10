@@ -32,7 +32,6 @@
         <StackLayout HeightRequest="200" BackgroundColor="{StaticResource Primary}">
             <Label Text="Powered By" HorizontalOptions="Center"
                    FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
-            <Image Source="logo_pxl_digital.png" HorizontalOptions="Center" Aspect="AspectFit"/>
         </StackLayout>
     </Shell.FlyoutFooter>
 

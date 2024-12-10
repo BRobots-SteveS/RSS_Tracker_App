@@ -11,11 +11,11 @@ namespace Rss_Mobile_App.ViewModels
 {
     public partial class AuthorListViewModel : BaseViewModel
     {
-        private readonly AuthorRepository _repo;
-        private readonly UserRepository _userRepo;
+        private readonly IAuthorRepository _repo;
+        private readonly IUserRepository _userRepo;
         [ObservableProperty]
         private ObservableCollection<AuthorDto> authors;
-        public AuthorListViewModel(AuthorRepository repo, UserRepository userRepo,
+        public AuthorListViewModel(IAuthorRepository repo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         { _repo = repo; _userRepo = userRepo; ReloadData().GetAwaiter().GetResult(); }
 

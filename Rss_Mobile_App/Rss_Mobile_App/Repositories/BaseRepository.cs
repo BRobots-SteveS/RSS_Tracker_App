@@ -2,11 +2,27 @@
 
 namespace Rss_Mobile_App.Repositories
 {
-    public class BaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class
+    {
+        Task<List<T>> GetAllRows();
+        Task<T> GetRowById(Guid id);
+        Task<T> CreateRow(T item);
+        Task<T> UpdateRow(T item, Guid itemId);
+        Task DeleteRow(T item, Guid itemId);
+    }
+    public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
         internal readonly HttpClient httpClient;
         internal const string BaseUrl = "https://0fl257js-5009.euw.devtunnels.ms/api/v1.0/";
         internal readonly string Route;
+        internal readonly System.Text.Json.JsonSerializerOptions options = new()
+        {
+            IncludeFields = true,
+            PropertyNameCaseInsensitive = true,
+            IgnoreReadOnlyFields = false,
+            IgnoreReadOnlyProperties = false,
+            AllowTrailingCommas = true
+        };
         public BaseRepository(string route)
         {
             Route = route;
@@ -79,6 +95,9 @@ namespace Rss_Mobile_App.Repositories
             result.EnsureSuccessStatusCode();
             return;
         }
-
+        internal TItem? Deserialize<TItem>(string content) where TItem : class
+        {
+            return System.Text.Json.JsonSerializer.Deserialize<TItem>(content, options);
+        }
     }
 }

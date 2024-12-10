@@ -2,7 +2,13 @@
 
 namespace Rss_Mobile_App.Repositories
 {
-    public class FeedRepository : BaseRepository<FeedDto>
+    public interface IFeedRepository : IBaseRepository<FeedDto>
+    {
+        Task<FeedDto> UpdateFeed(Guid feedId);
+        Task<List<FeedDto>> GetFeedByCreator(Guid creatorId);
+        Task<List<FeedDto>> GetFeedsByUserId(Guid userId);
+    }
+    public class FeedRepository : BaseRepository<FeedDto>, IFeedRepository
     {
         public FeedRepository() : base("feeds") { }
         public async Task<FeedDto> UpdateFeed(Guid feedId)
@@ -14,7 +20,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<FeedDto>(await result.Content.ReadAsStringAsync());
+            return Deserialize<FeedDto>(await result.Content.ReadAsStringAsync());
         }
         public async Task<List<FeedDto>> GetFeedByCreator(Guid creatorId)
         {
@@ -25,7 +31,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
         }
         public async Task<List<FeedDto>> GetFeedsByUserId(Guid userId)
         {
@@ -36,7 +42,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
         }
     }
 }
