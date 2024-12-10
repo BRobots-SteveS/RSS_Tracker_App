@@ -45,12 +45,13 @@ namespace Rss_Tracking_Api.Controllers
             var authHeader = Request.Headers.Authorization.FirstOrDefault();
             var values = authHeader.Replace("Basic ", "").Split(':');
             var username = values[0];
-            var realPassword = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(values[1]));
+            var realPassword = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(string.Join(string.Empty, values.Skip(1))));
             var users = _users.GetUsersByName(username);
             if (users is null || !users.Any()) return NotFound("No user exists for the given username");
             foreach (var user in users)
             {
-                if (CryptoHelper.ValidatePassword(realPassword, user.Salt, user.Password)) return new OkObjectResult(DbMapper.UserToDto(user));
+                Console.WriteLine(user.Password);
+                if (user.ValidLogin(username, realPassword)) return new OkObjectResult(DbMapper.UserToDto(user));
                 continue;
             }
             return BadRequest("Wrong password, try again");
@@ -75,7 +76,7 @@ namespace Rss_Tracking_Api.Controllers
             var username = values[0];
             var password = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(values[1]));
             if (_users.IsUsernameTaken(username)) return BadRequest("This username is already taken");
-            User user = new(username, password) { UserName = username };
+            User user = new(username, password);
             var output = _users.Add(user);
             _users.SaveChanges();
             return new OkObjectResult(DbMapper.UserToDto(output));

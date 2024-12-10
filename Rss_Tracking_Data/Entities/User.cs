@@ -6,9 +6,11 @@ namespace Rss_Tracking_Data.Entities
     public class User
     {
         public Guid Id { get; set; }
-        public required string UserName { get; set; }
+        public string UserName { get; set; }
         public string Password { get; private set; }
         public string Salt { get; private set; }
+
+        public User() { Id = Guid.Empty; UserName = string.Empty; Password = string.Empty; Salt = string.Empty; }
         public User(string userName, string password)
         {
             UserName = userName;

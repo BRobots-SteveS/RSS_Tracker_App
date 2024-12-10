@@ -6,7 +6,7 @@ namespace Rss_Tracking_Data.Helpers
     public static class CryptoHelper
     {
         private const int KeySize = 64;
-        private const int Itterations = 50000;
+        private const int Itterations = 1000;
         private static readonly HashAlgorithmName AlgorithmName = HashAlgorithmName.SHA512;
         public static string HashPassword(string clearPassword, string? existingSalt, out byte[] salt)
         {
