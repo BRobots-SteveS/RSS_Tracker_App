@@ -14,14 +14,16 @@ namespace Rss_Mobile_App.ViewModels
     public partial class FeedListViewModel : BaseViewModel
     {
         private readonly IFeedRepository _feedRepo;
+        private readonly IUserRepository _userRepo;
         [ObservableProperty]
-        private Guid? userId;
+        private Guid? userId = null;
         [ObservableProperty]
-        private Guid? authorId;
+        private Guid? authorId = null;
         [ObservableProperty]
-        private ObservableCollection<FeedDto> feeds;
-        public FeedListViewModel(INavigationService navigation, IDialogService dialogService, IFeedRepository repo) : base(navigation, dialogService)
-        { _feedRepo = repo; }
+        private ObservableCollection<FeedDto> feeds = new();
+        public FeedListViewModel(IUserRepository userRepo, IFeedRepository repo,
+            INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
+        { _feedRepo = repo; _userRepo = userRepo; }
 
         [RelayCommand]
         public async Task ReloadData()
@@ -35,9 +37,26 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
+        public async Task AddToFavorites(FeedDto selectedFeed)
+        {
+            if (selectedFeed == null) return;
+            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), feedId: selectedFeed.Id);
+        }
+
+        [RelayCommand]
         public async Task CreateFeed() => await Navigation.NavigateToAsync(nameof(FeedDetailPage));
 
         [RelayCommand]
         public async Task GoToDetails(FeedDto selectedFeed) => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object> { { "feed", selectedFeed.Id } });
+
+        [RelayCommand]
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
+
     }
 }

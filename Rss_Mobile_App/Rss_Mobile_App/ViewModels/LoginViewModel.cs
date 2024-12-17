@@ -49,5 +49,9 @@ namespace Rss_Mobile_App.ViewModels
             catch (HttpRequestException ex) { await DialogService.ConfirmAsync("Register failed - server", $"{ex.StatusCode} - {ex.Message}"); }
             catch (Exception ex) { await DialogService.ConfirmAsync("Unknown error", ex.Message); }
         }
+
+        [RelayCommand]
+        public async Task CheckLogin()
+        { if (Preferences.ContainsKey("user")) await Navigation.NavigateToAsync(nameof(AccountDetailsPage)); }
     }
 }

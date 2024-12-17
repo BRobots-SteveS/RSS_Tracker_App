@@ -19,19 +19,17 @@ namespace Rss_Mobile_App.ViewModels
         [ObservableProperty]
         private Guid? feedId;
         [ObservableProperty]
-        private FeedDto feed;
+        private FeedDto feed = new();
         [ObservableProperty]
-        private ObservableCollection<EpisodeDto> episodes;
+        private ObservableCollection<EpisodeDto> episodes = new();
         [ObservableProperty]
-        private ObservableCollection<AuthorDto> authors;
+        private ObservableCollection<AuthorDto> authors = new();
         [ObservableProperty]
-        private ObservableCollection<string> platforms;
+        private ObservableCollection<string> platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud"]);
         public FeedDetailViewModel(IFeedRepository feedRepo, IAuthorRepository authorRepo, IEpisodeRepository episodeRepo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         {
             _feedRepo = feedRepo; _authorRepo = authorRepo; _episodeRepo = episodeRepo; _userRepo = userRepo;
-            platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud"]);
-            ReloadData().GetAwaiter().GetResult();
         }
 
         [RelayCommand]
@@ -69,5 +67,15 @@ namespace Rss_Mobile_App.ViewModels
         {
             if (FeedId.HasValue) await Browser.Default.OpenAsync(Feed.FeedUri);
         }
+
+        [RelayCommand]
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
+
     }
 }

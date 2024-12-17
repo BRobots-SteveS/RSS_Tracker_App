@@ -42,19 +42,19 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<List<T>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<T>>(await result.Content.ReadAsStringAsync());
         }
         public async Task<T> GetRowById(Guid id)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}?id={id}")
+                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/{id}")
             };
             var result = await httpClient.SendAsync(message);
             if (result.StatusCode == System.Net.HttpStatusCode.NotFound) return (T)Activator.CreateInstance(typeof(T));
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task<T> CreateRow(T item)
@@ -67,7 +67,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task<T> UpdateRow(T item, Guid itemId)
@@ -80,7 +80,7 @@ namespace Rss_Mobile_App.Repositories
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return System.Text.Json.JsonSerializer.Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync());
         }
 
         public async Task DeleteRow(T item, Guid itemId)

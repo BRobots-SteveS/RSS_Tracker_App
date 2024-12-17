@@ -13,20 +13,20 @@ using UraniumUI.Dialogs;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    [QueryProperty(nameof(authorId), "author")]
+    [QueryProperty(nameof(AuthorId), "author")]
     public partial class AuthorDetailViewModel : BaseViewModel
     {
         private readonly IAuthorRepository _authorRepo;
         private readonly IFeedRepository _feedRepo;
         [ObservableProperty]
-        private Guid authorId;
+        private Guid authorId = Guid.Empty;
         [ObservableProperty]
-        private AuthorDto author;
+        private AuthorDto author = new();
         [ObservableProperty]
-        private ObservableCollection<FeedDto> feeds;
+        private ObservableCollection<FeedDto> feeds = new();
         public AuthorDetailViewModel(IAuthorRepository authorRepo, IFeedRepository feedRepo,
             INavigationService navigation, IDialogService dialog) : base(navigation, dialog)
-        { _authorRepo = authorRepo; _feedRepo = feedRepo; ReloadData().GetAwaiter().GetResult(); }
+        { _authorRepo = authorRepo; _feedRepo = feedRepo; author = new(); feeds = new(); }
 
         [RelayCommand]
         public async Task ReloadData()
@@ -34,5 +34,15 @@ namespace Rss_Mobile_App.ViewModels
             Author = await _authorRepo.GetRowById(AuthorId);
             Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));
         }
+
+        [RelayCommand]
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
+
     }
 }

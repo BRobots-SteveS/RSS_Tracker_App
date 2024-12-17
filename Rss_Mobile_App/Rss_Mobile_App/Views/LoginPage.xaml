@@ -2,19 +2,22 @@
 <uranium:UraniumContentPage x:Class="Rss_Mobile_App.Views.LoginPage"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mct="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
-             xmlns:local="clr-namespace:Rss_Mobile_App.Views"
-             Shell.FlyoutBehavior="Disabled">
-
-    <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" HorizontalOptions="Center" MaximumWidthRequest="400">
+             xmlns:local="clr-namespace:Rss_Mobile_App.Views" Shell.FlyoutBehavior="Disabled">
+    <uranium:UraniumContentPage.Behaviors>
+        <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding CheckLoginCommand}"/>
+    </uranium:UraniumContentPage.Behaviors>
+    
+    <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400">
         <material:TextField 
         Title="Username"
         Text="{Binding ExistingUser.Username}"
-        TextColor="{StaticResource OnPrimary}"
-        AccentColor="{StaticResource OnPrimary}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
         Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
             <validation:RequiredValidation />
         </material:TextField>
@@ -22,8 +25,8 @@
         <material:TextField 
         Title="Password"
         Text="{Binding ExistingUser.Password}" IsPassword="True"
-        TextColor="{StaticResource OnPrimary}"
-        AccentColor="{StaticResource OnPrimary}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
         Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Password}}">
             <validation:RequiredValidation />
         </material:TextField>
@@ -38,7 +41,7 @@
                 Title="Add" 
                 IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Add_circle}, Color={StaticResource OnPrimary}}"
                 BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
-            <input:FormView SubmitCommand="{Binding AddNewUserCommand}" Spacing="10" Padding="25,30" HorizontalOptions="Center" MaximumWidthRequest="400">
+            <input:FormView SubmitCommand="{Binding RegisterCommand}" Spacing="10" Padding="25,30" HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400">
                 <material:TextField 
                     Title="Username"
                     Text="{Binding NewUser.Username}"

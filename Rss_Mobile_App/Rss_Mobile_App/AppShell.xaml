@@ -5,35 +5,23 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:uranium="clr-namespace:UraniumUI.Icons.MaterialSymbols;assembly=UraniumUI.Icons.MaterialSymbols"
     xmlns:local="clr-namespace:Rss_Mobile_App"
-    xmlns:views="clr-namespace:Rss_Mobile_App.Views">
+    xmlns:views="clr-namespace:Rss_Mobile_App.Views"
+    Shell.FlyoutBehavior="Flyout">
 
-    <Shell.FlyoutHeader>
-        <Image Source="logo_pxl_hogeschool.png" BackgroundColor="{StaticResource Primary}" 
-               HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit"
-               HeightRequest="100"/>
-    </Shell.FlyoutHeader>
     <FlyoutItem Title="Login" FlyoutItemIsVisible="False"
                 Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
         <ShellContent ContentTemplate="{DataTemplate views:LoginPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="My account"
+    <FlyoutItem Title="My account" FlyoutItemIsVisible="True"
                 Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}}">
         <ShellContent ContentTemplate="{DataTemplate views:AccountDetailsPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Search feed"
+    <FlyoutItem Title="Search feed" FlyoutItemIsVisible="True"
                 Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Rss_feed}}">
         <ShellContent ContentTemplate="{DataTemplate views:FeedListPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Search author" 
+    <FlyoutItem Title="Search author" FlyoutItemIsVisible="True"
                 Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_search}}">
         <ShellContent ContentTemplate="{DataTemplate views:AuthorListPage}"/>
     </FlyoutItem>
-    <Shell.FlyoutFooter>
-        <StackLayout HeightRequest="200" BackgroundColor="{StaticResource Primary}">
-            <Label Text="Powered By" HorizontalOptions="Center"
-                   FontSize="Large" FontAttributes="Bold" TextColor="Black"/>
-        </StackLayout>
-    </Shell.FlyoutFooter>
-
-
 </Shell>

@@ -7,6 +7,7 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+             xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
              xmlns:local="clr-namespace:Rss_Mobile_App.Views">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
@@ -15,9 +16,15 @@
     <material:TabView CachingStrategy="RecreateAlways" TabPlacement="Bottom">
         <material:TabItem Title="Authors">
             <material:TabItem.Content>
-                <material:DataGrid ItemsSource="{Binding Authors}">
-
-                </material:DataGrid>
+                <ListView ItemsSource="{Binding Authors}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="models:AuthorDto">
+                            <Grid RowDefinitions="*" ColumnDefinitions="*,*,*">
+                                <Label />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </material:TabItem.Content>
         </material:TabItem>
         <material:TabItem Title="Episodes">
@@ -31,10 +38,19 @@
 
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView>
-            
+
         </material:BackdropView>
         <material:BottomSheetView>
-            
+            <Grid RowDefinitions="*,*,*">
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding ToAccountDetailsCommand}" Text="My account"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="1"
+                        Command="{Binding ToFeedListCommand}" Text="Feeds" FontAttributes="Bold"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="2"
+                        Command="{Binding ToAuthorListCommand}" Text="Authors"/>
+            </Grid>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>

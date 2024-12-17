@@ -43,13 +43,13 @@ namespace Rss_Mobile_App
                 .AddSingleton<FeedListViewModel>()
                 .AddSingleton<LoginViewModel>();
             builder.Services
-                .AddSingleton<LoginPage>()
                 .AddSingleton<AccountDetailsPage>()
                 .AddSingleton<AuthorListPage>()
                 .AddSingleton<AuthorDetailPage>()
-                .AddSingleton<FeedListPage>()
+                .AddSingleton<EpisodeDetailPage>()
                 .AddSingleton<FeedDetailPage>()
-                .AddSingleton<EpisodeDetailPage>();
+                .AddSingleton<FeedListPage>()
+                .AddSingleton<LoginPage>();
             return builder.Build();
         }
     }

@@ -13,11 +13,11 @@ namespace Rss_Mobile_App.ViewModels
     {
         private readonly IEpisodeRepository _repo;
         [ObservableProperty]
-        private Guid episodeId;
+        private Guid episodeId = Guid.Empty;
         [ObservableProperty]
-        private EpisodeDto episode;
+        private EpisodeDto episode = new();
         public EpisodeDetailViewModel(INavigationService navigation, IDialogService dialogService, IEpisodeRepository repo) : base(navigation, dialogService)
-        { _repo = repo; episode = _repo.GetRowById(episodeId).GetAwaiter().GetResult(); }
+        { _repo = repo; }
 
         [RelayCommand]
         public async Task ReloadData() => Episode = await _repo.GetRowById(EpisodeId);
@@ -30,5 +30,15 @@ namespace Rss_Mobile_App.ViewModels
             else
                 await Browser.Default.OpenAsync(Episode.PreviewUrl);
         }
+
+        [RelayCommand]
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
+
     }
 }

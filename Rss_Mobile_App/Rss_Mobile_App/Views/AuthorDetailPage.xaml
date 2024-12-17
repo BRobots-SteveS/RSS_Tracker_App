@@ -7,7 +7,8 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
-             xmlns:local="clr-namespace:Rss_Mobile_App.Views">
+             xmlns:local="clr-namespace:Rss_Mobile_App.Views"
+                            Shell.FlyoutBehavior="Flyout">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
@@ -17,4 +18,20 @@
             HorizontalOptions="Center"
             VerticalOptions="Center"/>
     </StackLayout>
+
+    <uranium:UraniumContentPage.Attachments>
+        <material:BottomSheetView>
+            <Grid RowDefinitions="*,*,*">
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding ToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="1"
+                        Command="{Binding ToFeedListCommand}" Text="Feeds"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="2"
+                        Command="{Binding ToAuthorListCommand}" Text="Authors"/>
+            </Grid>
+        </material:BottomSheetView>
+    </uranium:UraniumContentPage.Attachments>
+
 </uranium:UraniumContentPage>

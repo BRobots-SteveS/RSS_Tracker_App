@@ -11,18 +11,41 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-    
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!!!"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
-    </StackLayout>
+
+    <material:DataGrid ItemsSource="{Binding Feeds}" HorizontalOptions="Center" x:Name="feedsList" Margin="20">
+        <material:DataGrid.Columns>
+            <material:DataGridColumn ValueBinding="{Binding Platform}" Title="Platform"/>
+            <material:DataGridColumn ValueBinding="{Binding AuthorName}" Title="Author"/>
+            <material:DataGridColumn ValueBinding="{Binding FeedUri}" Title="Feed URL"/>
+            <material:DataGridColumn ValueBinding="{Binding ThumbnailUri}" Title="Thumbnail URL"/>
+            <material:DataGridColumn ValueBinding="{Binding PublishedTime}" Title="Published"/>
+            <material:DataGridColumn Title="Add to favorites">
+                <material:DataGridColumn.CellItemTemplate>
+                    <DataTemplate>
+                        <Button StyleClass="TextButton" Text="Add me" Command="{Binding AddToFavoritesCommand}" CommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedsList} }"/>
+                    </DataTemplate>
+                </material:DataGridColumn.CellItemTemplate>
+            </material:DataGridColumn>
+        </material:DataGrid.Columns>
+    </material:DataGrid>
 
     <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView
+        <!--<material:BackdropView
             Title="Filter"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Filter_alt}, Color={StaticResource OnPrimary}}"
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
-        </material:BackdropView>
+        </material:BackdropView>-->
+        <material:BottomSheetView>
+            <Grid RowDefinitions="*,*,*">
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding ToAccountDetailsCommand}" Text="My account"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="1"
+                        Command="{Binding ToFeedListCommand}" Text="Feeds" FontAttributes="Bold"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Grid.Row="2"
+                        Command="{Binding ToAuthorListCommand}" Text="Authors"/>
+            </Grid>
+        </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>

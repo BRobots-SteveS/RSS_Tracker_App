@@ -13,16 +13,19 @@ namespace Rss_Mobile_App.ViewModels
     {
         private readonly IAuthorRepository _repo;
         private readonly IUserRepository _userRepo;
+        
         [ObservableProperty]
-        private ObservableCollection<AuthorDto> authors;
+        private ObservableCollection<AuthorDto> authors = new();
         public AuthorListViewModel(IAuthorRepository repo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
-        { _repo = repo; _userRepo = userRepo; ReloadData().GetAwaiter().GetResult(); }
+        { _repo = repo; _userRepo = userRepo; }
 
         [RelayCommand]
         public async Task ReloadData()
         {
+            Console.WriteLine("Started fetching all authors.");
             Authors = new ObservableCollection<AuthorDto>(await _repo.GetAllRows());
+            Console.WriteLine($"Fetched all records: {Authors.Count}");
         }
 
         [RelayCommand]
@@ -39,5 +42,15 @@ namespace Rss_Mobile_App.ViewModels
             if (selectedAuthor == null) return;
             await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), authorId: selectedAuthor.Id);
         }
+
+        [RelayCommand]
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
+
     }
 }

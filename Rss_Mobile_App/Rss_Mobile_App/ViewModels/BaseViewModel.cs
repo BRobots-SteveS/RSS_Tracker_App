@@ -16,11 +16,19 @@ namespace Rss_Mobile_App.ViewModels
             DialogService = dialogService;
         }
 
-        [RelayCommand]
-        public async Task DoLogout()
+        protected async Task DoLogout()
         {
             Preferences.Remove("user");
             await Navigation.NavigateToAsync($"///{nameof(LoginPage)}");
         }
+
+        protected async Task GoToAccountDetails()
+        { await Navigation.NavigateToAsync(nameof(AccountDetailsPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
+        protected async Task GoToFeedList()
+        { await Navigation.NavigateToAsync(nameof(FeedListPage)); }
+        protected async Task GoToAuthorList()
+        { await Navigation.NavigateToAsync(nameof(AuthorListPage)); }
+        protected async Task GoToFavorites()
+        { await Navigation.NavigateToAsync(nameof(FeedListPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
     }
 }

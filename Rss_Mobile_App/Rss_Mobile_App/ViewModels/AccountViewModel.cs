@@ -20,7 +20,7 @@ namespace Rss_Mobile_App.ViewModels
             _repo = repo;
             newPassword = string.Empty;
             var userId = Preferences.Get("user", Guid.Empty.ToString());
-            ReloadData().GetAwaiter().GetResult();
+            User = new() { Id = Guid.Parse(userId) };
         }
 
         [RelayCommand]
@@ -35,6 +35,12 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
-        public async Task GoToFavorites() => await Navigation.NavigateToAsync(nameof(FeedListPage), new Dictionary<string, object> { { "user", User.Id } });
+        public async Task ToAccountDetails() => await GoToAccountDetails();
+        [RelayCommand]
+        public async Task ToFeedList() => await GoToFeedList();
+        [RelayCommand]
+        public async Task ToAuthorList() => await GoToAuthorList();
+        [RelayCommand]
+        public async Task ToFavorites() => await GoToFavorites();
     }
 }
