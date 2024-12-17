@@ -13,7 +13,6 @@ namespace Rss_Tracking_Data.Repositories
     }
     public class AuthorRepository : BaseRepository<Author>, IAuthorRepository
     {
-        private readonly Rss_TrackingDbContext _context;
         public AuthorRepository(Rss_TrackingDbContext context) : base(context) { }
         public override Author? GetById(Guid id) => _context.Authors.Where(x => x.Id == id).FirstOrDefault();
         public override List<Author> GetAll() => _context.Authors.ToList();
