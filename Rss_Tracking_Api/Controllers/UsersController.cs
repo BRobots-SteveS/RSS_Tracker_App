@@ -50,11 +50,20 @@ namespace Rss_Tracking_Api.Controllers
             if (users is null || !users.Any()) return NotFound("No user exists for the given username");
             foreach (var user in users)
             {
-                Console.WriteLine(user.Password);
                 if (user.ValidLogin(username, realPassword)) return new OkObjectResult(DbMapper.UserToDto(user));
                 continue;
             }
             return BadRequest("Wrong password, try again");
+        }
+
+        [HttpGet("{userId}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserById(Guid userId)
+        {
+            var user = _users.GetById(userId);
+            if (user == null) return NotFound();
+            return Ok(DbMapper.UserToDto(user));
         }
 
         [HttpGet("favorite/{userId}")]

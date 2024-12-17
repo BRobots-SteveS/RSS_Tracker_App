@@ -14,6 +14,7 @@ builder.Services.AddDbContext<Rss_TrackingDbContext>(opts =>
 #endif
 });
 builder.Services
+    .AddScoped<Rss_TrackingDbContext>()
     .AddScoped<IAuthorRepository, AuthorRepository>()
     .AddScoped<IEpisodeRepository, EpisodeRepository>()
     .AddScoped<IFeedRepository, FeedRepository>()

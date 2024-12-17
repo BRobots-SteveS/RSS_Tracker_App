@@ -36,6 +36,7 @@ namespace Rss_Tracking_Api.Controllers
         {
             return new OkObjectResult(_episodes.GetEpisodesByFeedId(feedId).Select(DbMapper.EpisodeToDto).ToList());
         }
+
         [HttpGet("{episodeId}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(EpisodeDto), StatusCodes.Status200OK)]

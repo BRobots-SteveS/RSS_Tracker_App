@@ -34,11 +34,15 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<AuthorDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAuthorsByFeedId(Guid feedId)
         {
-            return new OkObjectResult(_authors.GetAuthorsByFeedId(feedId).Select(x => DbMapper.AuthorToDto(x , [_feeds.GetById(feedId)])).ToList());
+            return new OkObjectResult(_authors.GetAuthorsByFeedId(feedId).Select(x => DbMapper.AuthorToDto(x, [_feeds.GetById(feedId)])).ToList());
         }
-        [HttpGet("{episodeId}")]
+
+        [HttpGet("{authorId}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(AuthorDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAuthorById(Guid authorId) => _authors.GetById(authorId) is null ? BadRequest("Episode does not exist") : new OkObjectResult(DbMapper.AuthorToDto(_authors.GetById(authorId), _feeds.GetFeedsByAuthorId(authorId)));
+        public async Task<IActionResult> GetAuthorById(Guid authorId)
+        {
+            return _authors.GetById(authorId) is null ? BadRequest("Episode does not exist") : new OkObjectResult(DbMapper.AuthorToDto(_authors.GetById(authorId), _feeds.GetFeedsByAuthorId(authorId)));
+        }
     }
 }

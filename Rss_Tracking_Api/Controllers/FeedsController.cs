@@ -31,7 +31,10 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllFeeds()
         {
-            return new OkObjectResult(_feeds.GetAll().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
+            HashSet<FeedDto> output = new();
+            var feeds = _feeds.GetAll().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
+            foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
+            return new OkObjectResult(output);
         }
 
         [HttpGet("{feedId}")]
