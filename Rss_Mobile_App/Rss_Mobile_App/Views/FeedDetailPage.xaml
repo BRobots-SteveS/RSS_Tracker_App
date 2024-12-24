@@ -37,19 +37,19 @@
     </material:TabView>
 
     <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView>
+        <!--<material:BackdropView>
 
-        </material:BackdropView>
+        </material:BackdropView>-->
         <material:BottomSheetView>
             <Grid RowDefinitions="*,*,*">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
-                        Command="{Binding ToAccountDetailsCommand}" Text="My account"/>
-                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
                         Grid.Row="1"
-                        Command="{Binding ToFeedListCommand}" Text="Feeds" FontAttributes="Bold"/>
-                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
                         Grid.Row="2"
-                        Command="{Binding ToAuthorListCommand}" Text="Authors"/>
+                        Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
             </Grid>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
