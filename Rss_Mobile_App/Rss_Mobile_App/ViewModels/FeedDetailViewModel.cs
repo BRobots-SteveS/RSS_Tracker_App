@@ -65,17 +65,7 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         public async Task GoToFeed()
         {
-            if (FeedId.HasValue) await Browser.Default.OpenAsync(Feed.FeedUri);
+            if (FeedId.HasValue) await Navigation.OpenBrowser(Feed.FeedUri);
         }
-
-        [RelayCommand]
-        public async Task ToAccountDetails() => await GoToAccountDetails();
-        [RelayCommand]
-        public async Task ToFeedList() => await GoToFeedList();
-        [RelayCommand]
-        public async Task ToAuthorList() => await GoToAuthorList();
-        [RelayCommand]
-        public async Task ToFavorites() => await GoToFavorites();
-
     }
 }

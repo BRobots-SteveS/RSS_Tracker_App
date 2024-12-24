@@ -4,6 +4,7 @@
     {
         Task NavigateToAsync(string route, IDictionary<string, object>? routeParameters = null);
         Task PopAsync();
+        Task OpenBrowser(string route);
     }
 
     public class MauiNavigationService : INavigationService
@@ -22,7 +23,8 @@
                 : Shell.Current.GoToAsync(shellNavigation);
         }
 
-        public Task PopAsync() =>
-            Shell.Current.GoToAsync("..");
+        public Task PopAsync() => Shell.Current.GoToAsync("..");
+
+        public async Task OpenBrowser(string route) => await Browser.Default.OpenAsync(route, BrowserLaunchMode.SystemPreferred);
     }
 }

@@ -33,14 +33,5 @@ namespace Rss_Mobile_App.ViewModels
             await _repo.UpdateRow(User, User.Id);
             await DoLogout();
         }
-
-        [RelayCommand]
-        public async Task ToAccountDetails() => await GoToAccountDetails();
-        [RelayCommand]
-        public async Task ToFeedList() => await GoToFeedList();
-        [RelayCommand]
-        public async Task ToAuthorList() => await GoToAuthorList();
-        [RelayCommand]
-        public async Task ToFavorites() => await GoToFavorites();
     }
 }

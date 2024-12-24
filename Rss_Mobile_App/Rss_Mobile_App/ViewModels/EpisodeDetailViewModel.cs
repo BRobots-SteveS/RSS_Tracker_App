@@ -30,15 +30,5 @@ namespace Rss_Mobile_App.ViewModels
             else
                 await Browser.Default.OpenAsync(Episode.PreviewUrl);
         }
-
-        [RelayCommand]
-        public async Task ToAccountDetails() => await GoToAccountDetails();
-        [RelayCommand]
-        public async Task ToFeedList() => await GoToFeedList();
-        [RelayCommand]
-        public async Task ToAuthorList() => await GoToAuthorList();
-        [RelayCommand]
-        public async Task ToFavorites() => await GoToFavorites();
-
     }
 }

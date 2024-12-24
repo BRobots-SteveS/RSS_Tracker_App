@@ -21,14 +21,19 @@ namespace Rss_Mobile_App.ViewModels
             Preferences.Remove("user");
             await Navigation.NavigateToAsync($"///{nameof(LoginPage)}");
         }
-
+        [RelayCommand]
         protected async Task GoToAccountDetails()
         { await Navigation.NavigateToAsync(nameof(AccountDetailsPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
-        protected async Task GoToFeedList()
-        { await Navigation.NavigateToAsync(nameof(FeedListPage)); }
-        protected async Task GoToAuthorList()
-        { await Navigation.NavigateToAsync(nameof(AuthorListPage)); }
+        [RelayCommand]
         protected async Task GoToFavorites()
         { await Navigation.NavigateToAsync(nameof(FeedListPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
+        [RelayCommand]
+        protected async Task GoToFeedList() => await Navigation.NavigateToAsync(nameof(FeedListPage));
+        [RelayCommand]
+        protected async Task GoToAuthorList() => await Navigation.NavigateToAsync(nameof(AuthorListPage));
+        [RelayCommand]
+        protected async Task OpenBrowser(string uri) => await Navigation.OpenBrowser(uri);
+        [RelayCommand]
+        protected async Task OpenEmail(string route) => await Navigation.OpenBrowser($"mailto:{route}");
     }
 }

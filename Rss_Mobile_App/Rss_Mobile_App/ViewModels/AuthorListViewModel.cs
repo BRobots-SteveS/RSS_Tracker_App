@@ -23,9 +23,7 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         public async Task ReloadData()
         {
-            Console.WriteLine("Started fetching all authors.");
             Authors = new ObservableCollection<AuthorDto>(await _repo.GetAllRows());
-            Console.WriteLine($"Fetched all records: {Authors.Count}");
         }
 
         [RelayCommand]
@@ -37,20 +35,19 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
+        public async Task GoToDetails(AuthorDto selectedAuthor)
+        {
+            Dictionary<string, object> authorMap = new();
+            if (selectedAuthor != null) authorMap.Add("author", selectedAuthor.Id);
+            await Navigation.NavigateToAsync(nameof(AuthorDetailPage), authorMap);
+        }
+
+
+        [RelayCommand]
         public async Task AddToFavorites(AuthorDto selectedAuthor)
         {
             if (selectedAuthor == null) return;
             await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), authorId: selectedAuthor.Id);
         }
-
-        [RelayCommand]
-        public async Task ToAccountDetails() => await GoToAccountDetails();
-        [RelayCommand]
-        public async Task ToFeedList() => await GoToFeedList();
-        [RelayCommand]
-        public async Task ToAuthorList() => await GoToAuthorList();
-        [RelayCommand]
-        public async Task ToFavorites() => await GoToFavorites();
-
     }
 }
