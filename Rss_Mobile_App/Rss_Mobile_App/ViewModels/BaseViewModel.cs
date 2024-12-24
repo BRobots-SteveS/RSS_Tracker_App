@@ -10,12 +10,26 @@ namespace Rss_Mobile_App.ViewModels
     {
         public readonly INavigationService Navigation;
         public readonly IDialogService DialogService;
+
+        [ObservableProperty]
+        private bool isRefreshing = false;
         public BaseViewModel(INavigationService navigation, IDialogService dialogService)
         {
             Navigation = navigation;
             DialogService = dialogService;
         }
 
+        protected void ToggleRefreshing() => IsRefreshing = !IsRefreshing;
+        public virtual async Task DoRefresh() { }
+
+        [RelayCommand]
+        protected async Task ReloadData()
+        {
+            ToggleRefreshing();
+            await DoRefresh();
+            ToggleRefreshing();
+        }
+        [RelayCommand]
         protected async Task DoLogout()
         {
             Preferences.Remove("user");

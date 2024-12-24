@@ -32,8 +32,7 @@ namespace Rss_Mobile_App.ViewModels
             _feedRepo = feedRepo; _authorRepo = authorRepo; _episodeRepo = episodeRepo; _userRepo = userRepo;
         }
 
-        [RelayCommand]
-        public async Task ReloadData()
+        public override async Task DoRefresh()
         {
             Feed = FeedId.HasValue ? await _feedRepo.GetRowById(FeedId.Value) : new();
             Episodes = FeedId.HasValue ? new(await _episodeRepo.GetEpisodesByFeedId(FeedId.Value)) : new();

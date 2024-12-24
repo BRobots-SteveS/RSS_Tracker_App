@@ -25,8 +25,7 @@ namespace Rss_Mobile_App.ViewModels
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         { _feedRepo = repo; _userRepo = userRepo; }
 
-        [RelayCommand]
-        public async Task ReloadData()
+        public override async Task DoRefresh()
         {
             if (UserId != null && UserId != Guid.Empty)
                 Feeds = new(await _feedRepo.GetFeedsByUserId(UserId.Value));

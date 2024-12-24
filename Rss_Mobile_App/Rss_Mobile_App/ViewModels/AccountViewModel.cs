@@ -22,9 +22,7 @@ namespace Rss_Mobile_App.ViewModels
             var userId = Preferences.Get("user", Guid.Empty.ToString());
             User = new() { Id = Guid.Parse(userId) };
         }
-
-        [RelayCommand]
-        public async Task ReloadData() => User = await _repo.GetRowById(Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())));
+        public override async Task DoRefresh() => User = await _repo.GetRowById(Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())));
 
         [RelayCommand]
         public async Task ChangePassword()

@@ -20,8 +20,7 @@ namespace Rss_Mobile_App.ViewModels
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         { _repo = repo; _userRepo = userRepo; }
 
-        [RelayCommand]
-        public async Task ReloadData()
+        public override async Task DoRefresh()
         {
             Authors = new ObservableCollection<AuthorDto>(await _repo.GetAllRows());
         }

@@ -28,8 +28,7 @@ namespace Rss_Mobile_App.ViewModels
             INavigationService navigation, IDialogService dialog) : base(navigation, dialog)
         { _authorRepo = authorRepo; _feedRepo = feedRepo; author = new(); feeds = new(); }
 
-        [RelayCommand]
-        public async Task ReloadData()
+        public override async Task DoRefresh()
         {
             Author = await _authorRepo.GetRowById(AuthorId);
             Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));

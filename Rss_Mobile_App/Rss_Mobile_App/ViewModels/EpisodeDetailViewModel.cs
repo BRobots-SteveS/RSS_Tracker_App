@@ -19,8 +19,10 @@ namespace Rss_Mobile_App.ViewModels
         public EpisodeDetailViewModel(INavigationService navigation, IDialogService dialogService, IEpisodeRepository repo) : base(navigation, dialogService)
         { _repo = repo; }
 
-        [RelayCommand]
-        public async Task ReloadData() => Episode = await _repo.GetRowById(EpisodeId);
+        public override async Task DoRefresh()
+        {
+            Episode = await _repo.GetRowById(EpisodeId);
+        }
 
         [RelayCommand]
         public async Task OpenInBrowser()
