@@ -8,7 +8,9 @@
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
-                            Shell.FlyoutBehavior="Flyout">
+             xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
+             xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
+             x:DataType="vm:AuthorDetailViewModel">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>

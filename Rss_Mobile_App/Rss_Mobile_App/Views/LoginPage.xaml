@@ -7,7 +7,11 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
-             xmlns:local="clr-namespace:Rss_Mobile_App.Views" Shell.FlyoutBehavior="Disabled">
+             xmlns:local="clr-namespace:Rss_Mobile_App.Views"
+             xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
+             xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
+             x:DataType="vm:LoginViewModel"
+             Shell.FlyoutBehavior="Disabled">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding CheckLoginCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
