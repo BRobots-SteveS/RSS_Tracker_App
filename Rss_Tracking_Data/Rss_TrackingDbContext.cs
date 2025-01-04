@@ -19,6 +19,7 @@ namespace Rss_Tracking_Data
                 {
                     Id = new Guid("da69f989-6159-4f03-a777-e4880345e7e6"),
                     CreatorId = "yt:channel:o_IB5145EVNcf8hw1Kku7w",
+                    Title = "The Game Theorists",
                     Description = "The Game Theorists",
                     Platform = Enums.Platform.Youtube,
                     YoutubeType = Enums.YoutubeType.Channel,
@@ -32,6 +33,7 @@ namespace Rss_Tracking_Data
                 {
                     Id = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2"),
                     CreatorId = "yt:playlist:PLOl4b517qn8iG3DBk-0TSm3fcP3_zgTlf",
+                    Title = "The Game Theorists",
                     Description = "Dating Sims with a Side of Horror",
                     Platform = Enums.Platform.Youtube,
                     YoutubeType = Enums.YoutubeType.Playlist,
@@ -45,6 +47,7 @@ namespace Rss_Tracking_Data
                 {
                     Id = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d"),
                     CreatorId = "796469f9-ea34-46a2-8776-ad0f015d6beb",
+                    Title = "Hildy the Barback and the Lake of Fire",
                     Description = @"When an evil force threatens to incinerate the fantastical land of Golgorath, it's up to Hildy the Barback and her friends to kick some ass on a comedic quest to save the world. Oh, also there are lots of dragons. Melissa McCarthy leads an all-star cast, including Ben Falcone, Octavia Spencer, Glenn Close, and more, in Hildy the Barback and the Lake of Fire, a legendary adventure you won’t want to miss! Featuring original music in every episode, it's a hilarious extravaganza of epic proportions. For Hildy merch, head to: https://hildy.store/ Sales and Distribution by Lemonada Media",
                     Platform = Enums.Platform.Omny,
                     YoutubeType = Enums.YoutubeType.None,
@@ -59,6 +62,7 @@ namespace Rss_Tracking_Data
                 {
                     Id = new Guid("a0748a81-91b4-450b-8469-3175284c1083"),
                     CreatorId = "Nicholas Galinski",
+                    Title = "Opus Theos D&D",
                     Description = @"In a modified world of Theros, where gods interfere in the lives of mortals to advance their own agendas, six adventurers uncover mysteries and prophecies in the wake of the death of the world's greatest hero. Features popular streamers playing together in-person, including TrumpSC, Jaycgee, DKane, JellyPeanut, YungLlama, Selkie_Smooth, and RazorATX.
 
 This podcast features recordings of actual play sessions recorded live on twitch.tv/RazorATX on Tuesdays at 6 PM Pacific time.
@@ -155,7 +159,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"*SUBSCRIBE* To SAVE The Chompettes ► https://www.youtube.com/@GameTheory/?sub_confirmation=1 Cooking Companions was a horror visual novel game that came out a few years ago that everyone slept on! It had every element you need in a fantastic scary game, from great visuals, interesting characters, and of course… satisfying lore! So when Dread Weight, the sequel released we knew it was a game to keep an eye on. After playing through the game I feel like we’re able to finally answer some of the BIGGEST questions we were left with from Cooking Companions, so sharpen those knives theorists because it’s time to cook! ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Need Royalty Free Music for your Content? Try Epidemic Sound. Get Your 30 Day Free Trial Now ► http://share.epidemicsound.com/MatPat ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ Credits: Writers: Tom Robinson, Taylor ""Swag Dracula"" Bailey, and Eddie “NostalGamer” Robinson Editors: Alex ""Sedge"" Sedgwick, Jerika (NekoOnigiri), Koen Verhagen, Millie Ferris, and Axellent Sound Designer: Yosi Berman Thumbnail Artist: DasGnomo ‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐ #DreadWeight #CookingCompanions #VisualNovel #Lore #Theory #GameTheory #Matpat",
                     LastUpdated = new DateTime(2024, 9, 24, 1, 12, 17),
                     Published = new DateTime(2024, 8, 31, 17, 5, 0),
-                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
+                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
                 },
                 new Episode
                 {
@@ -167,7 +171,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     Description = @"Can you EAT your clothes to SURVIVE? Check out the Food Theory ! ► https://youtu.be/5nMEJEndAV4 Theorists, not since Doki Doki Literature Club have I seen a game that makes me scared the cute character is going to come out of the computer and get me. Welcome to Cooking Companions, the sweet looking cooking game that is hiding some unimaginable horrors. You'll have to grab a snack and watch to find out what secrets I've uncovered. Be careful though, you never know what may be hiding in your food. Find out more about how to support Ukraine ► https://bit.ly/3K9HjF3 Find out more about the game here! ► https://store.steampowered.com/app/1263230/Cooking_Companions/ Get Your Theory Wear! ► https://theorywear.com/ SUBSCRIBE for every TASTY Theory! ► https://goo.gl/kQWHkJ Need Royalty Free Music for your Content? Try Epidemic Sound. Get A 30 Day Free Trial! ► http://share.epidemicsound.com/MatPat More THEORIES: FNAF, The FINAL Timeline ►► https://bit.ly/2MlHYFe FNAF, The Monster We MISSED! ►► https://youtu.be/_ygN8HLCaJg FNAF This Theory Changes Everything ► https://bit.ly/2JUQUn6 FNAF, You Were Meant To Lose ► https://youtu.be/7bn8hM9k0b0 FNAF 6, No More Secrets ► https://bit.ly/2LVCq4u Credits: Writers: Matthew Patrick and Tom Robinson Editors: Pedro Freitas, Jerika (NekoOnigiri), and Alex ""Sedge"" Sedgwick Assistant Editor: Caitie Turner (Caiterpillart) Sound Editor: Yosi Berman #CookingCompanions #Lore #CookingCompanionsLore #BabaYaga #Secrets #Scary #MatPat #Theory #GameTheory",
                     LastUpdated = new DateTime(2024, 10, 8, 4, 57, 26),
                     Published = new DateTime(2024, 4, 5, 18, 5, 55),
-                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
+                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
                 },
                 new Episode
                 {
@@ -181,7 +185,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 1775,
                     IsExplicit = true,
-                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
+                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
                 },
                 new Episode
                 {
@@ -195,7 +199,7 @@ Please excuse poor audio in early episodes. Our audio equipment has improved as 
                     EpisodeType = "full",
                     Duration = 1718,
                     IsExplicit = true,
-                    FeedId = new Guid("ac3dd517-b238-4e36-a6dd-937bf6ee68e2")
+                    FeedId = new Guid("d125ff8e-13e6-4adf-b280-f176fb77420d")
                 },
                 new Episode
                 {

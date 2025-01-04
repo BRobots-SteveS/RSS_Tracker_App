@@ -10,6 +10,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Feed> GetFeedsByAuthorId(Guid authorId);
         List<Feed> GetFeedsByUserId(Guid userId);
         List<Feed> GetFeedsByUri(string uri);
+        List<Feed> GetFeedsByTitle(string title);
         List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform);
     }
     public class FeedRepository : BaseRepository<Feed>, IFeedRepository
@@ -31,6 +32,7 @@ namespace Rss_Tracking_Data.Repositories
         public List<Feed> GetFeedsByAuthorId(Guid authorId) => _context.FeedsAuthors.Where(x => x.AuthorId == authorId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUserId(Guid userId) => _context.UserFavorites.Where(x => x.UserId == userId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUri(string uri) => _context.Feeds.Where(x => x.FeedUrl == uri).ToList();
+        public List<Feed> GetFeedsByTitle(string title) => _context.Feeds.Where(x => x.Title.Contains(title)).ToList();
         public List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform)
         {
             HashSet<Feed> result = new();
