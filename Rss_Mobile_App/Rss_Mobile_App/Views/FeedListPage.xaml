@@ -7,6 +7,7 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+             xmlns:converters="clr-namespace:Rss_Mobile_App.Converters"
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
@@ -14,23 +15,33 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
+    <uranium:UraniumContentPage.Resources>
+        <converters:LabelMaxLengthConverter x:Key="LabelMaxLengthConverter"/>
+        <converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
+    </uranium:UraniumContentPage.Resources>
+    <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+        <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
+                        SelectionChangedCommand="{Binding GoToDetailsCommand}"
+                        SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedList}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:FeedDto">
+                    <VerticalStackLayout>
+                        <uranium:GridLayout RowCount="2" ColumnCount="3" Margin="5" ColumnSpacing="5" RowSpacing="5">
+                            <Image Grid.RowSpan="2" Source="{Binding ., Converter={StaticResource ImageSourceConverter}}"
+                                   MaximumHeightRequest="120" MaximumWidthRequest="120"
+                                   HeightRequest="90" WidthRequest="90"
+                                   Aspect="AspectFit"/>
+                            <Label Text="{Binding AuthorName}" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Platform}" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2"/>
+                        </uranium:GridLayout>
+                        <BoxView StyleClass="Divider" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
 
-    <material:DataGrid ItemsSource="{Binding Feeds}" HorizontalOptions="Center" x:Name="feedsList" Margin="20">
-        <material:DataGrid.Columns>
-            <material:DataGridColumn ValueBinding="{Binding Platform}" Title="Platform"/>
-            <material:DataGridColumn ValueBinding="{Binding AuthorName}" Title="Author"/>
-            <material:DataGridColumn ValueBinding="{Binding FeedUri}" Title="Feed URL"/>
-            <material:DataGridColumn ValueBinding="{Binding ThumbnailUri}" Title="Thumbnail URL"/>
-            <material:DataGridColumn ValueBinding="{Binding PublishedTime}" Title="Published"/>
-            <material:DataGridColumn Title="Add to favorites">
-                <material:DataGridColumn.CellItemTemplate>
-                    <DataTemplate>
-                        <Button StyleClass="TextButton" Text="Add me" Command="{Binding AddToFavoritesCommand}" CommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedsList} }"/>
-                    </DataTemplate>
-                </material:DataGridColumn.CellItemTemplate>
-            </material:DataGridColumn>
-        </material:DataGrid.Columns>
-    </material:DataGrid>
+        </CollectionView>
+    </ScrollView>
 
     <uranium:UraniumContentPage.Attachments>
         <!--<material:BackdropView
@@ -39,16 +50,16 @@
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
         </material:BackdropView>-->
         <material:BottomSheetView>
-            <Grid RowDefinitions="*,*,*">
+            <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="1"
                         Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="2"
                         Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
-            </Grid>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Logout}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding DoLogoutCommand}" Text="Logout"/>
+            </uranium:GridLayout>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>

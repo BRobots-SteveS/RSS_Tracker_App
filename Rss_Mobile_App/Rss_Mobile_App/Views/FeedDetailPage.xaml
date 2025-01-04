@@ -7,6 +7,7 @@
              xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
              xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui"
              xmlns:validation="clr-namespace:InputKit.Shared.Validations;assembly=InputKit.Maui"
+             xmlns:converters="clr-namespace:Rss_Mobile_App.Converters"
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
@@ -14,27 +15,84 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
+    <uranium:UraniumContentPage.Resources>
+        <converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
+        <converters:LabelMaxLengthConverter x:Key="LabelMaxLengthConverter"/>
+    </uranium:UraniumContentPage.Resources>
 
-    <material:TabView CachingStrategy="RecreateAlways" TabPlacement="Bottom">
+    <material:TabView CachingStrategy="RecreateAlways" TabPlacement="Top">
+        <material:TabItem Title="Details">
+            <material:TabItem.ContentTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout HorizontalOptions="Center">
+                        <Label Text="{Binding Path=Feed.Platform, StringFormat='Platform: {0}'}" FontSize="Title"/>
+                        <Label Text="{Binding Path=Feed.PublishedTime, StringFormat='Published on: {0}'}" FontAttributes="Italic" FontSize="Subtitle"/>
+                        <Label Text="{Binding Feed.Description}"/>
+                        <Image Grid.RowSpan="2" Source="{Binding Feed, Converter={StaticResource ImageSourceConverter}}"
+                                   MaximumHeightRequest="240" MaximumWidthRequest="240"
+                                   HeightRequest="180" WidthRequest="180"
+                                   Aspect="AspectFit"/>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </material:TabItem.ContentTemplate>
+        </material:TabItem>
         <material:TabItem Title="Authors">
-            <material:TabItem.Content>
-                <ListView ItemsSource="{Binding Authors}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="models:AuthorDto">
-                            <Grid RowDefinitions="*" ColumnDefinitions="*,*,*">
-                                <Label />
-                            </Grid>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </material:TabItem.Content>
+            <material:TabItem.ContentTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
+                                    SelectionChangedCommand="{Binding GoToAuthorCommand}"
+                                    SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorsList}}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:AuthorDto">
+                                    <uranium:GridLayout RowCount="4" ColumnCount="1">
+                                        <Label Text="{Binding Name}"/>
+                                        <Button class="TextButton" Text="{Binding Email}" 
+                                Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
+                                CommandParameter="{Binding Email}"/>
+                                        <Button class="TextButton" Text="{Binding Uri}" 
+                                Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
+                                CommandParameter="{Binding Uri}"/>
+                                        <BoxView StyleClass="Divider"/>
+                                    </uranium:GridLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </ScrollView>
+                </DataTemplate>
+            </material:TabItem.ContentTemplate>
         </material:TabItem>
         <material:TabItem Title="Episodes">
-            <material:TabItem.Content>
-                <material:DataGrid ItemsSource="{Binding Episodes}">
-
-                </material:DataGrid>
-            </material:TabItem.Content>
+            <material:TabItem.ContentTemplate>
+                <DataTemplate>
+                    <ScrollView>
+                        <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"
+                                    SelectionChangedCommand="{Binding GoToEpisodeCommand}"
+                                    SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference episodeList}}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:EpisodeDto">
+                                    <uranium:GridLayout RowCount="4" ColumnCount="2">
+                                        <Label Text="{Binding EpisodeName}"/>
+                                        <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
+                                        <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2"/>
+                                        <Button Text="Play preview" Grid.ColumnSpan="2"
+                                            ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
+                                            Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
+                                            CommandParameter="{Binding PreviewUrl}"/>
+                                        <BoxView StyleClass="Divider"/>
+                                    </uranium:GridLayout>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                            <CollectionView.EmptyView>
+                                <Label Text="No episodes found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                            </CollectionView.EmptyView>
+                        </CollectionView>
+                    </ScrollView>
+                </DataTemplate>
+            </material:TabItem.ContentTemplate>
         </material:TabItem>
     </material:TabView>
 
@@ -43,16 +101,16 @@
 
         </material:BackdropView>-->
         <material:BottomSheetView>
-            <Grid RowDefinitions="*,*,*">
+            <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="1"
                         Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="2"
                         Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
-            </Grid>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Logout}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding DoLogoutCommand}" Text="Logout"/>
+            </uranium:GridLayout>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>

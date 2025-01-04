@@ -23,17 +23,16 @@
 
     <uranium:UraniumContentPage.Attachments>
         <material:BottomSheetView>
-            <Grid RowDefinitions="*,*,*">
+            <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="1"
                         Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="2"
                         Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
-            </Grid>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Logout}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding DoLogoutCommand}" Text="Logout"/>
+            </uranium:GridLayout>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
-
 </uranium:UraniumContentPage>

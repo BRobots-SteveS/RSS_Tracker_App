@@ -14,7 +14,7 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-    <StackLayout>
+    <VerticalStackLayout>
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
                 <Label Text="Account details"/>
@@ -25,7 +25,7 @@
                     Text="{Binding User.Username}"
                     TextColor="{StaticResource OnPrimary}"
                     AccentColor="{StaticResource OnPrimary}"
-                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Supervised_user_circle}}">
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person}}">
                     <validation:RequiredValidation />
                 </material:TextField>
 
@@ -57,21 +57,20 @@
             </uranium:ExpanderView.Header>
             <Button HorizontalOptions="Center" Text="My favorites" StyleClass="ElevatedButton" Command="{Binding GoToFavoritesCommand}"/>
         </uranium:ExpanderView>
-        <Button Text="Testing button" Clicked="Button_Clicked"/>
-    </StackLayout>
+    </VerticalStackLayout>
     
     <uranium:UraniumContentPage.Attachments>
         <material:BottomSheetView>
-            <Grid RowDefinitions="*,*,*">
+            <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="1"
                         Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="2"
                         Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
-            </Grid>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Logout}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding DoLogoutCommand}" Text="Logout"/>
+            </uranium:GridLayout>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>

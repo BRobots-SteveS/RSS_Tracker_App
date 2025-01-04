@@ -8,6 +8,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Author> GetAuthorsByEmail(string email);
         List<Author> GetAuthorsByUri(string uri);
         List<Author> GetAuthorsByFeedId(Guid feedId);
+        List<Author> GetAuthorsByNameAndEmail(string name, string email);
         FeedsAuthors AddFeedAuthor(Guid feedId, Guid authorId);
         bool DoesFeedAuthorExist(Guid feedId, Guid authorId);
     }
@@ -27,6 +28,8 @@ namespace Rss_Tracking_Data.Repositories
         public List<Author> GetAuthorsByName(string name) => _context.Authors.Where(x => x.Name == name).ToList();
         public List<Author> GetAuthorsByEmail(string email) => _context.Authors.Where(x => x.Email == email).ToList();
         public List<Author> GetAuthorsByUri(string uri) => _context.Authors.Where(x => x.Uri == uri).ToList();
+        public List<Author> GetAuthorsByNameAndEmail(string name, string email) =>
+            _context.Authors.Where(x => string.IsNullOrEmpty(name) || (x.Name.Contains(name) && string.IsNullOrEmpty(email) || x.Email.Contains(email))).ToList();
         public List<Author> GetAuthorsByFeedId(Guid feedId) => _context.FeedsAuthors.Where(x => x.FeedId == feedId).Select(x => x.Author).ToList();
         public FeedsAuthors AddFeedAuthor(Guid feedId, Guid authorId) => _context.FeedsAuthors.Add(new() { Id = Guid.NewGuid(), FeedId = feedId, AuthorId = authorId }).Entity;
         public bool DoesFeedAuthorExist(Guid feedId, Guid authorid) => _context.FeedsAuthors.Any(x => x.FeedId == feedId && x.AuthorId == authorid);

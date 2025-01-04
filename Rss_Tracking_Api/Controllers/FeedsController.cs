@@ -45,7 +45,7 @@ namespace Rss_Tracking_Api.Controllers
             var feed = _feeds.GetById(feedId);
             if (feed == null) return BadRequest("Feed does not exist");
             var authors = _authors.GetAuthorsByFeedId(feedId);
-            return new OkObjectResult(DbMapper.FeedToDto(feed, authors));
+            return new OkObjectResult(DbMapper.FeedToDto(feed, authors).First());
         }
 
         [HttpGet("author/{authorId}")]
@@ -64,6 +64,18 @@ namespace Rss_Tracking_Api.Controllers
             return new OkObjectResult(_feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
         }
 
+        [HttpGet("filter")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFeedsByFilter(string creatorId, string description, string authorName, string platform)
+        {
+            HashSet<FeedDto> result = new();
+            var feeds = _feeds.GetFeedsByFilter(creatorId, description, authorName, platform).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
+            foreach (var feedList in feeds) { foreach (var feed in feedList) { result.Add(feed); } }
+            var output = result.ToList();
+            output.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            return new OkObjectResult(output);
+        }
 
         [HttpPost]
         [MapToApiVersion("1.0")]

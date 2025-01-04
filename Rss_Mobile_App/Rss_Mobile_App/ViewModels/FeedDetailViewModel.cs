@@ -9,15 +9,20 @@ using UraniumUI.Dialogs;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    [QueryProperty(nameof(FeedId), "feed")]
+    [QueryProperty(nameof(FeedGuid), "feed")]
     public partial class FeedDetailViewModel : BaseViewModel
     {
         private readonly IFeedRepository _feedRepo;
         private readonly IAuthorRepository _authorRepo;
         private readonly IEpisodeRepository _episodeRepo;
         private readonly IUserRepository _userRepo;
+        public string FeedGuid
+        {
+            get => FeedId.ToString();
+            set => FeedId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
+        }
         [ObservableProperty]
-        private Guid? feedId;
+        private Guid feedId = Guid.Empty;
         [ObservableProperty]
         private FeedDto feed = new();
         [ObservableProperty]
@@ -34,15 +39,25 @@ namespace Rss_Mobile_App.ViewModels
 
         public override async Task DoRefresh()
         {
-            Feed = FeedId.HasValue ? await _feedRepo.GetRowById(FeedId.Value) : new();
-            Episodes = FeedId.HasValue ? new(await _episodeRepo.GetEpisodesByFeedId(FeedId.Value)) : new();
-            Authors = FeedId.HasValue ? new(await _authorRepo.GetAuthorsByFeedId(FeedId.Value)) : new();
+            if (FeedId != Guid.Empty)
+            {
+                Feed = await _feedRepo.GetRowById(FeedId);
+                Episodes = new(await _episodeRepo.GetEpisodesByFeedId(FeedId));
+                Authors = new(await _authorRepo.GetAuthorsByFeedId(FeedId));
+            }
+        }
+
+        [RelayCommand]
+        public async Task UpdateFeed()
+        {
+            await _feedRepo.UpdateFeed(Feed.Id);
+            await DoRefresh();
         }
 
         [RelayCommand]
         public async Task CreateFeed()
         {
-            if (FeedId.HasValue) { await DialogService.ConfirmAsync("No permission", "Feed already exists"); return; }
+            if (FeedId != Guid.Empty) { await DialogService.ConfirmAsync("No permission", "Feed already exists"); return; }
             if (string.IsNullOrWhiteSpace(Feed.Platform)) { await DialogService.ConfirmAsync("Error", "No platform selected"); return; }
             if (string.IsNullOrWhiteSpace(Feed.FeedUri)) { await DialogService.ConfirmAsync("Error", "No Feed URL present"); return; }
             if (string.IsNullOrEmpty(Feed.AuthorName)) Feed.AuthorName = string.Empty;
@@ -64,7 +79,7 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         public async Task GoToFeed()
         {
-            if (FeedId.HasValue) await Navigation.OpenBrowser(Feed.FeedUri);
+            if (FeedId != Guid.Empty) await Navigation.OpenBrowser(Feed.FeedUri);
         }
     }
 }

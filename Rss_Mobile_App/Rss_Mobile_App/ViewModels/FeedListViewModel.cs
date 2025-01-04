@@ -23,7 +23,10 @@ namespace Rss_Mobile_App.ViewModels
         private ObservableCollection<FeedDto> feeds = new();
         public FeedListViewModel(IUserRepository userRepo, IFeedRepository repo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
-        { _feedRepo = repo; _userRepo = userRepo; }
+        { 
+            _feedRepo = repo;
+            _userRepo = userRepo;
+        }
 
         public override async Task DoRefresh()
         {
@@ -46,6 +49,6 @@ namespace Rss_Mobile_App.ViewModels
         public async Task CreateFeed() => await Navigation.NavigateToAsync(nameof(FeedDetailPage));
 
         [RelayCommand]
-        public async Task GoToDetails(FeedDto selectedFeed) => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object> { { "feed", selectedFeed.Id } });
+        public async Task GoToDetails(FeedDto selectedFeed) => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object> { { "feed", selectedFeed.Id.ToString() } });
     }
 }

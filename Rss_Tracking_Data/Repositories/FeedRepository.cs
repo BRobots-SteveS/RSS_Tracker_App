@@ -10,6 +10,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Feed> GetFeedsByAuthorId(Guid authorId);
         List<Feed> GetFeedsByUserId(Guid userId);
         List<Feed> GetFeedsByUri(string uri);
+        List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform);
     }
     public class FeedRepository : BaseRepository<Feed>, IFeedRepository
     {
@@ -30,6 +31,20 @@ namespace Rss_Tracking_Data.Repositories
         public List<Feed> GetFeedsByAuthorId(Guid authorId) => _context.FeedsAuthors.Where(x => x.AuthorId == authorId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUserId(Guid userId) => _context.UserFavorites.Where(x => x.UserId == userId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUri(string uri) => _context.Feeds.Where(x => x.FeedUrl == uri).ToList();
-
+        public List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform)
+        {
+            HashSet<Feed> result = new();
+            if(!string.IsNullOrEmpty(authorName))
+            {
+                var feeds = _context.FeedsAuthors.Where(x => x.Author.Name == authorName).Select(x => x.Feed).ToList();
+                foreach(var feed in feeds) result.Add(feed);
+            }
+            var filteredFeeds = _context.Feeds.Where(x => 
+                (!string.IsNullOrEmpty(creatorId) || x.CreatorId.Contains(creatorId)) &&
+                (!string.IsNullOrEmpty(description) || x.Description.Contains(description)) && 
+                (!string.IsNullOrEmpty(platform) || x.Platform.ToString().Contains(platform)));
+            foreach(var feed in filteredFeeds) result.Add(feed);
+            return result.ToList();
+        }
     }
 }

@@ -14,21 +14,25 @@
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-
-    <material:DataGrid ItemsSource="{Binding Authors}" HorizontalOptions="Center" x:Name="authorList" Margin="20">
-        <material:DataGrid.Columns>
-            <material:DataGridColumn ValueBinding="{Binding Name}" Title="Name"/>
-            <material:DataGridColumn ValueBinding="{Binding Email}" Title="Email"/>
-            <material:DataGridColumn Title="Add to favorites">
-                <material:DataGridColumn.CellItemTemplate>
-                    <DataTemplate>
-                        <Button StyleClass="TextButton" Text="Add me" Command="{Binding AddToFavoritesCommand}" CommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList} }"/>
-                    </DataTemplate>
-                </material:DataGridColumn.CellItemTemplate>
-            </material:DataGridColumn>
-        </material:DataGrid.Columns>
-    </material:DataGrid>
-
+    <ScrollView>
+        <CollectionView ItemsSource="{Binding Authors}" x:Name="authorList" SelectionMode="Single"
+                        SelectionChangedCommand="{Binding GoToDetailsCommand}"
+                        SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList}}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:AuthorDto">
+                    <uranium:GridLayout RowCount="2" ColumnCount="3">
+                        <Label Text="{Binding Name}"/>
+                        <Button class="TextButton" Text="{Binding Email}" 
+                                Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
+                                CommandParameter="{Binding Email}"/>
+                        <Button class="TextButton" Text="{Binding Uri}" 
+                                Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
+                                CommandParameter="{Binding Uri}"/>
+                    </uranium:GridLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ScrollView>
     <uranium:UraniumContentPage.Attachments>
         <!--<material:BackdropView
             Title="Filter"
@@ -36,16 +40,16 @@
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
         </material:BackdropView>-->
         <material:BottomSheetView>
-            <Grid RowDefinitions="*,*,*">
+            <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.View_list}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="1"
                         Command="{Binding GoToFeedListCommand}" Text="Feeds"/>
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}, Color={StaticResource OnPrimary}}"
-                        Grid.Row="2"
                         Command="{Binding GoToAuthorListCommand}" Text="Authors"/>
-            </Grid>
+                <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Logout}, Color={StaticResource OnPrimary}}"
+                        Command="{Binding DoLogoutCommand}" Text="Logout"/>
+            </uranium:GridLayout>
         </material:BottomSheetView>
     </uranium:UraniumContentPage.Attachments>
 </uranium:UraniumContentPage>
