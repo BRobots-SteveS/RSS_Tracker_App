@@ -8,6 +8,8 @@ namespace Rss_Tracking_App.Models.Dto
         private Guid id;
         [ObservableProperty]
         private string platform;
+        [ObservableProperty] 
+        private string title;
         [ObservableProperty]
         private string authorName;
         [ObservableProperty]

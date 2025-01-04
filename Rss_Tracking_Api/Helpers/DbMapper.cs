@@ -26,6 +26,7 @@ namespace Rss_Tracking_Api.Helpers
             return authors.Select(author => new FeedDto
             {
                 Id = feed.Id,
+                Title = feed.Title,
                 AuthorName = author.Name,
                 AuthorEmail = author.Email,
                 AuthorUri = author.Uri,

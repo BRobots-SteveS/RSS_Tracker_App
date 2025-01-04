@@ -122,6 +122,7 @@ namespace Rss_Tracking_Api.Helpers
             return new Feed
             {
                 CreatorId = feed.Id,
+                Title = feed.Title.Text,
                 FeedUrl = feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.ImageUrl.AbsoluteUri,
                 Description = DescriptionSanitizer(feed.Description.Text),
@@ -137,6 +138,7 @@ namespace Rss_Tracking_Api.Helpers
             return new Feed
             {
                 CreatorId = feed.Feed.Id,
+                Title = feed.Feed.Title.Text,
                 FeedUrl = feed.Feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.Feed.ImageUrl.AbsoluteUri,
                 Description = DescriptionSanitizer(feed.Feed.Description?.Text),
@@ -152,6 +154,7 @@ namespace Rss_Tracking_Api.Helpers
             return new Feed
             {
                 CreatorId = feed.ChannelId ?? feed.Feed.Id,
+                Title = feed.Feed.Title.Text,
                 FeedUrl = string.IsNullOrEmpty(feed.PlaylistId) ? $"https://www.youtube.com/feeds/videos.xml?channel_id={feed.ChannelId}" : $"https://www.youtube.com/feeds/videos.xml?playlist_id={feed.PlaylistId}",
                 ImageUrl = feed.Feed.ImageUrl?.AbsoluteUri,
                 Description = DescriptionSanitizer(feed.Feed.Description?.Text),
@@ -169,6 +172,7 @@ namespace Rss_Tracking_Api.Helpers
             return new Feed
             {
                 CreatorId = feed.Feed.Id,
+                Title = feed.Feed.Title.Text,
                 FeedUrl = feed.Feed.Links.FirstOrDefault()?.Uri.AbsoluteUri ?? string.Empty,
                 ImageUrl = feed.Image?.Href ?? feed.Feed.ImageUrl?.AbsoluteUri,
                 Description = DescriptionSanitizer(feed.Summary ?? feed.Feed.Description.Text),
@@ -184,6 +188,7 @@ namespace Rss_Tracking_Api.Helpers
             return new Feed
             {
                 CreatorId = feed.Feed.Id,
+                Title = feed.Feed.Title.Text,
                 ChannelId = $"{feed.OrganizationId}/{feed.ProgramId}",
                 PlaylistId = feed.PlaylistId.ToString(),
                 FeedUrl = $"https://www.omnycontent.com/d/playlist/{feed.OrganizationId}/{feed.ProgramId}/{feed.PlaylistId}/podcast.rss",
