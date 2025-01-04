@@ -9,7 +9,7 @@
         public string? PlaylistId { get; set; }
         public string? ImageUrl { get; set; }
         public required string FeedUrl { get; set; }
-        public required string CreatorId { get; set; }
+        public string? CreatorId { get; set; }
         public required string Title { get; set; }
         public required string Description { get; set; }
         public DateTime PublishDate { get; set; }
