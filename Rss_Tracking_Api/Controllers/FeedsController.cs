@@ -53,7 +53,10 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFeedsByAuthorId(Guid authorId)
         {
-            return new OkObjectResult(_feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList());
+            HashSet<FeedDto> output = new();
+            var temp = _feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList();
+            foreach(var feedList in temp) { foreach(var feed in feedList) { output.Add(feed); } }
+            return new OkObjectResult(output.ToList());
         }
 
         [HttpGet("user/{userId}")]
@@ -61,7 +64,10 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetFeedsByUserId(Guid userId)
         {
-            return new OkObjectResult(_feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList());
+            HashSet<FeedDto> output = new();
+            var temp = _feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList();
+            foreach (var feedList in temp) { foreach (var feed in feedList) { output.Add(feed); } }
+            return new OkObjectResult(output.ToList());
         }
 
         [HttpGet("filter")]
