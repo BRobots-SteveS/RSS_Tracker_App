@@ -9,7 +9,7 @@ namespace Rss_Tracking_Data.Repositories
     public class UserFavoriteRepository : BaseRepository<UserFavorite>, IUserFavoriteRepository
     {
         public UserFavoriteRepository(Rss_TrackingDbContext context) : base(context) { }
-        public override UserFavorite? GetById(Guid id) => _context.UserFavorites.Where(x => x.Id == id).FirstOrDefault();
+        public override UserFavorite? GetById(Guid id) => _context.UserFavorites.SingleOrDefault(x => x.Id == id);
         public override List<UserFavorite> GetAll() => _context.UserFavorites.ToList();
         public override UserFavorite Add(UserFavorite userFavorite)
         {

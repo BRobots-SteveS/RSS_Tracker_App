@@ -15,6 +15,7 @@ namespace Rss_Tracking_Data.Repositories
         void Delete(T entity);
         bool AlreadyExists(T entity);
         void SaveChanges();
+        void ClearTracking();
     }
     public partial class BaseRepository<T> : IBaseRepository<T> where T: class
     {
@@ -46,14 +47,13 @@ namespace Rss_Tracking_Data.Repositories
             throw new NotImplementedException();
         }
 
-        public virtual void SaveChanges()
-        {
-            _context.SaveChanges();
-        }
-
         public virtual T? Update(T entity)
         {
             throw new NotImplementedException();
         }
+
+        public virtual void SaveChanges() => _context.SaveChanges();
+
+        public virtual void ClearTracking() => _context.ChangeTracker.Clear();
     }
 }

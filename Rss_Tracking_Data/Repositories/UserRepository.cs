@@ -15,7 +15,7 @@ namespace Rss_Tracking_Data.Repositories
     public class UserRepository : BaseRepository<User>, IUserRepository
     {
         public UserRepository(Rss_TrackingDbContext context) : base(context) { }
-        public override User? GetById(Guid id) => _context.Users.Where(x => x.Id == id).FirstOrDefault();
+        public override User? GetById(Guid id) => _context.Users.SingleOrDefault(x => x.Id == id);
         public override List<User> GetAll() => _context.Users.ToList();
         public override User Add(User user)
         {
