@@ -11,7 +11,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Feed> GetFeedsByUserId(Guid userId);
         List<Feed> GetFeedsByUri(string uri);
         List<Feed> GetFeedsByTitle(string title);
-        List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform);
+        List<Feed> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform);
     }
     public class FeedRepository : BaseRepository<Feed>, IFeedRepository
     {
@@ -33,7 +33,7 @@ namespace Rss_Tracking_Data.Repositories
         public List<Feed> GetFeedsByUserId(Guid userId) => _context.UserFavorites.Where(x => x.UserId == userId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUri(string uri) => _context.Feeds.Where(x => x.FeedUrl == uri).ToList();
         public List<Feed> GetFeedsByTitle(string title) => _context.Feeds.Where(x => x.Title.Contains(title)).ToList();
-        public List<Feed> GetFeedsByFilter(string creatorId, string description, string authorName, string platform)
+        public List<Feed> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
         {
             HashSet<Feed> result = new();
             if(!string.IsNullOrEmpty(authorName))
@@ -41,7 +41,8 @@ namespace Rss_Tracking_Data.Repositories
                 var feeds = _context.FeedsAuthors.Where(x => x.Author.Name == authorName).Select(x => x.Feed).ToList();
                 foreach(var feed in feeds) result.Add(feed);
             }
-            var filteredFeeds = _context.Feeds.Where(x => 
+            var filteredFeeds = _context.Feeds.Where(x =>
+                (!string.IsNullOrEmpty(title) || x.Title.Contains(title)) &&
                 (!string.IsNullOrEmpty(creatorId) || x.CreatorId.Contains(creatorId)) &&
                 (!string.IsNullOrEmpty(description) || x.Description.Contains(description)) && 
                 (!string.IsNullOrEmpty(platform) || x.Platform.ToString().Contains(platform)));

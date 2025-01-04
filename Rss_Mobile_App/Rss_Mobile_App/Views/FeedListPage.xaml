@@ -31,7 +31,7 @@
                                    MaximumHeightRequest="120" MaximumWidthRequest="120"
                                    HeightRequest="90" WidthRequest="90"
                                    Aspect="AspectFit"/>
-                            <Label Text="{Binding AuthorName}" HorizontalOptions="Center"/>
+                            <Label Text="{Binding Title}" HorizontalOptions="Center"/>
                             <Label Text="{Binding Platform}" HorizontalOptions="Center"/>
                             <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2"/>
                         </uranium:GridLayout>

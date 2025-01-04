@@ -15,9 +15,7 @@
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
     <StackLayout>
-        <Label Text="Welcome to .NET MAUI!!!"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
+        
     </StackLayout>
 
     <uranium:UraniumContentPage.Attachments>

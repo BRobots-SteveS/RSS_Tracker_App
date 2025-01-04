@@ -7,6 +7,7 @@ namespace Rss_Mobile_App.Repositories
         Task<FeedDto> UpdateFeed(Guid feedId);
         Task<List<FeedDto>> GetFeedByCreator(Guid creatorId);
         Task<List<FeedDto>> GetFeedsByUserId(Guid userId);
+        Task<List<FeedDto>> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform);
     }
     public class FeedRepository : BaseRepository<FeedDto>, IFeedRepository
     {
@@ -39,6 +40,24 @@ namespace Rss_Mobile_App.Repositories
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/user/{userId}")
+            };
+            var result = await httpClient.SendAsync(message);
+            result.EnsureSuccessStatusCode();
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+        }
+        public async Task<List<FeedDto>> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
+        {
+            string querystring = (string.IsNullOrEmpty(title)? string.Empty : $"title={title}&") +
+                (string.IsNullOrEmpty(description) ? string.Empty : $"description={description}&") +
+                (string.IsNullOrEmpty(creatorId) ? string.Empty : $"creatorid={creatorId}&") +
+                (string.IsNullOrEmpty(authorName) ? string.Empty : $"authorname={authorName}&") +
+                (string.IsNullOrEmpty(platform) ? string.Empty : $"platform={platform}&");
+            if (string.IsNullOrEmpty(querystring)) return new();
+            querystring.TrimEnd('&');
+            HttpRequestMessage message = new()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/filter?{querystring}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
