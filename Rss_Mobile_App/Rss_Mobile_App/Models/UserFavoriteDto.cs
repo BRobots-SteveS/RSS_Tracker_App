@@ -4,6 +4,12 @@ namespace Rss_Tracking_App.Models.Dto
 {
     public partial class UserFavoriteDto : ObservableObject
     {
+        public UserFavoriteDto()
+        {
+            id = Guid.Empty;
+            user = new();
+            feed = new();
+        }
         [ObservableProperty]
         private Guid id;
         [ObservableProperty]

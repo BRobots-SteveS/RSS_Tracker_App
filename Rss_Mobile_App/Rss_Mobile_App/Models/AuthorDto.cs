@@ -4,6 +4,12 @@ namespace Rss_Tracking_App.Models.Dto
 {
     public partial class AuthorDto : ObservableObject
     {
+        public AuthorDto()
+        {
+            id = Guid.Empty;
+            feedIds = [];
+            name = string.Empty;
+        }
         [ObservableProperty]
         private Guid id;
         [ObservableProperty]

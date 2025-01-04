@@ -10,7 +10,7 @@ namespace Rss_Mobile_App.Repositories
         Task<T> UpdateRow(T item, Guid itemId);
         Task DeleteRow(T item, Guid itemId);
     }
-    public class BaseRepository<T> : IBaseRepository<T> where T : class
+    public class BaseRepository<T> : IBaseRepository<T> where T : class, new()
     {
         internal readonly HttpClient httpClient;
         internal const string BaseUrl = "https://0fl257js-5009.euw.devtunnels.ms/api/v1.0/";
@@ -38,23 +38,23 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<T>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<T>>(await result.Content.ReadAsStringAsync()) ?? new();
         }
         public async Task<T> GetRowById(Guid id)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/{id}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/{id}")
             };
             var result = await httpClient.SendAsync(message);
-            if (result.StatusCode == System.Net.HttpStatusCode.NotFound) return (T)Activator.CreateInstance(typeof(T));
+            if (result.StatusCode == System.Net.HttpStatusCode.NotFound) return new();
             result.EnsureSuccessStatusCode();
-            return Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync()) ?? new();
         }
 
         public async Task<T> CreateRow(T item)
@@ -62,12 +62,12 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}"),
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}"),
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync()) ?? new();
         }
 
         public async Task<T> UpdateRow(T item, Guid itemId)
@@ -75,12 +75,12 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/{itemId}"),
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/{itemId}"),
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<T>(await result.Content.ReadAsStringAsync());
+            return Deserialize<T>(await result.Content.ReadAsStringAsync()) ?? new();
         }
 
         public async Task DeleteRow(T item, Guid itemId)
@@ -88,7 +88,7 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Delete,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}?{Route}id={itemId}"),
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}?{Route}id={itemId}"),
                 Content = JsonContent.Create(item)
             };
             var result = await httpClient.SendAsync(message);

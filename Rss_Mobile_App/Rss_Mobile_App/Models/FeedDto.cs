@@ -4,6 +4,20 @@ namespace Rss_Tracking_App.Models.Dto
 {
     public partial class FeedDto : ObservableObject
     {
+        public FeedDto()
+        {
+            id = Guid.Empty;
+            platform = "Basic";
+            title = string.Empty;
+            authorName = string.Empty;
+            authorEmail = string.Empty;
+            AuthorUri = string.Empty;
+            creatorId = string.Empty;
+            description = string.Empty;
+            FeedUri = string.Empty;
+            thumbnailUri = string.Empty;
+            publishedTime = DateTime.Now;
+        }
         [ObservableProperty]
         private Guid id;
         [ObservableProperty]

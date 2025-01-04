@@ -17,33 +17,33 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Put,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/{feedId}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/{feedId}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<FeedDto>(await result.Content.ReadAsStringAsync());
+            return Deserialize<FeedDto>(await result.Content.ReadAsStringAsync()) ?? new();
         }
         public async Task<List<FeedDto>> GetFeedByCreator(Guid creatorId)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/author/{creatorId}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/author/{creatorId}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
         }
         public async Task<List<FeedDto>> GetFeedsByUserId(Guid userId)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/user/{userId}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/user/{userId}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
         }
         public async Task<List<FeedDto>> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
         {
@@ -57,11 +57,11 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/filter?{querystring}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/filter?{querystring}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
         }
     }
 }

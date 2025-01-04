@@ -18,36 +18,36 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/login")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/login")
             };
             message.Headers.Add("authorization", $"Basic {username}:{Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(password))}");
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<UserDto>(await result.Content.ReadAsStringAsync());
+            return Deserialize<UserDto>(await result.Content.ReadAsStringAsync()) ?? new();
         }
         public async Task<UserDto> DoRegister(string username, string password)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}")
             };
             message.Headers.Add("authorization", $"Basic {username}:{Convert.ToHexString(System.Text.Encoding.UTF8.GetBytes(password))}");
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
             var content = await result.Content.ReadAsStringAsync();
-            return Deserialize<UserDto>(content);
+            return Deserialize<UserDto>(content) ?? new();
         }
         public async Task<List<UserFavoriteDto>> GetFavoritesByUserId(Guid userId)
         {
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/favorite/{userId}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/favorite/{userId}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<UserFavoriteDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<UserFavoriteDto>>(await result.Content.ReadAsStringAsync()) ?? new();
         }
 
         public async Task<UserFavoriteDto> CreateFavorite(Guid userId, Guid? feedId = null, Guid? authorId = null)
@@ -55,11 +55,11 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/favorite?userid={userId}{(feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/favorite?userid={userId}{(feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<UserFavoriteDto>(await result.Content.ReadAsStringAsync());
+            return Deserialize<UserFavoriteDto>(await result.Content.ReadAsStringAsync()) ?? new();
         }
     }
 }

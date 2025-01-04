@@ -4,6 +4,12 @@ namespace Rss_Tracking_App.Models.Dto
 {
     public partial class EpisodeDto : ObservableObject
     {
+        public EpisodeDto()
+        {
+            id = Guid.Empty;
+            FeedId = Guid.Empty;
+            createdOn = DateTime.Now;
+        }
         [ObservableProperty]
         private Guid id;
         [ObservableProperty]

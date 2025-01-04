@@ -15,11 +15,11 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{httpClient.BaseAddress.AbsoluteUri}/feed/{feedId}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/feed/{feedId}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
-            return Deserialize<List<EpisodeDto>>(await result.Content.ReadAsStringAsync());
+            return Deserialize<List<EpisodeDto>>(await result.Content.ReadAsStringAsync()) ?? new();
     }
 }
 }
