@@ -26,15 +26,15 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:FeedDto">
                     <VerticalStackLayout>
-                        <uranium:GridLayout RowCount="2" ColumnCount="3" Margin="5" ColumnSpacing="5" RowSpacing="5">
+                        <Grid RowDefinitions="*,*" ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5" RowSpacing="5">
                             <Image Grid.RowSpan="2" Source="{Binding ., Converter={StaticResource ImageSourceConverter}}"
                                    MaximumHeightRequest="120" MaximumWidthRequest="120"
                                    HeightRequest="90" WidthRequest="90"
                                    Aspect="AspectFit"/>
-                            <Label Text="{Binding Title}" HorizontalOptions="Center"/>
-                            <Label Text="{Binding Platform}" HorizontalOptions="Center"/>
-                            <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2"/>
-                        </uranium:GridLayout>
+                            <Label Text="{Binding Title}" HorizontalOptions="Center" Grid.Column="1"/>
+                            <Label Text="{Binding Platform}" HorizontalOptions="Center" Grid.Column="2"/>
+                            <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1"/>
+                        </Grid>
                         <BoxView StyleClass="Divider" />
                     </VerticalStackLayout>
                 </DataTemplate>

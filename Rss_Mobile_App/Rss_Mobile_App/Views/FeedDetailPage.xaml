@@ -97,7 +97,7 @@
 
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView Title="Commands">
-            <Button Text="Refresh feed" Command="{Binding ReloadDataCommand}"/>
+            <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}"/>
         </material:BackdropView>
         <material:BottomSheetView>
             <material:BottomSheetView.Header>
