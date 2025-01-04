@@ -8,10 +8,15 @@ using UraniumUI.Dialogs;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    [QueryProperty(nameof(EpisodeId), "episode")]
+    [QueryProperty(nameof(EpisodeGuid), "episode")]
     public partial class EpisodeDetailViewModel : BaseViewModel
     {
         private readonly IEpisodeRepository _repo;
+        public string EpisodeGuid
+        {
+            get => EpisodeId.ToString() ?? Guid.Empty.ToString();
+            set => EpisodeId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
+        }
         [ObservableProperty]
         private Guid episodeId = Guid.Empty;
         [ObservableProperty]

@@ -9,12 +9,22 @@ using UraniumUI.Dialogs;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    [QueryProperty(nameof(UserId), "user")]
-    [QueryProperty(nameof(AuthorId), "author")]
+    [QueryProperty(nameof(UserGuid), "user")]
+    [QueryProperty(nameof(AuthorGuid), "author")]
     public partial class FeedListViewModel : BaseViewModel
     {
         private readonly IFeedRepository _feedRepo;
         private readonly IUserRepository _userRepo;
+        public string UserGuid
+        {
+            get => UserId?.ToString() ?? Guid.Empty.ToString();
+            set => UserId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
+        }
+        public string AuthorGuid
+        {
+            get => AuthorId?.ToString() ?? Guid.Empty.ToString();
+            set => AuthorId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
+        }
         [ObservableProperty]
         private Guid? userId = null;
         [ObservableProperty]

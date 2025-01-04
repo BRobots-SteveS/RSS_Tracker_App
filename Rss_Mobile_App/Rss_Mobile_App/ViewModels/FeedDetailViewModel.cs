@@ -65,10 +65,10 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
-        public async Task GoToAuthor(AuthorDto selectedAuthor) => await Navigation.NavigateToAsync(nameof(AuthorListPage), new Dictionary<string, object> { { "author", selectedAuthor.Id } });
+        public async Task GoToAuthor(AuthorDto selectedAuthor) => await Navigation.NavigateToAsync(nameof(AuthorDetailPage), new Dictionary<string, object> { { "author", selectedAuthor.Id.ToString() } });
 
         [RelayCommand]
-        public async Task GoToEpisode(EpisodeDto selectedEpisode) => await Navigation.NavigateToAsync(nameof(EpisodeDetailPage), new Dictionary<string, object> { { "episode", selectedEpisode.Id } });
+        public async Task GoToEpisode(EpisodeDto selectedEpisode) => await Navigation.NavigateToAsync(nameof(EpisodeDetailPage), new Dictionary<string, object> { { "episode", selectedEpisode.Id.ToString() } });
 
         [RelayCommand]
         public async Task AddToFavorites()

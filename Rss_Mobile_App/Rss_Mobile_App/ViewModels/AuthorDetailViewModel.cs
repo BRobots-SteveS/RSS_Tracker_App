@@ -13,13 +13,18 @@ using UraniumUI.Dialogs;
 
 namespace Rss_Mobile_App.ViewModels
 {
-    [QueryProperty(nameof(AuthorId), "author")]
+    [QueryProperty(nameof(AuthorGuid), "author")]
     public partial class AuthorDetailViewModel : BaseViewModel
     {
         private readonly IAuthorRepository _authorRepo;
         private readonly IFeedRepository _feedRepo;
+        public string AuthorGuid
+        {
+            get => AuthorId?.ToString() ?? Guid.Empty.ToString();
+            set => AuthorId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
+        }
         [ObservableProperty]
-        private Guid authorId = Guid.Empty;
+        private Guid? authorId = Guid.Empty;
         [ObservableProperty]
         private AuthorDto author = new();
         [ObservableProperty]
@@ -30,8 +35,9 @@ namespace Rss_Mobile_App.ViewModels
 
         public override async Task DoRefresh()
         {
-            Author = await _authorRepo.GetRowById(AuthorId);
-            Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));
+            if (AuthorId == null || AuthorId == Guid.Empty) return;
+            Author = await _authorRepo.GetRowById(AuthorId.Value);
+            Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId.Value));
         }
     }
 }
