@@ -72,7 +72,7 @@ namespace Rss_Tracking_Api.Helpers
         {
             return items.Select(item =>
             {
-                var firstUrl = item.Item.BaseUri.AbsolutePath;
+                var firstUrl = item.Item.BaseUri?.AbsolutePath ?? string.Empty;
                 string? firstImage = null;
                 if (item.MediaGroup is null || item.MediaGroup.Count <= 0)
                 {
