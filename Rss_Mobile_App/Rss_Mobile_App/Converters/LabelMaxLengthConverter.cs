@@ -10,12 +10,12 @@ namespace Rss_Mobile_App.Converters
     public class LabelMaxLengthConverter : IValueConverter
     {
         private const int MAXLENGTH = 50;
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value.GetType() != typeof(string)) return value;
-            string labelText = value as string;
+            string labelText = (string)value;
 
-            if (labelText == null)
+            if (string.IsNullOrEmpty(labelText))
                 return value;
             if (labelText.Length > MAXLENGTH)
                 return $"{labelText[..MAXLENGTH]}...";
