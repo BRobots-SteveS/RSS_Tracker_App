@@ -46,8 +46,17 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         protected async Task GoToAuthorList() => await Navigation.NavigateToAsync(nameof(AuthorListPage));
         [RelayCommand]
-        protected async Task OpenBrowser(string uri) => await Navigation.OpenBrowser(uri);
+        protected async Task OpenBrowser(string uri)
+        {
+            if(string.IsNullOrEmpty(uri)) return;
+            await Navigation.OpenBrowser(uri);
+        }
+
         [RelayCommand]
-        protected async Task OpenEmail(string route) => await Navigation.OpenBrowser($"mailto:{route}");
+        protected async Task OpenEmail(string route)
+        {
+            if(string.IsNullOrEmpty(route)) return;
+            await Navigation.OpenBrowser($"mailto:{route}");
+        }
     }
 }
