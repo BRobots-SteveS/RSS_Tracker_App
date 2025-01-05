@@ -17,35 +17,52 @@ namespace Rss_Mobile_App.ViewModels
         private readonly IUserRepository _userRepo;
         public string UserGuid
         {
-            get => UserId?.ToString() ?? Guid.Empty.ToString();
+            get => UserId.ToString();
             set => UserId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
         }
         public string AuthorGuid
         {
-            get => AuthorId?.ToString() ?? Guid.Empty.ToString();
+            get => AuthorId.ToString();
             set => AuthorId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
         }
         [ObservableProperty]
-        private Guid? userId = null;
+        private Guid userId = Guid.Empty;
         [ObservableProperty]
-        private Guid? authorId = null;
+        private Guid authorId = Guid.Empty;
         [ObservableProperty]
         private ObservableCollection<FeedDto> feeds = new();
+
+        [ObservableProperty]
+        private ObservableCollection<string> platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud", "Basic"]);
+
+        [ObservableProperty]
+        private string title = string.Empty;
+        [ObservableProperty]
+        private string description = string.Empty;
+        [ObservableProperty]
+        private string platform = string.Empty;
+        [ObservableProperty]
+        private string authorName = string.Empty;
+        [ObservableProperty]
+        private string creatorId = string.Empty;
         public FeedListViewModel(IUserRepository userRepo, IFeedRepository repo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
-        { 
+        {
             _feedRepo = repo;
             _userRepo = userRepo;
         }
 
         public override async Task DoRefresh()
         {
-            if (UserId != null && UserId != Guid.Empty)
-                Feeds = new(await _feedRepo.GetFeedsByUserId(UserId.Value));
-            else if (AuthorId != null && AuthorId != Guid.Empty)
-                Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId.Value));
+            if (!string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Description) || !string.IsNullOrEmpty(Platform) || !string.IsNullOrWhiteSpace(AuthorName) || !string.IsNullOrEmpty(CreatorId))
+                Feeds = new(await _feedRepo.GetFeedsByFilter(Title, CreatorId, Description, AuthorName, Platform));
+            else if (UserId != Guid.Empty)
+                Feeds = new(await _feedRepo.GetFeedsByUserId(UserId));
+            else if (AuthorId != Guid.Empty)
+                Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));
             else
                 Feeds = new(await _feedRepo.GetAllRows());
+            ClearFilters();
         }
 
         [RelayCommand]
@@ -60,5 +77,25 @@ namespace Rss_Mobile_App.ViewModels
 
         [RelayCommand]
         public async Task GoToDetails(FeedDto selectedFeed) => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object> { { "feed", selectedFeed.Id.ToString() } });
+        [RelayCommand]
+        public async Task DoFilter()
+        {
+            Feeds = new(await _feedRepo.GetFeedsByFilter(Title, CreatorId, Description, AuthorName, Platform));
+        }
+
+        [RelayCommand]
+        public void SelectedPlatformChanged(string selectedItem)
+        {
+            Platform = selectedItem;
+        }
+        [RelayCommand]
+        public void ClearFilters()
+        {
+            Title = string.Empty;
+            Description = string.Empty;
+            Platform = string.Empty;
+            AuthorName = string.Empty;
+            CreatorId = string.Empty;
+        }
     }
 }
