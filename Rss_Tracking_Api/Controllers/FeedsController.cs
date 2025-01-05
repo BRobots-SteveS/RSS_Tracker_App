@@ -73,7 +73,7 @@ namespace Rss_Tracking_Api.Controllers
         [HttpGet("filter")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
+        public async Task<IActionResult> GetFeedsByFilter([FromQuery]string? title, [FromQuery]string? creatorId, [FromQuery]string? description, [FromQuery]string? authorName, [FromQuery]string? platform)
         {
             HashSet<FeedDto> result = new();
             var feeds = _feeds.GetFeedsByFilter(title, creatorId, description, authorName, platform).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));

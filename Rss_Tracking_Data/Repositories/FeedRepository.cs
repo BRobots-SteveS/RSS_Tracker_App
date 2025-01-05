@@ -12,7 +12,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Feed> GetFeedsByUserId(Guid userId);
         List<Feed> GetFeedsByUri(string uri);
         List<Feed> GetFeedsByTitle(string title);
-        List<Feed> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform);
+        List<Feed> GetFeedsByFilter(string? title, string? creatorId, string? description, string? authorName, string? platform);
     }
     public class FeedRepository : BaseRepository<Feed>, IFeedRepository
     {
@@ -34,8 +34,9 @@ namespace Rss_Tracking_Data.Repositories
         public List<Feed> GetFeedsByUserId(Guid userId) => _context.UserFavorites.AsNoTracking().Where(x => x.UserId == userId).Select(x => x.Feed).ToList();
         public List<Feed> GetFeedsByUri(string uri) => _context.Feeds.AsNoTracking().Where(x => x.FeedUrl == uri).ToList();
         public List<Feed> GetFeedsByTitle(string title) => _context.Feeds.AsNoTracking().Where(x => x.Title.Contains(title)).ToList();
-        public List<Feed> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
+        public List<Feed> GetFeedsByFilter(string? title, string? creatorId, string? description, string? authorName, string? platform)
         {
+            if (!Enum.TryParse<Platform>(platform, out Platform parsedPlatform)) { parsedPlatform = Platform.Basic; }
             HashSet<Feed> result = new();
             if(!string.IsNullOrEmpty(authorName))
             {
@@ -43,10 +44,11 @@ namespace Rss_Tracking_Data.Repositories
                 foreach(var feed in feeds) result.Add(feed);
             }
             var filteredFeeds = _context.Feeds.AsNoTracking().Where(x =>
-                (!string.IsNullOrEmpty(title) || x.Title.Contains(title)) &&
-                (!string.IsNullOrEmpty(creatorId) || x.CreatorId.Contains(creatorId)) &&
-                (!string.IsNullOrEmpty(description) || x.Description.Contains(description)) && 
-                (!string.IsNullOrEmpty(platform) || x.Platform.ToString().Contains(platform)));
+                (string.IsNullOrEmpty(title) || x.Title.Contains(title)) &&
+                (string.IsNullOrEmpty(creatorId) || (string.IsNullOrEmpty(x.CreatorId) || x.CreatorId.Contains(creatorId))) &&
+                (string.IsNullOrEmpty(description) || x.Description.Contains(description)) &&
+                (parsedPlatform == Platform.Basic || x.Platform == parsedPlatform)
+            );
             foreach(var feed in filteredFeeds) result.Add(feed);
             return result.ToList();
         }
