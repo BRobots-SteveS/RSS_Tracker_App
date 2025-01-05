@@ -30,7 +30,7 @@ namespace Rss_Mobile_App.ViewModels
         [ObservableProperty]
         private ObservableCollection<AuthorDto> authors = new();
         [ObservableProperty]
-        private ObservableCollection<string> platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud"]);
+        private ObservableCollection<string> platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud", "Basic"]);
         public FeedDetailViewModel(IFeedRepository feedRepo, IAuthorRepository authorRepo, IEpisodeRepository episodeRepo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         {
@@ -80,6 +80,12 @@ namespace Rss_Mobile_App.ViewModels
         public async Task GoToFeed()
         {
             if (FeedId != Guid.Empty) await Navigation.OpenBrowser(Feed.FeedUri);
+        }
+
+        [RelayCommand]
+        public void SelectedPlatformChanged(string platform)
+        {
+            Feed.Platform = platform;
         }
     }
 }
