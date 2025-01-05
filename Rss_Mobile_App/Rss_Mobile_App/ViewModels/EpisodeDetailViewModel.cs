@@ -14,7 +14,7 @@ namespace Rss_Mobile_App.ViewModels
         private readonly IEpisodeRepository _repo;
         public string EpisodeGuid
         {
-            get => EpisodeId.ToString() ?? Guid.Empty.ToString();
+            get => EpisodeId.ToString();
             set => EpisodeId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
         }
         [ObservableProperty]

@@ -20,11 +20,11 @@ namespace Rss_Mobile_App.ViewModels
         private readonly IFeedRepository _feedRepo;
         public string AuthorGuid
         {
-            get => AuthorId?.ToString() ?? Guid.Empty.ToString();
+            get => AuthorId.ToString();
             set => AuthorId = Guid.TryParse(value, out var result) ? result : Guid.Empty;
         }
         [ObservableProperty]
-        private Guid? authorId = Guid.Empty;
+        private Guid authorId = Guid.Empty;
         [ObservableProperty]
         private AuthorDto author = new();
         [ObservableProperty]
@@ -35,9 +35,15 @@ namespace Rss_Mobile_App.ViewModels
 
         public override async Task DoRefresh()
         {
-            if (AuthorId == null || AuthorId == Guid.Empty) return;
-            Author = await _authorRepo.GetRowById(AuthorId.Value);
-            Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId.Value));
+            if (AuthorId == Guid.Empty) return;
+            Author = await _authorRepo.GetRowById(AuthorId);
+            Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));
+        }
+
+        [RelayCommand]
+        public async Task GoToFeed(FeedDto selectedItem)
+        {
+            await Navigation.NavigateToAsync(nameof(FeedDetailViewModel), new Dictionary<string, object> { { "feed", selectedItem.Id.ToString() } });
         }
     }
 }
