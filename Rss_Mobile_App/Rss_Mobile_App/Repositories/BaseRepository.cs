@@ -57,7 +57,7 @@ namespace Rss_Mobile_App.Repositories
             return Deserialize<T>(await result.Content.ReadAsStringAsync()) ?? new();
         }
 
-        public async Task<T> CreateRow(T item)
+        public virtual async Task<T> CreateRow(T item)
         {
             HttpRequestMessage message = new()
             {

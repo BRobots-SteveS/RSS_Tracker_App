@@ -1,4 +1,5 @@
 ﻿using Rss_Tracking_App.Models.Dto;
+using System.Net.Http.Json;
 
 namespace Rss_Mobile_App.Repositories
 {
@@ -62,6 +63,19 @@ namespace Rss_Mobile_App.Repositories
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
             return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
+        }
+
+        public override async Task<FeedDto> CreateRow(FeedDto item)
+        {
+            HttpRequestMessage message = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}"),
+                Content = JsonContent.Create(item)
+            };
+            var result = await httpClient.SendAsync(message);
+            result.EnsureSuccessStatusCode();
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync())?.FirstOrDefault() ?? new();
         }
     }
 }
