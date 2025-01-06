@@ -35,6 +35,7 @@ namespace Rss_Mobile_App.ViewModels
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         {
             _feedRepo = feedRepo; _authorRepo = authorRepo; _episodeRepo = episodeRepo; _userRepo = userRepo;
+            if (FeedId == Guid.Empty) Feed.Title = "New Feed";
         }
 
         public override async Task DoRefresh()
