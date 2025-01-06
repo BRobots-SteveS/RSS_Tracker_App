@@ -33,7 +33,7 @@ namespace Rss_Mobile_App.ViewModels
         protected async Task DoLogout()
         {
             Preferences.Remove("user");
-            await Navigation.NavigateToAsync($"///{nameof(LoginPage)}");
+            await Navigation.NavigateToAsync($"{nameof(LoginPage)}");
         }
         [RelayCommand]
         protected async Task GoToAccountDetails()

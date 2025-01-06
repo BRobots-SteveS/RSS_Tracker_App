@@ -60,6 +60,7 @@ namespace Rss_Mobile_App.ViewModels
             if (FeedId != Guid.Empty) { await DialogService.ConfirmAsync("No permission", "Feed already exists"); return; }
             if (string.IsNullOrWhiteSpace(Feed.Platform)) { await DialogService.ConfirmAsync("Error", "No platform selected"); return; }
             if (string.IsNullOrWhiteSpace(Feed.FeedUri)) { await DialogService.ConfirmAsync("Error", "No Feed URL present"); return; }
+            if (string.IsNullOrWhiteSpace(Feed.CreatorId)) { await DialogService.ConfirmAsync("Error", "No CreatorId present"); return; }
             if (string.IsNullOrEmpty(Feed.AuthorName)) Feed.AuthorName = string.Empty;
             await _feedRepo.CreateRow(Feed);
         }
