@@ -10,35 +10,54 @@
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
-             x:DataType="vm:AuthorListViewModel">
+             x:DataType="vm:AuthorListViewModel"
+             Title="Authors">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-    <ScrollView>
+    <uranium:UraniumContentPage.Resources>
+        <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
+    </uranium:UraniumContentPage.Resources>
+    <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
         <CollectionView ItemsSource="{Binding Authors}" x:Name="authorList" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToDetailsCommand}"
                         SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList}}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:AuthorDto">
-                    <uranium:GridLayout RowCount="2" ColumnCount="3">
+                    <uranium:GridLayout RowCount="4" ColumnCount="1">
                         <Label Text="{Binding Name}"/>
                         <Button class="TextButton" Text="{Binding Email}" 
                                 Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
-                                CommandParameter="{Binding Email}"/>
+                                CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                         <Button class="TextButton" Text="{Binding Uri}" 
                                 Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
-                                CommandParameter="{Binding Uri}"/>
+                                CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                        <BoxView StyleClass="Divider"/>
                     </uranium:GridLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
+            <CollectionView.EmptyView>
+                <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </CollectionView.EmptyView>
         </CollectionView>
     </ScrollView>
     <uranium:UraniumContentPage.Attachments>
-        <!--<material:BackdropView
+        <material:BackdropView
             Title="Filter"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Filter_alt}, Color={StaticResource OnPrimary}}"
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
-        </material:BackdropView>-->
+            <input:FormView SubmitCommand="{Binding FilterResultsCommand}" Spacing="5" Padding="10,15" MinimumWidthRequest="400"
+                    HorizontalOptions="CenterAndExpand">
+                <material:TextField Title="Name" Text="{Binding AuthorName}"
+                    TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person}}"/>
+                <material:TextField Title="Email" Text="{Binding AuthorEmail}"
+                    TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Mail}}"/>
+                <Button input:FormView.IsSubmitButton="True"
+                        Text="Filter" StyleClass="ElevatedButton"/>
+            </input:FormView>
+        </material:BackdropView>
         <material:BottomSheetView>
             <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"

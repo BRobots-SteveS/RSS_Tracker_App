@@ -11,12 +11,14 @@
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
              x:DataType="vm:LoginViewModel"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.FlyoutBehavior="Disabled"
+             Title="Login">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding CheckLoginCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
     
-    <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" HorizontalOptions="CenterAndExpand" MinimumWidthRequest="400">
+    <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
+                    HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
         <material:TextField 
         Title="Username"
         Text="{Binding ExistingUser.Username}"

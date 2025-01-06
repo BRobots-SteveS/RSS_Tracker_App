@@ -19,17 +19,38 @@
     <uranium:UraniumContentPage.Resources>
         <converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
         <converters:LabelMaxLengthConverter x:Key="LabelMaxLengthConverter"/>
+        <converters:GuidEmptyToTrueConverter x:Key="GuidEmptyToTrueConverter"/>
+        <converters:NewFeedTitleConverter x:Key="NewFeedTitleConverter"/>
+        <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
     </uranium:UraniumContentPage.Resources>
-    <VerticalStackLayout>
+    <VerticalStackLayout VerticalOptions="Center">
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
                 <Label Text="Details"/>
             </uranium:ExpanderView.Header>
-            <VerticalStackLayout HorizontalOptions="Center">
-                <Label Text="{Binding Path=Feed.Title, StringFormat='Title: {0}'}" FontSize="Title" FontAttributes="Bold"/>
-                <Label Text="{Binding Path=Feed.Platform, StringFormat='Platform: {0}'}" FontSize="Subtitle"/>
-                <Label Text="{Binding Path=Feed.PublishedTime, StringFormat='Published on: {0}'}" FontAttributes="Italic" FontSize="Subtitle"/>
-                <Label Text="{Binding Feed.Description}"/>
+            <VerticalStackLayout>
+                <input:FormView SubmitCommand="{Binding CreateFeedCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
+                    HorizontalOptions="CenterAndExpand" IsEnabled="{Binding FeedId, Converter={StaticResource GuidEmptyToTrueConverter}}">
+                    <material:TextField Title="Title" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                                        Text="{Binding Feed.Title}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Title}}">
+                    </material:TextField>
+                    <material:PickerField Title="Platform" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                                          ItemsSource="{Binding Platforms}" SelectedItem="{Binding Feed.Platform}"
+                                          SelectedValueChangedCommand="{Binding SelectedPlatformChangedCommand}"
+                                          Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}}"/>
+                    <material:TextField Title="URL" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                                        Text="{Binding Feed.FeedUri}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}}">
+                        <validation:RequiredValidation />
+                    </material:TextField>
+                    <material:TextField Title="CreatorId" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                                        Text="{Binding Feed.CreatorId}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Id_card}}">
+                        <validation:RequiredValidation />
+                    </material:TextField>
+                    <Button
+        input:FormView.IsSubmitButton="True"
+        Text="Create feed"
+        StyleClass="ElevatedButton"/>
+                </input:FormView>
                 <Image Grid.RowSpan="2" Source="{Binding Feed, Converter={StaticResource ImageSourceConverter}}"
                MaximumHeightRequest="240" MaximumWidthRequest="240"
                HeightRequest="180" WidthRequest="180"
@@ -49,11 +70,11 @@
                             <uranium:GridLayout RowCount="4" ColumnCount="1">
                                 <Label Text="{Binding Name}"/>
                                 <Button class="TextButton" Text="{Binding Email}" 
-                                Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
-                                CommandParameter="{Binding Email}"/>
+                                Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
+                                CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                                 <Button class="TextButton" Text="{Binding Uri}" 
-                                Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
-                                CommandParameter="{Binding Uri}"/>
+                                Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
+                                CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                                 <BoxView StyleClass="Divider"/>
                             </uranium:GridLayout>
                         </DataTemplate>
@@ -74,14 +95,14 @@
                                     SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference episodeList}}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:EpisodeDto">
-                            <uranium:GridLayout RowCount="4" ColumnCount="2">
-                                <Label Text="{Binding EpisodeName}"/>
+                            <uranium:GridLayout RowCount="5" ColumnCount="1">
+                                <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
                                 <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
-                                <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2"/>
-                                <Button Text="Play preview" Grid.ColumnSpan="2"
+                                <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
+                                <Button Text="Play preview"
                                             ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                                             Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
-                                            CommandParameter="{Binding PreviewUrl}"/>
+                                            CommandParameter="{Binding PreviewUrl}" IsVisible="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                                 <BoxView StyleClass="Divider"/>
                             </uranium:GridLayout>
                         </DataTemplate>
@@ -100,9 +121,6 @@
             <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}"/>
         </material:BackdropView>
         <material:BottomSheetView>
-            <material:BottomSheetView.Header>
-            <Label Text="Navigation"/>
-            </material:BottomSheetView.Header>
             <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
                         Command="{Binding GoToAccountDetailsCommand}" Text="My account" FontAttributes="Bold"/>

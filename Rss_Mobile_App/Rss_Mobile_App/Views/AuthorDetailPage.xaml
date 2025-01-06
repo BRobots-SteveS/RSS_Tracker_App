@@ -10,16 +10,58 @@
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
-             x:DataType="vm:AuthorDetailViewModel">
+             x:DataType="vm:AuthorDetailViewModel"
+             Title="{Binding Author.Name}">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
+    <uranium:UraniumContentPage.Resources>
+        <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
+    </uranium:UraniumContentPage.Resources>
 
-    <StackLayout>
-        <Label Text="Welcome to .NET MAUI!!!"
-            HorizontalOptions="Center"
-            VerticalOptions="Center"/>
-    </StackLayout>
+    <VerticalStackLayout VerticalOptions="Center">
+        <uranium:ExpanderView>
+            <uranium:ExpanderView.Header>
+                <Label Text="Details"/>
+            </uranium:ExpanderView.Header>
+            <VerticalStackLayout>
+                <Label Text="{Binding Author.Name}" FontSize="Large" FontAttributes="Bold"/>
+                <Button class="TextButton" Text="{Binding Author.Email}"
+                        Command="{Binding OpenEmailCommand}" CommandParameter="{Binding Author.Email}"
+                        IsEnabled="{Binding Author.Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                <Button class="TextButton" Text="More information"
+                        Command="{Binding OpenBrowserCommand}" CommandParameter="{Binding Author.Uri}"
+                        IsEnabled="{Binding Author.Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+            </VerticalStackLayout>
+        </uranium:ExpanderView>
+        <uranium:ExpanderView>
+            <uranium:ExpanderView.Header>
+                <Label Text="Feeds"/>
+            </uranium:ExpanderView.Header>
+            <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+                <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
+                        SelectionChangedCommand="{Binding GoToFeedCommand}"
+                        SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedList}}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:FeedDto">
+                            <VerticalStackLayout>
+                                <Grid RowDefinitions="*,*" ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5" RowSpacing="5">
+                                    <Image Grid.RowSpan="2" Source="{Binding ., Converter={StaticResource ImageSourceConverter}}"
+                                   MaximumHeightRequest="120" MaximumWidthRequest="120"
+                                   HeightRequest="90" WidthRequest="90"
+                                   Aspect="AspectFit"/>
+                                    <Label Text="{Binding Title}" HorizontalOptions="Center" Grid.Column="1"/>
+                                    <Label Text="{Binding Platform}" HorizontalOptions="Center" Grid.Column="2"/>
+                                    <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1"/>
+                                </Grid>
+                                <BoxView StyleClass="Divider" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </ScrollView>
+        </uranium:ExpanderView>
+    </VerticalStackLayout>
 
     <uranium:UraniumContentPage.Attachments>
         <material:BottomSheetView>

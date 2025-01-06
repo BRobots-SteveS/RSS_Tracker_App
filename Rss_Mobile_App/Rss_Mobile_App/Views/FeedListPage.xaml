@@ -11,7 +11,8 @@
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
-             x:DataType="vm:FeedListViewModel">
+             x:DataType="vm:FeedListViewModel"
+             Title="Feeds">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
@@ -19,7 +20,7 @@
         <converters:LabelMaxLengthConverter x:Key="LabelMaxLengthConverter"/>
         <converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
     </uranium:UraniumContentPage.Resources>
-    <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+    <ScrollView VerticalOptions="Fill">
         <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToDetailsCommand}"
                         SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedList}}">
@@ -39,16 +40,58 @@
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
-
+            <CollectionView.EmptyView>
+                <Label Text="No feeds found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+            </CollectionView.EmptyView>
         </CollectionView>
     </ScrollView>
 
     <uranium:UraniumContentPage.Attachments>
-        <!--<material:BackdropView
+        <material:BackdropView
             Title="Filter"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Filter_alt}, Color={StaticResource OnPrimary}}"
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
-        </material:BackdropView>-->
+            <input:FormView SubmitCommand="{Binding DoFilterCommand}" Spacing="5" Padding="10,15" MinimumWidthRequest="400"
+                    HorizontalOptions="CenterAndExpand">
+                <material:TextField 
+        Title="Title"
+        Text="{Binding Title}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Title}}"/>
+                <material:DropdownField x:Name="platformSelection" Title="Platform"
+                    TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                    ItemsSource="{Binding Platforms}" SelectedItem="{Binding Platform}"
+                    SelectedItemChangedCommand="{Binding SelectedPlatformChangedCommand}"
+                    Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}}"/>
+                <material:TextField 
+        Title="Description"
+        Text="{Binding Description}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Bookmark}}"/>
+                <material:TextField 
+        Title="Author"
+        Text="{Binding AuthorName}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Person_edit}}"/>
+                <material:TextField 
+        Title="CreatorId"
+        Text="{Binding CreatorId}"
+        TextColor="{StaticResource OnSecondary}"
+        AccentColor="{StaticResource OnSecondary}"
+        Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Id_card}}"/>
+                <Grid RowDefinitions="*" ColumnDefinitions="*,*">
+                <Button input:FormView.IsSubmitButton="True"
+                        Text="Filter" StyleClass="ElevatedButton" HorizontalOptions="CenterAndExpand"/>
+                    <Button input:FormView.IsSubmitButton="False"
+                        Text="Add" StyleClass="ElevatedButton" Grid.Column="1" HorizontalOptions="CenterAndExpand"
+                            Command="{Binding CreateFeedCommand}"/>
+
+                </Grid>
+            </input:FormView>
+        </material:BackdropView>
         <material:BottomSheetView>
             <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"

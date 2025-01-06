@@ -10,11 +10,12 @@
              xmlns:local="clr-namespace:Rss_Mobile_App.Views"
              xmlns:vm="clr-namespace:Rss_Mobile_App.ViewModels"
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
-             x:DataType="vm:AccountViewModel">
+             x:DataType="vm:AccountViewModel"
+             Title="My account">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
-    <VerticalStackLayout>
+    <VerticalStackLayout VerticalOptions="Center">
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
                 <Label Text="Account details"/>
