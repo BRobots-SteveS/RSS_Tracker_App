@@ -124,7 +124,7 @@ namespace Rss_Tracking_Api.Controllers
             if (!_feeds.AlreadyExists(feed))
                 resultFeed = _feeds.Add(feed);
             else
-                resultFeed = _feeds.GetFeedsByUri(uri).First();
+                resultFeed = _feeds.Update(feed)!;
             foreach (var author in authors)
             {
                 Author resultAuthor;

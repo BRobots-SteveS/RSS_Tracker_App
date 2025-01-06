@@ -6,9 +6,9 @@ namespace Rss_Tracking_Api.Models.Dto
     {
         private Platform _platform = Rss_Tracking_Lib.Enums.Platform.Basic;
         public string Platform { get => _platform.ToString(); set => _platform = Enum.Parse<Platform>(value); }
-        public Guid Id { get; set; }
-        public string Title { get; set; }
-        public string AuthorName { get; set; }
+        public Guid Id { get; set; } = Guid.Empty;
+        public string Title { get; set; } = string.Empty;
+        public string AuthorName { get; set; } = string.Empty;
         public string? AuthorEmail { get; set; }
         public string? AuthorUri { get; set; }
         public string CreatorId { get; set; } = string.Empty;
