@@ -9,6 +9,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary x:Name="appColors" Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary x:Name="appStyles" Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary x:Name="customStyles" Source="Resources/Styles/CustomStyles.xaml"/>
                 <material:StyleResource ColorsOverride="{x:Reference appColors}" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

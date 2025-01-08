@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:t="clr-namespace:UraniumUI.Theming;assembly=UraniumUI"
+                    xmlns:uranium="http://schemas.enisn-projects.io/dotnet/maui/uraniumui"
+                    xmlns:material="http://schemas.enisn-projects.io/dotnet/maui/uraniumui/material"
+                    xmlns:input="clr-namespace:InputKit.Shared.Controls;assembly=InputKit.Maui">
+    <LinearGradientBrush x:Key="LightBackgroundBrush">
+        <GradientStop Offset="0.1" Color="#FFDBAA"/>
+        <GradientStop Offset="1.0" Color="#96C291"/>
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="DarkBackgroundBrush">
+        <GradientStop Offset="0.1" Color="#0766AD"/>
+        <GradientStop Offset="1.0" Color="#304D30"/>
+    </LinearGradientBrush>
+    
+    <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+        <Setter Property="BackgroundImageSource" Value="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"/>
+        <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightBackgroundBrush}, Dark={StaticResource DarkBackgroundBrush}}"/>
+    </Style>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{AppThemeBinding Light=Gray900, Dark=Gray100}"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="ExpanderTitle">
+        <Setter Property="FontSize" Value="Subtitle"/>
+        <Setter Property="Margin" Value="10,5,0,5"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+</ResourceDictionary>
