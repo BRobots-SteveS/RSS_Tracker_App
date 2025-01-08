@@ -73,7 +73,7 @@ namespace Rss_Mobile_App.ViewModels
         }
 
         [RelayCommand]
-        public async Task CreateFeed() => await Navigation.NavigateToAsync(nameof(FeedDetailPage));
+        public async Task CreateFeed() => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object>() { { "feed", Guid.Empty.ToString() } });
 
         [RelayCommand]
         public async Task GoToDetails(FeedDto selectedFeed) => await Navigation.NavigateToAsync(nameof(FeedDetailPage), new Dictionary<string, object> { { "feed", selectedFeed.Id.ToString() } });

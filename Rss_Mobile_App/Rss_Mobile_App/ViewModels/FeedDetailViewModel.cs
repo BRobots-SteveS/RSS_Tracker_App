@@ -46,6 +46,12 @@ namespace Rss_Mobile_App.ViewModels
                 Episodes = new(await _episodeRepo.GetEpisodesByFeedId(FeedId));
                 Authors = new(await _authorRepo.GetAuthorsByFeedId(FeedId));
             }
+            else
+            {
+                Feed = new();
+                Episodes = new();
+                Authors = new();
+            }
         }
 
         [RelayCommand]
@@ -63,7 +69,9 @@ namespace Rss_Mobile_App.ViewModels
             if (string.IsNullOrWhiteSpace(Feed.FeedUri)) { await DialogService.ConfirmAsync("Error", "No Feed URL present"); return; }
             if (string.IsNullOrWhiteSpace(Feed.CreatorId)) { await DialogService.ConfirmAsync("Error", "No CreatorId present"); return; }
             if (string.IsNullOrEmpty(Feed.AuthorName)) Feed.AuthorName = string.Empty;
-            await _feedRepo.CreateRow(Feed);
+            Feed = await _feedRepo.CreateRow(Feed);
+            FeedId = Feed.Id;
+            await DoRefresh();
         }
 
         [RelayCommand]

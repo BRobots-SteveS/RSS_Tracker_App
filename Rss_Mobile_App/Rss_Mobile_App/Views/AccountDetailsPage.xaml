@@ -16,6 +16,8 @@
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding ReloadDataCommand}"/>
     </uranium:UraniumContentPage.Behaviors>
     <VerticalStackLayout VerticalOptions="Center">
+        <Label Text="Welcome back!" FontSize="Title" FontAttributes="Bold" HorizontalOptions="Center"/>
+        <Label Text="{Binding User.Username}" FontSize="Subtitle" HorizontalOptions="Center"/>
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
                 <Label Text="Account details"/>

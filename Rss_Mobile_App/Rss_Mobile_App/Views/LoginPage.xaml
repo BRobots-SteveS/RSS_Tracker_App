@@ -12,6 +12,7 @@
              xmlns:models="clr-namespace:Rss_Tracking_App.Models.Dto"
              x:DataType="vm:LoginViewModel"
              Shell.FlyoutBehavior="Disabled"
+                            BackgroundImageSource="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"
              Title="Login">
     <uranium:UraniumContentPage.Behaviors>
         <mct:EventToCommandBehavior EventName="Appearing" Command="{Binding CheckLoginCommand}"/>
@@ -19,6 +20,9 @@
     
     <input:FormView SubmitCommand="{Binding LoginCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
                     HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+        <Label Text="Trackify" HorizontalOptions="Center" FontSize="Title" FontAttributes="Bold"/>
+        <Image Source="app_logo.png" MaximumWidthRequest="250" MaximumHeightRequest="250" Aspect="AspectFit"/>
+
         <material:TextField 
         Title="Username"
         Text="{Binding ExistingUser.Username}"

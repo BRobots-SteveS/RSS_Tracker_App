@@ -99,7 +99,7 @@
                                 <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
                                 <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
                                 <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
-                                <Button Text="Play preview"
+                                <Button Text="Play preview" StyleClass="ElevatedButton"
                                             ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                                             Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
                                             CommandParameter="{Binding PreviewUrl}" IsVisible="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
@@ -117,8 +117,14 @@
 
 
     <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView Title="Commands">
-            <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}"/>
+        <material:BackdropView Title="Commands"
+            IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Pending_actions}, Color={StaticResource OnPrimary}}">
+            <Grid RowDefinitions="*" ColumnDefinitions="*,*" HorizontalOptions="Center" VerticalOptions="Center">
+            <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}" StyleClass="ElevatedButton"
+                    ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Update}}"/>
+                <Button Text="Add to Favorites" Command="{Binding AddToFavoritesCommand}" StyleClass="ElevatedButton" Grid.Column="1"
+                    ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Star_rate}}"/>
+            </Grid>
         </material:BackdropView>
         <material:BottomSheetView>
             <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">

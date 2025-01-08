@@ -64,6 +64,11 @@
     </VerticalStackLayout>
 
     <uranium:UraniumContentPage.Attachments>
+        <material:BackdropView Title="Commands"
+            IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Star_rate}, Color={StaticResource OnPrimary}}">
+            <Button Text="Add to Favorites" Command="{Binding AddToFavoritesCommand}" StyleClass="ElevatedButton" Grid.Column="1"
+                    ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Star_rate}}"/>
+        </material:BackdropView>
         <material:BottomSheetView>
             <uranium:GridLayout RowCount="2" ColumnCount="2" HorizontalOptions="Center" RowSpacing="5" ColumnSpacing="10">
                 <Button ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Verified_user}, Color={StaticResource OnPrimary}}"
