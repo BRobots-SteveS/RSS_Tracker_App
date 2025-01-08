@@ -1,1 +1,15 @@
-<svg id="eY3pdqV0TAD1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 455.731 455.731" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" project-id="c955ed36ae894b149d8a60903f9cc01f" export-id="df65d165de4540899e3f1f027fb09d79" cached="false"><defs><linearGradient id="eY3pdqV0TAD5-fill" x1="0.268949" y1="0.5" x2="1" y2="0.5" spreadMethod="pad" gradientUnits="objectBoundingBox" gradientTransform="translate(0 0)"><stop id="eY3pdqV0TAD5-fill-0" offset="0%" stop-color="#000"/><stop id="eY3pdqV0TAD5-fill-1" offset="100%" stop-color="rgba(110,110,110,0.8)"/></linearGradient></defs><g><ellipse rx="227.8655" ry="227.8655" transform="translate(227.8655 227.8655)" fill="#f78422" stroke-width="0"/><g><ellipse rx="227.8655" ry="227.8655" transform="matrix(.949838 0 0 0.944265 227.8655 227.8655)" fill="url(#eY3pdqV0TAD5-fill)" stroke="#6e6e6e" stroke-linecap="square"/></g><g transform="matrix(.770609 0 0 0.716153 52.26991 64.679295)"><path d="M296.208,159.16C234.445,97.397,152.266,63.382,64.81,63.382v64.348c70.268,0,136.288,27.321,185.898,76.931c49.609,49.61,76.931,115.63,76.931,185.898h64.348c-.001-87.456-34.016-169.636-95.779-231.399Z" fill="#fff"/><path d="M64.143,172.273v64.348c84.881,0,153.938,69.056,153.938,153.939h64.348c0-120.364-97.922-218.287-218.286-218.287Z" fill="#fff"/><circle r="46.088" transform="translate(109.833 346.26)" fill="#fff"/></g></g></svg>
+<svg width="455.731" height="455.731" xmlns="http://www.w3.org/2000/svg" cached="false" export-id="df65d165de4540899e3f1f027fb09d79" project-id="c955ed36ae894b149d8a60903f9cc01f" text-rendering="geometricPrecision" shape-rendering="geometricPrecision">
+ <defs>
+  <linearGradient gradientTransform="translate(0 0)" gradientUnits="objectBoundingBox" spreadMethod="pad" y2="0.5" x2="1" y1="0.5" x1="0.26895" id="eY3pdqV0TAD5-fill">
+   <stop stop-color="#000" offset="0%" id="eY3pdqV0TAD5-fill-0"/>
+   <stop stop-color="rgba(110,110,110,0.8)" offset="100%" id="eY3pdqV0TAD5-fill-1"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <ellipse id="svg_2" cx="227.86549" cy="227.86549" stroke-width="0" fill="#f78422" ry="227.8655" rx="227.8655"/>
+  <g id="svg_3">
+   <ellipse id="svg_4" stroke-linecap="square" stroke="#6e6e6e" fill="url(#eY3pdqV0TAD5-fill)" transform="matrix(.949838 0 0 0.944265 227.8655 227.8655)" ry="227.8655" rx="227.8655"/>
+  </g>
+ </g>
+</svg>
