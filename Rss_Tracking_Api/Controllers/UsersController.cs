@@ -93,14 +93,14 @@ namespace Rss_Tracking_Api.Controllers
         [HttpPost("favorite")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(UserFavoriteDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateFavorite([FromQuery] Guid userId, [FromQuery] Guid feedId, [FromQuery] Guid? authorId)
+        public async Task<IActionResult> CreateFavorite([FromQuery] Guid userId, [FromQuery] Guid? feedId, [FromQuery] Guid? authorId)
         {
             if (_favorites.GetUserFavoritesByUserId(userId).Any(x => x.FeedId == feedId && x.AuthorId == authorId))
                 return BadRequest("Already exists");
             var author = _authors.GetById(authorId ?? Guid.Empty);
-            var feed = _feeds.GetById(feedId);
+            var feed = _feeds.GetById(feedId ?? Guid.Empty);
             if (author == null || feed == null) return BadRequest("Feed or Author do not exist");
-            var output = _favorites.Add(new() { UserId = userId, FeedId = feedId, AuthorId = authorId });
+            var output = _favorites.Add(new() { UserId = userId, FeedId = feedId ?? Guid.Empty, AuthorId = authorId });
             _favorites.SaveChanges();
             return new OkObjectResult(DbMapper.UserFavoriteToDto(output, author));
         }

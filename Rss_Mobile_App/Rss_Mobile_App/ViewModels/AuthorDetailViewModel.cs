@@ -18,6 +18,7 @@ namespace Rss_Mobile_App.ViewModels
     {
         private readonly IAuthorRepository _authorRepo;
         private readonly IFeedRepository _feedRepo;
+        private readonly IUserRepository _userRepo;
         public string AuthorGuid
         {
             get => AuthorId.ToString();
@@ -29,9 +30,9 @@ namespace Rss_Mobile_App.ViewModels
         private AuthorDto author = new();
         [ObservableProperty]
         private ObservableCollection<FeedDto> feeds = new();
-        public AuthorDetailViewModel(IAuthorRepository authorRepo, IFeedRepository feedRepo,
+        public AuthorDetailViewModel(IAuthorRepository authorRepo, IFeedRepository feedRepo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialog) : base(navigation, dialog)
-        { _authorRepo = authorRepo; _feedRepo = feedRepo; author = new(); feeds = new(); }
+        { _authorRepo = authorRepo; _feedRepo = feedRepo; _userRepo = userRepo; }
 
         public override async Task DoRefresh()
         {
@@ -44,6 +45,12 @@ namespace Rss_Mobile_App.ViewModels
         public async Task GoToFeed(FeedDto selectedItem)
         {
             await Navigation.NavigateToAsync(nameof(FeedDetailViewModel), new Dictionary<string, object> { { "feed", selectedItem.Id.ToString() } });
+        }
+
+        [RelayCommand]
+        public async Task AddToFavorites()
+        {
+            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())), null, AuthorId);
         }
     }
 }

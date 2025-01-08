@@ -55,7 +55,7 @@ namespace Rss_Mobile_App.Repositories
             HttpRequestMessage message = new()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/favorite?userid={userId}{(feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/favorite?userid={userId}{(feedId != null && feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId != null && authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
             };
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();

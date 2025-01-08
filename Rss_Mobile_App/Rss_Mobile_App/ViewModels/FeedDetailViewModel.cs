@@ -83,7 +83,7 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         public async Task AddToFavorites()
         {
-            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), feedId: FeedId);
+            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), FeedId, null);
         }
 
         [RelayCommand]
