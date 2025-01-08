@@ -111,6 +111,9 @@ namespace Rss_Tracking_Api.Controllers
             List<Author> resultAuthors = new();
             var syndicate = FeedHelper.GetLatestFeed(new Uri(uri));
             if (syndicate == null) return BadRequest("Failed to fetch data from URL with given parameters.");
+            if (syndicate.Links.Count > 0)
+                if (syndicate.Links.First().Uri.AbsoluteUri.StartsWith("https://media.rss.com"))
+                    syndicate.Links[0].Uri = new Uri($"{syndicate.Links[0].Uri.AbsoluteUri}/feed.xml");
             if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == YoutubeFeed.NAMESPACE))
                 feed = FeedMapper.FeedToDbObject(new YoutubeFeed(syndicate), out authors, out episodes);
             else if (syndicate.ElementExtensions.Any(x => x.OuterNamespace == OmnyFeed.NAMESPACE))
