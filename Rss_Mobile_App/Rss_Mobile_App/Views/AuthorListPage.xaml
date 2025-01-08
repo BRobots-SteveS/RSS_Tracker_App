@@ -19,27 +19,29 @@
         <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
     </uranium:UraniumContentPage.Resources>
     <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-        <CollectionView ItemsSource="{Binding Authors}" x:Name="authorList" SelectionMode="Single"
+        <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
+            <CollectionView ItemsSource="{Binding Authors}" x:Name="authorList" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToDetailsCommand}"
                         SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList}}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:AuthorDto">
-                    <uranium:GridLayout RowCount="4" ColumnCount="1">
-                        <Label Text="{Binding Name}"/>
-                        <Button class="TextButton" Text="{Binding Email}" 
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:AuthorDto">
+                        <uranium:GridLayout RowCount="4" ColumnCount="1">
+                            <Label Text="{Binding Name}"/>
+                            <Button class="TextButton" Text="{Binding Email}" 
                                 Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                        <Button class="TextButton" Text="{Binding Uri}" 
+                            <Button class="TextButton" Text="{Binding Uri}" 
                                 Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                        <BoxView StyleClass="Divider"/>
-                    </uranium:GridLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-            <CollectionView.EmptyView>
-                <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
-            </CollectionView.EmptyView>
-        </CollectionView>
+                            <BoxView StyleClass="Divider"/>
+                        </uranium:GridLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <CollectionView.EmptyView>
+                    <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
     </ScrollView>
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView

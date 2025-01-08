@@ -62,27 +62,29 @@
                 <Label Text="Authors" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <ScrollView>
-                <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
+                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
+                    <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
                                     SelectionChangedCommand="{Binding GoToAuthorCommand}"
                                     SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorsList}}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:AuthorDto">
-                            <uranium:GridLayout RowCount="4" ColumnCount="1">
-                                <Label Text="{Binding Name}"/>
-                                <Button class="TextButton" Text="{Binding Email}" 
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AuthorDto">
+                                <uranium:GridLayout RowCount="4" ColumnCount="1">
+                                    <Label Text="{Binding Name}"/>
+                                    <Button class="TextButton" Text="{Binding Email}" 
                                 Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                <Button class="TextButton" Text="{Binding Uri}" 
+                                    <Button class="TextButton" Text="{Binding Uri}" 
                                 Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                <BoxView StyleClass="Divider"/>
-                            </uranium:GridLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.EmptyView>
-                        <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+                                    <BoxView StyleClass="Divider"/>
+                                </uranium:GridLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </RefreshView>
             </ScrollView>
         </uranium:ExpanderView>
         <uranium:ExpanderView>
@@ -90,27 +92,29 @@
                 <Label Text="Episodes" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <ScrollView>
-                <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"
+                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
+                    <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"
                                     SelectionChangedCommand="{Binding GoToEpisodeCommand}"
                                     SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference episodeList}}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:EpisodeDto">
-                            <uranium:GridLayout RowCount="5" ColumnCount="1">
-                                <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
-                                <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
-                                <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
-                                <Button Text="Play preview" StyleClass="ElevatedButton"
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:EpisodeDto">
+                                <uranium:GridLayout RowCount="5" ColumnCount="1">
+                                    <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
+                                    <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
+                                    <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
+                                    <Button Text="Play preview" StyleClass="ElevatedButton"
                                             ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                                             Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
                                             CommandParameter="{Binding PreviewUrl}" IsVisible="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                <BoxView StyleClass="Divider"/>
-                            </uranium:GridLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                    <CollectionView.EmptyView>
-                        <Label Text="No episodes found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
-                    </CollectionView.EmptyView>
-                </CollectionView>
+                                    <BoxView StyleClass="Divider"/>
+                                </uranium:GridLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <Label Text="No episodes found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </RefreshView>
             </ScrollView>
         </uranium:ExpanderView>
     </VerticalStackLayout>
@@ -120,7 +124,7 @@
         <material:BackdropView Title="Commands"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Pending_actions}, Color={StaticResource OnPrimary}}">
             <Grid RowDefinitions="*" ColumnDefinitions="*,*" HorizontalOptions="Center" VerticalOptions="Center">
-            <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}" StyleClass="ElevatedButton"
+                <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}" StyleClass="ElevatedButton"
                     ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Update}}"/>
                 <Button Text="Add to Favorites" Command="{Binding AddToFavoritesCommand}" StyleClass="ElevatedButton" Grid.Column="1"
                     ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Star_rate}}"/>

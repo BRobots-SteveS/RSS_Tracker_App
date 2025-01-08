@@ -39,26 +39,28 @@
                 <Label Text="Feeds" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
-                <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
+                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
+                    <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToFeedCommand}"
                         SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference feedList}}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:FeedDto">
-                            <VerticalStackLayout>
-                                <Grid RowDefinitions="*,*" ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5" RowSpacing="5">
-                                    <Image Grid.RowSpan="2" Source="{Binding ., Converter={StaticResource ImageSourceConverter}}"
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:FeedDto">
+                                <VerticalStackLayout>
+                                    <Grid RowDefinitions="*,*" ColumnDefinitions="*,*,*" Margin="5" ColumnSpacing="5" RowSpacing="5">
+                                        <Image Grid.RowSpan="2" Source="{Binding ., Converter={StaticResource ImageSourceConverter}}"
                                    MaximumHeightRequest="120" MaximumWidthRequest="120"
                                    HeightRequest="90" WidthRequest="90"
                                    Aspect="AspectFit"/>
-                                    <Label Text="{Binding Title}" HorizontalOptions="Center" Grid.Column="1"/>
-                                    <Label Text="{Binding Platform}" HorizontalOptions="Center" Grid.Column="2"/>
-                                    <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1"/>
-                                </Grid>
-                                <BoxView StyleClass="Divider" />
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                                        <Label Text="{Binding Title}" HorizontalOptions="Center" Grid.Column="1"/>
+                                        <Label Text="{Binding Platform}" HorizontalOptions="Center" Grid.Column="2"/>
+                                        <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}" Grid.ColumnSpan="2" Grid.Row="2" Grid.Column="1"/>
+                                    </Grid>
+                                    <BoxView StyleClass="Divider" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </ScrollView>
         </uranium:ExpanderView>
     </VerticalStackLayout>
