@@ -58,6 +58,7 @@ namespace Rss_Mobile_App.Repositories
                 RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/favorite?userid={userId}{(feedId != null && feedId.HasValue? $"&feedid={feedId.Value}" : "")}{(authorId != null && authorId.HasValue ? $"&feedid={authorId.Value}" : "")}")
             };
             var result = await httpClient.SendAsync(message);
+            if (result.StatusCode == System.Net.HttpStatusCode.BadRequest) { return new(); }
             result.EnsureSuccessStatusCode();
             return Deserialize<UserFavoriteDto>(await result.Content.ReadAsStringAsync()) ?? new();
         }

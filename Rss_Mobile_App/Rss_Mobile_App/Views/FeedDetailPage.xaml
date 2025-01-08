@@ -26,7 +26,7 @@
     <VerticalStackLayout VerticalOptions="Center">
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
-                <Label Text="Details"/>
+                <Label Text="Details" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <VerticalStackLayout>
                 <input:FormView SubmitCommand="{Binding CreateFeedCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
@@ -59,7 +59,7 @@
         </uranium:ExpanderView>
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
-                <Label Text="Authors"/>
+                <Label Text="Authors" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <ScrollView>
                 <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
@@ -87,7 +87,7 @@
         </uranium:ExpanderView>
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
-                <Label Text="Episodes"/>
+                <Label Text="Episodes" Style="{StaticResource ExpanderTitle}"/>
             </uranium:ExpanderView.Header>
             <ScrollView>
                 <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"

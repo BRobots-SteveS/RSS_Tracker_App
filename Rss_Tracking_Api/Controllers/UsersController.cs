@@ -71,7 +71,7 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<UserFavoriteDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMyFavorites(Guid userId)
         {
-            return new OkObjectResult(_favorites.GetUserFavoritesByUserId(userId).Select(x => DbMapper.UserFavoriteToDto(x, x.Author ?? new() { Name = string.Empty })).ToList());
+            return new OkObjectResult(_favorites.GetUserFavoritesByUserId(userId).Select(x => DbMapper.UserFavoriteToDto(x, x.AuthorId)).ToList());
         }
 
         [HttpPost]
@@ -99,10 +99,10 @@ namespace Rss_Tracking_Api.Controllers
                 return BadRequest("Already exists");
             var author = _authors.GetById(authorId ?? Guid.Empty);
             var feed = _feeds.GetById(feedId ?? Guid.Empty);
-            if (author == null || feed == null) return BadRequest("Feed or Author do not exist");
+            if ((author == null && authorId != null) || (feed == null && feedId != null)) return BadRequest("Feed or Author do not exist");
             var output = _favorites.Add(new() { UserId = userId, FeedId = feedId ?? Guid.Empty, AuthorId = authorId });
             _favorites.SaveChanges();
-            return new OkObjectResult(DbMapper.UserFavoriteToDto(output, author));
+            return new OkObjectResult(DbMapper.UserFavoriteToDto(output, author?.Id));
         }
         [HttpDelete("favorite")]
         [MapToApiVersion("1.0")]

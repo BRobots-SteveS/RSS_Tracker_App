@@ -46,11 +46,5 @@ namespace Rss_Mobile_App.ViewModels
         {
             await Navigation.NavigateToAsync(nameof(FeedDetailViewModel), new Dictionary<string, object> { { "feed", selectedItem.Id.ToString() } });
         }
-
-        [RelayCommand]
-        public async Task AddToFavorites()
-        {
-            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())), null, AuthorId);
-        }
     }
 }

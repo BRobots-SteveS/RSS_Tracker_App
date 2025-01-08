@@ -48,14 +48,6 @@ namespace Rss_Mobile_App.ViewModels
             await Navigation.NavigateToAsync(nameof(AuthorDetailPage), authorMap);
         }
 
-
-        [RelayCommand]
-        public async Task AddToFavorites(AuthorDto selectedAuthor)
-        {
-            if (selectedAuthor == null) return;
-            await _userRepo.CreateFavorite(Guid.Parse(Preferences.Get("user", string.Empty)), authorId: selectedAuthor.Id);
-        }
-
         [RelayCommand]
         public async Task FilterResults()
         {

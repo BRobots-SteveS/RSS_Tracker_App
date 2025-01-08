@@ -205,7 +205,7 @@ namespace Rss_Tracking_Api.Controllers
                 }
             }
             _feeds.SaveChanges();
-            return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors));
+            return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors).FirstOrDefault());
         }
     }
 }
