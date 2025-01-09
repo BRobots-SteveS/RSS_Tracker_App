@@ -21,16 +21,14 @@ namespace Rss_Mobile_App.ViewModels
             Navigation = navigation;
             DialogService = dialogService;
         }
-        protected void TogglePresented() => IsPresented = !IsPresented;
-        protected void ToggleRefreshing() => IsRefreshing = !IsRefreshing;
         public virtual async Task DoRefresh() { }
 
         [RelayCommand]
         protected async Task ReloadData()
         {
-            ToggleRefreshing();
+            IsRefreshing = true;
             await DoRefresh();
-            ToggleRefreshing();
+            IsRefreshing = false;
         }
         [RelayCommand]
         protected async Task DoLogout()

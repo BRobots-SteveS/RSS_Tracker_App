@@ -27,105 +27,97 @@
             <mct:InvertedBoolConverter/>
         </converters:ValueConverterGroup>
     </uranium:UraniumContentPage.Resources>
-    <VerticalStackLayout VerticalOptions="Center">
-        <Button class="ElevatedButton" Text="Open feed"
-                                 ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
-                                 Command="{Binding OpenBrowserCommand}" CommandParameter="{Binding Feed.FeedUri}"
-                                 IsVisible="{Binding Feed.Id, Converter={StaticResource GuidEmptyToFalseConverter}}"/>
-        <uranium:ExpanderView>
-            <uranium:ExpanderView.Header>
-                <Label Text="Details" Style="{StaticResource ExpanderTitle}"/>
-            </uranium:ExpanderView.Header>
-            <VerticalStackLayout>
-                <input:FormView SubmitCommand="{Binding CreateFeedCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
+    <ScrollView>
+        <VerticalStackLayout VerticalOptions="Center">
+            <uranium:ExpanderView>
+                <uranium:ExpanderView.Header>
+                    <Label Text="Details" Style="{StaticResource ExpanderTitle}"/>
+                </uranium:ExpanderView.Header>
+                <VerticalStackLayout>
+                    <input:FormView SubmitCommand="{Binding CreateFeedCommand}" Spacing="10" Padding="25,30" MinimumWidthRequest="400"
                     HorizontalOptions="CenterAndExpand" IsEnabled="{Binding FeedId, Converter={StaticResource GuidEmptyToTrueConverter}}">
-                    <material:TextField Title="Title" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                        <material:TextField Title="Title" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
                                         Text="{Binding Feed.Title}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Title}}">
-                    </material:TextField>
-                    <material:PickerField Title="Platform" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                        </material:TextField>
+                        <material:PickerField Title="Platform" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
                                           ItemsSource="{Binding Platforms}" SelectedItem="{Binding Feed.Platform}"
                                           SelectedValueChangedCommand="{Binding SelectedPlatformChangedCommand}"
                                           Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}}"/>
-                    <material:TextField Title="URL" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                        <material:TextField Title="URL" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
                                         Text="{Binding Feed.FeedUri}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}}">
-                        <validation:RequiredValidation />
-                    </material:TextField>
-                    <material:TextField Title="CreatorId" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
+                            <validation:RequiredValidation />
+                        </material:TextField>
+                        <material:TextField Title="CreatorId" TextColor="{StaticResource OnSecondary}" AccentColor="{StaticResource OnSecondary}"
                                         Text="{Binding Feed.CreatorId}" Icon="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Id_card}}">
-                        <validation:RequiredValidation />
-                    </material:TextField>
-                    <Button
-        input:FormView.IsSubmitButton="True"
-        Text="Create feed"
-        StyleClass="ElevatedButton"/>
-                </input:FormView>
-                <Image Grid.RowSpan="2" Source="{Binding Feed, Converter={StaticResource ImageSourceConverter}}"
-               MaximumHeightRequest="240" MaximumWidthRequest="240"
-               HeightRequest="180" WidthRequest="180"
-               Aspect="AspectFit"/>
-            </VerticalStackLayout>
-        </uranium:ExpanderView>
-        <uranium:ExpanderView>
-            <uranium:ExpanderView.Header>
-                <Label Text="Authors" Style="{StaticResource ExpanderTitle}"/>
-            </uranium:ExpanderView.Header>
-            <ScrollView>
-                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
-                    <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
+                            <validation:RequiredValidation />
+                        </material:TextField>
+                        <Button StyleClass="ElevatedButton" Text="Create feed" HorizontalOptions="Center" input:FormView.IsSubmitButton="True"
+                                ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Add}, Color={StaticResource Primary}}"/>
+                    </input:FormView>
+                    <Image Grid.RowSpan="2" Source="{Binding Feed, Converter={StaticResource ImageSourceConverter}}"
+                           MaximumHeightRequest="240" MaximumWidthRequest="240" HeightRequest="180" WidthRequest="180" Aspect="AspectFit"/>
+                    <Label Text="{Binding Feed.Description}" IsVisible="{Binding Feed.Description, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                    <Button StyleClass="ElevatedButton" Text="Open feed" HorizontalOptions="Center" input:FormView.IsSubmitButton="False"
+                                 ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Globe}, Color={StaticResource Primary}}"
+                                 Command="{Binding OpenBrowserCommand}" CommandParameter="{Binding Feed.FeedUri}"
+                                 IsEnabled="{Binding Feed.Id, Converter={StaticResource GuidEmptyToFalseConverter}}"
+                                 IsVisible="{Binding Feed.Id, Converter={StaticResource GuidEmptyToFalseConverter}}"/>
+                </VerticalStackLayout>
+            </uranium:ExpanderView>
+            <uranium:ExpanderView>
+                <uranium:ExpanderView.Header>
+                    <Label Text="Authors" Style="{StaticResource ExpanderTitle}"/>
+                </uranium:ExpanderView.Header>
+                <CollectionView ItemsSource="{Binding Authors}" x:Name="authorsList" SelectionMode="Single"
                                     SelectionChangedCommand="{Binding GoToAuthorCommand}"
                                     SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorsList}}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:AuthorDto">
-                                <uranium:GridLayout RowCount="4" ColumnCount="1">
-                                    <Label Text="{Binding Name}"/>
-                                    <Button class="TextButton" Text="{Binding Email}" 
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:AuthorDto">
+                            <uranium:GridLayout RowCount="4" ColumnCount="1">
+                                <Label Text="{Binding Name}"/>
+                                <Button StyleClass="TextButton" Text="{Binding Email}" 
                                 Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                    <Button class="TextButton" Text="{Binding Uri}" 
+                                <Button StyleClass="TextButton" Text="{Binding Uri}" 
                                 Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
                                 CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                    <BoxView StyleClass="Divider"/>
-                                </uranium:GridLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyView>
-                            <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
-                        </CollectionView.EmptyView>
-                    </CollectionView>
-                </RefreshView>
-            </ScrollView>
-        </uranium:ExpanderView>
-        <uranium:ExpanderView>
-            <uranium:ExpanderView.Header>
-                <Label Text="Episodes" Style="{StaticResource ExpanderTitle}"/>
-            </uranium:ExpanderView.Header>
-            <ScrollView>
-                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
-                    <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"
+                                <BoxView StyleClass="Divider"/>
+                            </uranium:GridLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="No authors found" Style="{StaticResource EmptyCollectionLabel}"/>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </uranium:ExpanderView>
+            <uranium:ExpanderView>
+                <uranium:ExpanderView.Header>
+                    <Label Text="Episodes" Style="{StaticResource ExpanderTitle}"/>
+                </uranium:ExpanderView.Header>
+                <CollectionView ItemsSource="{Binding Episodes}" x:Name="episodeList" SelectionMode="Single"
                                     SelectionChangedCommand="{Binding GoToEpisodeCommand}"
                                     SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference episodeList}}">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="models:EpisodeDto">
-                                <uranium:GridLayout RowCount="5" ColumnCount="1">
-                                    <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
-                                    <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
-                                    <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
-                                    <Button Text="Play preview" StyleClass="ElevatedButton"
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:EpisodeDto">
+                            <uranium:GridLayout RowCount="5" ColumnCount="1">
+                                <Label Text="{Binding EpisodeName, Converter={StaticResource LabelMaxLengthConverter}}"/>
+                                <Label Text="{Binding CreatedOn}" FontAttributes="Italic"/>
+                                <Label Text="{Binding Description, Converter={StaticResource LabelMaxLengthConverter}}"/>
+                                <Button Text="Play preview" StyleClass="ElevatedButton"
                                             ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                                             Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
                                             CommandParameter="{Binding PreviewUrl}" IsEnabled="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                                    <BoxView StyleClass="Divider"/>
-                                </uranium:GridLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                        <CollectionView.EmptyView>
-                            <Label Text="No episodes found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
-                        </CollectionView.EmptyView>
-                    </CollectionView>
-                </RefreshView>
-            </ScrollView>
-        </uranium:ExpanderView>
-    </VerticalStackLayout>
+                                <BoxView StyleClass="Divider"/>
+                            </uranium:GridLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                    <CollectionView.EmptyView>
+                        <Label Text="No episodes found" Style="{StaticResource EmptyCollectionLabel}"/>
+                    </CollectionView.EmptyView>
+                </CollectionView>
+            </uranium:ExpanderView>
+        </VerticalStackLayout>
+    </ScrollView>
 
 
     <uranium:UraniumContentPage.Attachments>

@@ -30,7 +30,7 @@ namespace Rss_Mobile_App.ViewModels
         [ObservableProperty]
         private ObservableCollection<AuthorDto> authors = new();
         [ObservableProperty]
-        private ObservableCollection<string> platforms = new(["Youtube", "Omny", "Media", "iTunes", "Soundcloud", "Basic"]);
+        private ObservableCollection<string> platforms = new(["Youtube Channel", "Youtube Playlist", "Omny", "Media", "iTunes", "Soundcloud", "Basic"]);
         public FeedDetailViewModel(IFeedRepository feedRepo, IAuthorRepository authorRepo, IEpisodeRepository episodeRepo, IUserRepository userRepo,
             INavigationService navigation, IDialogService dialogService) : base(navigation, dialogService)
         {
@@ -42,7 +42,10 @@ namespace Rss_Mobile_App.ViewModels
         {
             if (FeedId != Guid.Empty)
             {
-                Feed = await _feedRepo.GetRowById(FeedId);
+                var tempFeed = await _feedRepo.GetRowById(FeedId);
+                if (tempFeed.Platform == "Youtube")
+                    tempFeed.Platform = tempFeed.CreatorId.StartsWith("yt:channel:") ? "Youtube Channel" : "Youtube Playlist";
+                Feed = tempFeed;
                 Episodes = new(await _episodeRepo.GetEpisodesByFeedId(FeedId));
                 Authors = new(await _authorRepo.GetAuthorsByFeedId(FeedId));
             }
@@ -69,7 +72,10 @@ namespace Rss_Mobile_App.ViewModels
             if (string.IsNullOrWhiteSpace(Feed.FeedUri)) { await DialogService.ConfirmAsync("Error", "No Feed URL present"); return; }
             if (string.IsNullOrWhiteSpace(Feed.CreatorId)) { await DialogService.ConfirmAsync("Error", "No CreatorId present"); return; }
             if (string.IsNullOrEmpty(Feed.AuthorName)) Feed.AuthorName = string.Empty;
-            Feed = await _feedRepo.CreateRow(Feed);
+            var tempFeed = Feed;
+            if (tempFeed.Platform.StartsWith("Youtube"))
+                tempFeed.CreatorId = tempFeed.Platform == "Youtube Channel" ? $"yt:channel:{tempFeed.CreatorId}" : $"yt:playlist:{tempFeed.CreatorId}"; 
+            Feed = await _feedRepo.CreateRow(tempFeed);
             FeedId = Feed.Id;
             await DoRefresh();
         }

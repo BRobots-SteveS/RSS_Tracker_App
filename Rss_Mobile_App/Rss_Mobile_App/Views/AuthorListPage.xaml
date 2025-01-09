@@ -27,18 +27,20 @@
                     <DataTemplate x:DataType="models:AuthorDto">
                         <uranium:GridLayout RowCount="4" ColumnCount="1">
                             <Label Text="{Binding Name}"/>
-                            <Button class="TextButton" Text="{Binding Email}" 
-                                Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
-                                CommandParameter="{Binding Email}" IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                            <Button class="TextButton" Text="{Binding Uri}" 
-                                Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}"
-                                CommandParameter="{Binding Uri}" IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                            <Button StyleClass="TextButton" Text="{Binding Email}"
+                                    Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}" CommandParameter="{Binding Email}"
+                                    IsEnabled="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                                    IsVisible="{Binding Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                            <Button StyleClass="TextButton" Text="{Binding Uri}"
+                                    Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}" CommandParameter="{Binding Uri}"
+                                    IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                                    IsVisible="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                             <BoxView StyleClass="Divider"/>
                         </uranium:GridLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
-                    <Label Text="No authors found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Text="No authors found" Style="{StaticResource EmptyCollectionLabel}"/>
                 </CollectionView.EmptyView>
             </CollectionView>
         </RefreshView>

@@ -16,7 +16,7 @@
     </LinearGradientBrush>
     
     <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
-        <!--<Setter Property="BackgroundImageSource" Value="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"/>-->
+        <Setter Property="BackgroundImageSource" Value="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"/>
         <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightBackgroundBrush}, Dark={StaticResource DarkBackgroundBrush}}"/>
     </Style>
 
@@ -28,6 +28,14 @@
         <Setter Property="FontSize" Value="Subtitle"/>
         <Setter Property="Margin" Value="10,5,0,5"/>
         <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="EmptyCollectionLabel">
+        <Setter Property="FontSize" Value="Subtitle"/>
+        <Setter Property="TextColor" Value="Red"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
 </ResourceDictionary>

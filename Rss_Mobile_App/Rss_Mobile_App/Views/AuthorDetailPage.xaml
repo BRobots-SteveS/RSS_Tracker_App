@@ -26,12 +26,14 @@
             </uranium:ExpanderView.Header>
             <VerticalStackLayout>
                 <Label Text="{Binding Author.Name}" FontSize="Large" FontAttributes="Bold"/>
-                <Button class="TextButton" Text="{Binding Author.Email}"
-                        Command="{Binding OpenEmailCommand}" CommandParameter="{Binding Author.Email}"
-                        IsEnabled="{Binding Author.Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                <Button class="TextButton" Text="More information"
-                        Command="{Binding OpenBrowserCommand}" CommandParameter="{Binding Author.Uri}"
-                        IsEnabled="{Binding Author.Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                <Button StyleClass="TextButton" Text="{Binding Author.Email}"
+                        Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}" CommandParameter="{Binding Author.Email}"
+                        IsEnabled="{Binding Author.Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                        IsVisible="{Binding Author.Email, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                <Button StyleClass="TextButton" Text="{Binding Author.Uri}"
+                        Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}" CommandParameter="{Binding Author.Uri}"
+                        IsEnabled="{Binding Author.Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
+                        IsVisible="{Binding Author.Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
             </VerticalStackLayout>
         </uranium:ExpanderView>
         <uranium:ExpanderView>

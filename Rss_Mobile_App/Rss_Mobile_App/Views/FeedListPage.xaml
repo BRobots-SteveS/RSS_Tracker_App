@@ -20,7 +20,6 @@
         <converters:LabelMaxLengthConverter x:Key="LabelMaxLengthConverter"/>
         <converters:ImageSourceConverter x:Key="ImageSourceConverter"/>
     </uranium:UraniumContentPage.Resources>
-    <ScrollView VerticalOptions="Fill">
         <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
             <CollectionView x:Name="feedList" ItemsSource="{Binding Feeds}" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToDetailsCommand}"
@@ -42,11 +41,10 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
                 <CollectionView.EmptyView>
-                    <Label Text="No feeds found" FontSize="Large" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                    <Label Text="No feeds found" Style="{StaticResource EmptyCollectionLabel}"/>
                 </CollectionView.EmptyView>
             </CollectionView>
         </RefreshView>
-    </ScrollView>
 
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView
