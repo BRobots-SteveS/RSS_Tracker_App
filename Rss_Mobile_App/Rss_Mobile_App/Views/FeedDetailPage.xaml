@@ -121,7 +121,7 @@
 
 
     <uranium:UraniumContentPage.Attachments>
-        <material:BackdropView Title="Commands"
+        <material:BackdropView Title="Commands" IsPresented="{Binding IsPresented}"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Pending_actions}, Color={StaticResource OnPrimary}}">
             <Grid RowDefinitions="*" ColumnDefinitions="*,*" HorizontalOptions="Center" VerticalOptions="Center">
                 <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}" StyleClass="ElevatedButton"

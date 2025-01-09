@@ -13,12 +13,15 @@ namespace Rss_Mobile_App.ViewModels
 
         [ObservableProperty]
         private bool isRefreshing = false;
+
+        [ObservableProperty]
+        private bool isPresented = false;
         public BaseViewModel(INavigationService navigation, IDialogService dialogService)
         {
             Navigation = navigation;
             DialogService = dialogService;
         }
-
+        protected void TogglePresented() => IsPresented = !IsPresented;
         protected void ToggleRefreshing() => IsRefreshing = !IsRefreshing;
         public virtual async Task DoRefresh() { }
 

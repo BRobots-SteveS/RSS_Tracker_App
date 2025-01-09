@@ -45,7 +45,7 @@
     </ScrollView>
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView
-            Title="Filter"
+            Title="Filter" IsPresented="{Binding IsPresented}"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Filter_alt}, Color={StaticResource OnPrimary}}"
             BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource Gray950}}">
             <input:FormView SubmitCommand="{Binding FilterResultsCommand}" Spacing="5" Padding="10,15" MinimumWidthRequest="400"
