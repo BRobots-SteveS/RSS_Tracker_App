@@ -13,6 +13,7 @@ namespace Rss_Tracking_Data.Repositories
         List<Feed> GetFeedsByUri(string uri);
         List<Feed> GetFeedsByTitle(string title);
         List<Feed> GetFeedsByFilter(string? title, string? creatorId, string? description, string? authorName, string? platform);
+        List<Feed> GetFeedsByIds(List<Guid> ids);
     }
     public class FeedRepository : BaseRepository<Feed>, IFeedRepository
     {
@@ -52,5 +53,6 @@ namespace Rss_Tracking_Data.Repositories
             foreach(var feed in filteredFeeds) result.Add(feed);
             return result.ToList();
         }
+        public List<Feed> GetFeedsByIds(List<Guid> ids) => _context.Feeds.AsNoTracking().Where(x =>  ids.Contains(x.Id)).ToList();
     }
 }

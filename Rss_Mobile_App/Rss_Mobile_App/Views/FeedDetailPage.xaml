@@ -22,8 +22,16 @@
         <converters:GuidEmptyToTrueConverter x:Key="GuidEmptyToTrueConverter"/>
         <converters:NewFeedTitleConverter x:Key="NewFeedTitleConverter"/>
         <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
+        <converters:ValueConverterGroup x:Key="GuidEmptyToFalseConverter">
+            <converters:GuidEmptyToTrueConverter/>
+            <mct:InvertedBoolConverter/>
+        </converters:ValueConverterGroup>
     </uranium:UraniumContentPage.Resources>
     <VerticalStackLayout VerticalOptions="Center">
+        <Button class="ElevatedButton" Text="Open feed"
+                                 ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
+                                 Command="{Binding OpenBrowserCommand}" CommandParameter="{Binding Feed.FeedUri}"
+                                 IsVisible="{Binding Feed.Id, Converter={StaticResource GuidEmptyToFalseConverter}}"/>
         <uranium:ExpanderView>
             <uranium:ExpanderView.Header>
                 <Label Text="Details" Style="{StaticResource ExpanderTitle}"/>
@@ -105,7 +113,7 @@
                                     <Button Text="Play preview" StyleClass="ElevatedButton"
                                             ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                                             Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}"
-                                            CommandParameter="{Binding PreviewUrl}" IsVisible="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
+                                            CommandParameter="{Binding PreviewUrl}" IsEnabled="{Binding PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
                                     <BoxView StyleClass="Divider"/>
                                 </uranium:GridLayout>
                             </DataTemplate>
@@ -126,7 +134,7 @@
             <Grid RowDefinitions="*" ColumnDefinitions="*,*" HorizontalOptions="Center" VerticalOptions="Center">
                 <Button Text="Refresh feed" Command="{Binding UpdateFeedCommand}" StyleClass="ElevatedButton"
                     ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Update}}"/>
-                <Button Text="Add to Favorites" Command="{Binding AddToFavoritesCommand}" StyleClass="ElevatedButton" Grid.Column="1"
+                <Button Text="Add Favorite" Command="{Binding AddToFavoritesCommand}" StyleClass="ElevatedButton" Grid.Column="1"
                     ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Star_rate}}"/>
             </Grid>
         </material:BackdropView>

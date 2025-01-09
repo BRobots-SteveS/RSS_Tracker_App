@@ -16,7 +16,7 @@
     </LinearGradientBrush>
     
     <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
-        <Setter Property="BackgroundImageSource" Value="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"/>
+        <!--<Setter Property="BackgroundImageSource" Value="{AppThemeBinding Light='light_background.png', Dark='app_background.jpg'}"/>-->
         <Setter Property="Background" Value="{AppThemeBinding Light={StaticResource LightBackgroundBrush}, Dark={StaticResource DarkBackgroundBrush}}"/>
     </Style>
 

@@ -9,6 +9,7 @@ namespace Rss_Mobile_App.Repositories
         Task<List<FeedDto>> GetFeedByCreator(Guid creatorId);
         Task<List<FeedDto>> GetFeedsByUserId(Guid userId);
         Task<List<FeedDto>> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform);
+        Task<List<FeedDto>> GetFeedsByIds(List<Guid> feedIds);
     }
     public class FeedRepository : BaseRepository<FeedDto>, IFeedRepository
     {
@@ -45,6 +46,19 @@ namespace Rss_Mobile_App.Repositories
             var result = await httpClient.SendAsync(message);
             result.EnsureSuccessStatusCode();
             return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
+        }
+        public async Task<List<FeedDto>> GetFeedsByIds(List<Guid> feedIds)
+        {
+            HttpRequestMessage message = new()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{httpClient.BaseAddress!.AbsoluteUri}/multiple"),
+                Content = JsonContent.Create(feedIds)
+            };
+            var result = await httpClient.SendAsync(message);
+            result.EnsureSuccessStatusCode();
+            return Deserialize<List<FeedDto>>(await result.Content.ReadAsStringAsync()) ?? new();
+
         }
         public async Task<List<FeedDto>> GetFeedsByFilter(string title, string creatorId, string description, string authorName, string platform)
         {

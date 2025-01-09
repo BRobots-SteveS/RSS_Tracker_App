@@ -57,7 +57,11 @@ namespace Rss_Mobile_App.ViewModels
             if (!string.IsNullOrEmpty(Title) || !string.IsNullOrEmpty(Description) || !string.IsNullOrEmpty(Platform) || !string.IsNullOrWhiteSpace(AuthorName) || !string.IsNullOrEmpty(CreatorId))
                 Feeds = new(await _feedRepo.GetFeedsByFilter(Title, CreatorId, Description, AuthorName, Platform));
             else if (UserId != Guid.Empty)
-                Feeds = new(await _feedRepo.GetFeedsByUserId(UserId));
+            {
+                var tempFavs = await _userRepo.GetFavoritesByUserId(UserId);
+                var tempIds = tempFavs.Select(f => f.Feed.Id).ToList();
+                Feeds = new(await _feedRepo.GetFeedsByIds(tempIds));
+            }
             else if (AuthorId != Guid.Empty)
                 Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));
             else

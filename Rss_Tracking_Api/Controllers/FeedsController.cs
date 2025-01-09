@@ -48,6 +48,17 @@ namespace Rss_Tracking_Api.Controllers
             return new OkObjectResult(DbMapper.FeedToDto(feed, authors).First());
         }
 
+        [HttpPost("multiple")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetFeedsByIds(List<Guid> feedIds)
+        {
+            HashSet<FeedDto> output = new();
+            var feeds = _feeds.GetFeedsByIds(feedIds).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
+            foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
+            return new OkObjectResult(output);
+        }
+
         [HttpGet("author/{authorId}")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(List<FeedDto>), StatusCodes.Status200OK)]
