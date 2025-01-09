@@ -5,9 +5,15 @@ This is a school project for a single semester
 ## Powershell commands
 Due to the Data layer being in a different solution this project can not be scaffolded by using the basic commands.
 `add-migration InitialMigration` and `update-database` do not work directly here.
+
 You need to use the following:
 - `dotnet ef migrations add InitialMigration --project Rss_Tracking_Data --startup-project Rss_Tracking_Api` to create the migration
 - `dotnet ef database update InitialMigration --project Rss_Tracking_Data --startup-project Rss_Tracking_Api` to apply the migration
+
+## Changes to run
+Set up a Dev Tunnel for the API.
+
+In the MAUI app project navigate to `/Repositories/BaseRepository.cs` and change the BaseURL to your Dev Tunnel URL.
 
 ## Grading list
 ### Basic requirements
