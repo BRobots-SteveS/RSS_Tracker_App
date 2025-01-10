@@ -18,15 +18,17 @@
     <uranium:UraniumContentPage.Resources>
         <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
     </uranium:UraniumContentPage.Resources>
-    <VerticalStackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-        <Label Text="{Binding Episode.EpisodeName}" FontSize="Large" FontAttributes="Bold"/>
-        <Label Text="{Binding Episode.CreatedOn}" FontAttributes="Italic"/>
-        <Label Text="{Binding Episode.Description}"/>
-        <Button Text="Play preview"
+    <ScrollView>
+        <VerticalStackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+            <Label Text="{Binding Episode.EpisodeName}" FontSize="Large" FontAttributes="Bold"/>
+            <Label Text="{Binding Episode.CreatedOn}" FontAttributes="Italic"/>
+            <Label Text="{Binding Episode.Description}"/>
+            <Button Text="Play preview"
                 ImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Play_circle}, Color={StaticResource OnPrimary}}"
                 Command="{Binding OpenBrowserCommand, Source={RelativeSource AncestorType={x:Type vm:FeedDetailViewModel}}}" CommandParameter="{Binding Episode.PreviewUrl}"
                 IsVisible="{Binding Episode.PreviewUrl, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
 
     <uranium:UraniumContentPage.Attachments>
         <!--<material:BackdropView
