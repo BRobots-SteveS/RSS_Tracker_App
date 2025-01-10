@@ -90,6 +90,22 @@ namespace Rss_Tracking_Api.Controllers
             _users.SaveChanges();
             return new OkObjectResult(DbMapper.UserToDto(output));
         }
+
+        [HttpPut("{userId}")]
+        [MapToApiVersion("1.0")]
+        [ProducesResponseType(typeof(UserDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateUser([FromBody]UserDto user, Guid userId)
+        {
+            if (user == null || userId == Guid.Empty) return BadRequest("No User provided");
+            var tempUser = _users.GetById(userId);
+            if(tempUser == null) return BadRequest("No User provided");
+            tempUser.UserName = user.Username;
+            if(!string.IsNullOrEmpty(user.Password)) tempUser.UpdatePassword(user.Password);
+            tempUser = _users.Update(tempUser);
+            _users.SaveChanges();
+            return new OkObjectResult(DbMapper.UserToDto(tempUser));
+        }
+
         [HttpPost("favorite")]
         [MapToApiVersion("1.0")]
         [ProducesResponseType(typeof(UserFavoriteDto), StatusCodes.Status200OK)]

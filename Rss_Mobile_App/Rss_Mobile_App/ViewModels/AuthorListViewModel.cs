@@ -26,10 +26,10 @@ namespace Rss_Mobile_App.ViewModels
 
         public override async Task DoRefresh()
         {
-            if (!string.IsNullOrEmpty(AuthorName) || !string.IsNullOrEmpty(AuthorEmail))
-                Authors = new(await _repo.GetAuthorsByNameAndEmail(AuthorName, AuthorEmail));
+            if (string.IsNullOrEmpty(AuthorName) && string.IsNullOrEmpty(AuthorEmail))
+                Authors = new(await _repo.GetAllRows());
             else
-                Authors = new ObservableCollection<AuthorDto>(await _repo.GetAllRows());
+                Authors = new(await _repo.GetAuthorsByNameAndEmail(AuthorName, AuthorEmail));
         }
 
         [RelayCommand]
@@ -51,7 +51,7 @@ namespace Rss_Mobile_App.ViewModels
         [RelayCommand]
         public async Task FilterResults()
         {
-            Authors = new(await _repo.GetAuthorsByNameAndEmail(AuthorName, AuthorEmail));
+            await ReloadData();
         }
     }
 }

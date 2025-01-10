@@ -26,7 +26,9 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<EpisodeDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllEpisodes()
         {
-            return new OkObjectResult(_episodes.GetAll().Select(DbMapper.EpisodeToDto).ToList());
+            var episodes = _episodes.GetAll().Select(DbMapper.EpisodeToDto).ToList();
+            episodes.Sort((x, y) => DateTime.Compare(x.CreatedOn.UtcDateTime, y.CreatedOn.UtcDateTime));
+            return new OkObjectResult(episodes);
         }
 
         [HttpGet("feed/{feedId}")]
@@ -34,7 +36,9 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<EpisodeDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetEpisodesByFeedId(Guid feedId)
         {
-            return new OkObjectResult(_episodes.GetEpisodesByFeedId(feedId).Select(DbMapper.EpisodeToDto).ToList());
+            var episodes = _episodes.GetEpisodesByFeedId(feedId).Select(DbMapper.EpisodeToDto).ToList();
+            episodes.Sort((x, y) => DateTime.Compare(x.CreatedOn.UtcDateTime, y.CreatedOn.UtcDateTime));
+            return new OkObjectResult(episodes);
         }
 
         [HttpGet("{episodeId}")]

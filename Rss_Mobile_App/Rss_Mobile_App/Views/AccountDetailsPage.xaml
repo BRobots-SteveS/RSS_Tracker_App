@@ -50,7 +50,7 @@
                 </material:TextField>
                 <Button 
                     input:FormView.IsSubmitButton="True"
-                    Text="Register"
+                    Text="Update user"
                     StyleClass="ElevatedButton"/>
             </input:FormView>
         </uranium:ExpanderView>

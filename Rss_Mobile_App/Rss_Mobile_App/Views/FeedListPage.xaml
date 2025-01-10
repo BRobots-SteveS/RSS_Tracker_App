@@ -50,8 +50,7 @@
         <material:BackdropView
             Title="Filter" IsPresented="{Binding IsPresented}"
             IconImageSource="{FontImageSource FontFamily=MaterialSharp, Glyph={x:Static uranium:MaterialSharp.Filter_alt}, Color={StaticResource OnPrimary}}">
-            <input:FormView SubmitCommand="{Binding DoFilterCommand}" Spacing="5" Padding="10,15" MinimumWidthRequest="400"
-                    HorizontalOptions="CenterAndExpand">
+            <input:FormView SubmitCommand="{Binding DoFilterCommand}" Spacing="5" Padding="10,15" MinimumWidthRequest="400" HorizontalOptions="CenterAndExpand">
                 <material:TextField 
         Title="Title"
         Text="{Binding Title}"

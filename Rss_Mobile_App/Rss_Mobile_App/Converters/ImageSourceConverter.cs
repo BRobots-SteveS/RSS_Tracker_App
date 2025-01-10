@@ -22,6 +22,8 @@ namespace Rss_Mobile_App.Converters
             return feed.Platform switch
             {
                 "Youtube" => YOUTUBE,
+                "Youtube Channel" => YOUTUBE,
+                "Youtube Playlist" => YOUTUBE,
                 "iTunes" => ITUNES,
                 _ => RSS,
             };

@@ -34,7 +34,9 @@ namespace Rss_Tracking_Api.Controllers
             HashSet<FeedDto> output = new();
             var feeds = _feeds.GetAll().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
             foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
-            return new OkObjectResult(output);
+            var result = output.ToList();
+            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            return new OkObjectResult(result);
         }
 
         [HttpGet("{feedId}")]
@@ -56,7 +58,9 @@ namespace Rss_Tracking_Api.Controllers
             HashSet<FeedDto> output = new();
             var feeds = _feeds.GetFeedsByIds(feedIds).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
             foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
-            return new OkObjectResult(output);
+            var result = output.ToList();
+            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            return new OkObjectResult(result);
         }
 
         [HttpGet("author/{authorId}")]
@@ -67,7 +71,9 @@ namespace Rss_Tracking_Api.Controllers
             HashSet<FeedDto> output = new();
             var temp = _feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList();
             foreach(var feedList in temp) { foreach(var feed in feedList) { output.Add(feed); } }
-            return new OkObjectResult(output.ToList());
+            var result = output.ToList();
+            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            return new OkObjectResult(result);
         }
 
         [HttpGet("user/{userId}")]
@@ -78,7 +84,9 @@ namespace Rss_Tracking_Api.Controllers
             HashSet<FeedDto> output = new();
             var temp = _feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList();
             foreach (var feedList in temp) { foreach (var feed in feedList) { output.Add(feed); } }
-            return new OkObjectResult(output.ToList());
+            var result = output.ToList();
+            result.Sort((x,y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            return new OkObjectResult(result);
         }
 
         [HttpGet("filter")]
@@ -189,6 +197,7 @@ namespace Rss_Tracking_Api.Controllers
             resultFeed.Id = feed.Id;
             _feeds.Update(resultFeed);
 
+            if (authors == null || authors.Count == 0) authors = _authors.GetAuthorsByFeedId(feedId);
             foreach (var author in authors)
             {
                 Author resultAuthor;
@@ -216,7 +225,8 @@ namespace Rss_Tracking_Api.Controllers
                 }
             }
             _feeds.SaveChanges();
-            return new OkObjectResult(DbMapper.FeedToDto(resultFeed, resultAuthors).FirstOrDefault());
+            var results = DbMapper.FeedToDto(resultFeed, resultAuthors);
+            return new OkObjectResult(results.FirstOrDefault(new FeedDto()));
         }
     }
 }

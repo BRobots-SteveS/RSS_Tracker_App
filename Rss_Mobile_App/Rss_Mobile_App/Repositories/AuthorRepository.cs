@@ -25,7 +25,8 @@ namespace Rss_Mobile_App.Repositories
 
         public async Task<List<AuthorDto>> GetAuthorsByNameAndEmail(string name, string email)
         {
-            string querystring = (string.IsNullOrEmpty(name) ? string.Empty : $"authorname={name}&") +
+            string querystring = (string.IsNullOrEmpty(name) ? string.Empty : $"authorname={name}") +
+                                 (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(email)? "&" : string.Empty) +
                                  (string.IsNullOrEmpty(email) ? string.Empty : $"email={email}");
             HttpRequestMessage message = new()
             {

@@ -167,7 +167,7 @@ namespace Rss_Tracking_Api.Helpers
         }
         public static Feed FeedToDbObject(ITunesFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [new Author { Name = feed.Owner?.Name ?? feed.Author ?? string.Empty, Email = feed.Owner?.Email ?? string.Empty }];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
@@ -183,7 +183,7 @@ namespace Rss_Tracking_Api.Helpers
         }
         public static Feed FeedToDbObject(OmnyFeed feed, out List<Author> authors, out List<Episode> episodes)
         {
-            authors = [.. feed.Feed.Authors.Select(x => new Author { Name = x.Name, Email = x.Email, Uri = x.Uri })];
+            authors = [new Author { Name = feed.Owner?.Name ?? feed.Author ?? string.Empty, Email = feed.Owner?.Email ?? string.Empty }];
             episodes = GetItems(feed.Items).ToList();
             return new Feed
             {
