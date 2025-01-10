@@ -71,7 +71,9 @@ namespace Rss_Tracking_Api.Controllers
         [ProducesResponseType(typeof(List<UserFavoriteDto>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetMyFavorites(Guid userId)
         {
-            return new OkObjectResult(_favorites.GetUserFavoritesByUserId(userId).Select(x => DbMapper.UserFavoriteToDto(x, x.AuthorId)).ToList());
+            var favorites = _favorites.GetUserFavoritesByUserId(userId);
+            var results = favorites.Select(x => DbMapper.UserFavoriteToDto(x, x.AuthorId)).ToList();
+            return new OkObjectResult(results);
         }
 
         [HttpPost]

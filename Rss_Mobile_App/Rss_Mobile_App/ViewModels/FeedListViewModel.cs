@@ -59,8 +59,8 @@ namespace Rss_Mobile_App.ViewModels
             else if (UserId != Guid.Empty)
             {
                 var tempFavs = await _userRepo.GetFavoritesByUserId(UserId);
-                var tempIds = tempFavs.Select(f => f.Feed.Id).ToList();
-                Feeds = new(await _feedRepo.GetFeedsByIds(tempIds));
+                HashSet<Guid> tempIds = new(tempFavs.Select(f => f.Feed.Id));
+                Feeds = new(await _feedRepo.GetFeedsByIds(tempIds.ToList()));
             }
             else if (AuthorId != Guid.Empty)
                 Feeds = new(await _feedRepo.GetFeedByCreator(AuthorId));

@@ -58,13 +58,13 @@ namespace Rss_Tracking_Api.Helpers
         public static UserFavoriteDto UserFavoriteToDto(UserFavorite userFavorite, Guid? authorId)
         {
             Feed tempFeed = userFavorite.Feed ?? new() { Description = string.Empty, Title = string.Empty, FeedUrl = string.Empty, Id = userFavorite.FeedId };
-            Author tempAuthor = userFavorite.Author ?? new() { Name = string.Empty, Id = userFavorite.AuthorId == null? Guid.Empty : userFavorite.AuthorId.Value};
+            Author tempAuthor = userFavorite.Author ?? new() { Name = string.Empty, Id = authorId.GetValueOrDefault(Guid.Empty)};
             return new()
             {
                 Id = userFavorite.Id,
                 User = UserToDto(new() { Id = userFavorite.UserId }),
-                Feed = FeedToDto(tempFeed, authorId == null ? [] : [tempAuthor]).First(),
-                Author = userFavorite.AuthorId == null? null : AuthorToDto(tempAuthor, [tempFeed])
+                Feed = FeedToDto(tempFeed, [tempAuthor]).First(),
+                Author = !authorId.HasValue? null : AuthorToDto(tempAuthor, [tempFeed])
             };
         }
     }
