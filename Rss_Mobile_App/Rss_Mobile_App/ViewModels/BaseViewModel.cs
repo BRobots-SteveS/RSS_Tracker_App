@@ -41,7 +41,7 @@ namespace Rss_Mobile_App.ViewModels
         { await Navigation.NavigateToAsync(nameof(AccountDetailsPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
         [RelayCommand]
         protected async Task GoToFavorites()
-        { await Navigation.NavigateToAsync(nameof(FeedListPage), new Dictionary<string, object> { { "user", Guid.Parse(Preferences.Get("user", Guid.Empty.ToString())) } }); }
+        { await Navigation.NavigateToAsync(nameof(FeedListPage), new Dictionary<string, object> { { "user", Preferences.Get("user", Guid.Empty.ToString()) } }); }
         [RelayCommand]
         protected async Task GoToFeedList() => await Navigation.NavigateToAsync(nameof(FeedListPage));
         [RelayCommand]
