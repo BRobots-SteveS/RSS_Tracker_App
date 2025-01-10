@@ -27,7 +27,7 @@ namespace Rss_Tracking_Api.Controllers
         public async Task<IActionResult> GetAllEpisodes()
         {
             var episodes = _episodes.GetAll().Select(DbMapper.EpisodeToDto).ToList();
-            episodes.Sort((x, y) => DateTime.Compare(x.CreatedOn.UtcDateTime, y.CreatedOn.UtcDateTime));
+            episodes.Sort((x, y) => DateTime.Compare(y.CreatedOn.UtcDateTime, x.CreatedOn.UtcDateTime));
             return new OkObjectResult(episodes);
         }
 
@@ -37,7 +37,7 @@ namespace Rss_Tracking_Api.Controllers
         public async Task<IActionResult> GetEpisodesByFeedId(Guid feedId)
         {
             var episodes = _episodes.GetEpisodesByFeedId(feedId).Select(DbMapper.EpisodeToDto).ToList();
-            episodes.Sort((x, y) => DateTime.Compare(x.CreatedOn.UtcDateTime, y.CreatedOn.UtcDateTime));
+            episodes.Sort((x, y) => DateTime.Compare(y.CreatedOn.UtcDateTime, x.CreatedOn.UtcDateTime));
             return new OkObjectResult(episodes);
         }
 

@@ -35,7 +35,7 @@ namespace Rss_Tracking_Api.Controllers
             var feeds = _feeds.GetAll().Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
             foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
             var result = output.ToList();
-            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            result.Sort((x, y) => DateTime.Compare(y.PublishedTime, x.PublishedTime));
             return new OkObjectResult(result);
         }
 
@@ -59,7 +59,7 @@ namespace Rss_Tracking_Api.Controllers
             var feeds = _feeds.GetFeedsByIds(feedIds).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
             foreach (var feedList in feeds) { foreach (var feed in feedList) { output.Add(feed); } }
             var result = output.ToList();
-            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            result.Sort((x, y) => DateTime.Compare(y.PublishedTime, x.PublishedTime));
             return new OkObjectResult(result);
         }
 
@@ -72,7 +72,7 @@ namespace Rss_Tracking_Api.Controllers
             var temp = _feeds.GetFeedsByAuthorId(authorId).Select(x => DbMapper.FeedToDto(x, [_authors.GetById(authorId)])).ToList();
             foreach(var feedList in temp) { foreach(var feed in feedList) { output.Add(feed); } }
             var result = output.ToList();
-            result.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            result.Sort((x, y) => DateTime.Compare(y.PublishedTime, x.PublishedTime));
             return new OkObjectResult(result);
         }
 
@@ -85,7 +85,7 @@ namespace Rss_Tracking_Api.Controllers
             var temp = _feeds.GetFeedsByUserId(userId).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id))).ToList();
             foreach (var feedList in temp) { foreach (var feed in feedList) { output.Add(feed); } }
             var result = output.ToList();
-            result.Sort((x,y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            result.Sort((x,y) => DateTime.Compare(y.PublishedTime, x.PublishedTime));
             return new OkObjectResult(result);
         }
 
@@ -98,7 +98,7 @@ namespace Rss_Tracking_Api.Controllers
             var feeds = _feeds.GetFeedsByFilter(title, creatorId, description, authorName, platform).Select(x => DbMapper.FeedToDto(x, _authors.GetAuthorsByFeedId(x.Id)));
             foreach (var feedList in feeds) { foreach (var feed in feedList) { result.Add(feed); } }
             var output = result.ToList();
-            output.Sort((x, y) => DateTime.Compare(x.PublishedTime, y.PublishedTime));
+            output.Sort((x, y) => DateTime.Compare(y.PublishedTime, x.PublishedTime));
             return new OkObjectResult(output);
         }
 

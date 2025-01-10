@@ -18,8 +18,8 @@
     <uranium:UraniumContentPage.Resources>
         <mct:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter"/>
     </uranium:UraniumContentPage.Resources>
-    <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
         <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding ReloadDataCommand}">
+    <ScrollView HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
             <CollectionView ItemsSource="{Binding Authors}" x:Name="authorList" SelectionMode="Single"
                         SelectionChangedCommand="{Binding GoToDetailsCommand}"
                         SelectionChangedCommandParameter="{Binding Path=SelectedItem, Source={x:Reference authorList}}">
@@ -35,7 +35,7 @@
                                     Command="{Binding OpenEmailCommand, Source={RelativeSource AncestorType={x:Type vm:AuthorListViewModel}}}" CommandParameter="{Binding Uri}"
                                     IsEnabled="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"
                                     IsVisible="{Binding Uri, Converter={StaticResource IsStringNotNullOrEmptyConverter}}"/>
-                            <BoxView StyleClass="Divider"/>
+                            <BoxView StyleClass="Divider" Color="{StaticResource Gray900}"/>
                         </uranium:GridLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
@@ -43,8 +43,8 @@
                     <Label Text="No authors found" Style="{StaticResource EmptyCollectionLabel}"/>
                 </CollectionView.EmptyView>
             </CollectionView>
-        </RefreshView>
     </ScrollView>
+        </RefreshView>
     <uranium:UraniumContentPage.Attachments>
         <material:BackdropView
             Title="Filter" IsPresented="{Binding IsPresented}"
