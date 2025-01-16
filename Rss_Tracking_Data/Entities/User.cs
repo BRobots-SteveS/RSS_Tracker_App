@@ -19,7 +19,8 @@ namespace Rss_Tracking_Data.Entities
         }
         public void UpdatePassword(string newPassword)
         {
-            var newHash = CryptoHelper.HashPassword(newPassword, Salt, out _);
+            var realPassword = System.Text.Encoding.UTF8.GetString(Convert.FromHexString(newPassword));
+            var newHash = CryptoHelper.HashPassword(realPassword, Salt, out _);
             if (newHash != Password) Password = newHash;
         }
         public bool ValidLogin(string userName, string password)
